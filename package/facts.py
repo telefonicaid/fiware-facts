@@ -12,8 +12,8 @@ gevent.monkey.patch_all()
 
 # need to send {'serverId': 'serverId', 'cpu': 80, 'mem': 80, 'time': '2014-03-24 16:21:29.384631'}
 # to the topic
-@app.route('/<tenantId>/servers/<serverId>', methods=['POST'])
-def hello_world(tenantId, serverId):
+@app.route('/<tenantid>/servers/<serverid>', methods=['POST'])
+def hello_world(tenantid, serverid):
     if not request.json:
         abort(400)
 
@@ -25,11 +25,16 @@ def hello_world(tenantId, serverId):
 
     print(len(attrlist))
 
+    for item in attrlist:
+        print item['name']
+        print item['contextValue']
+
+
     time = datetime.datetime.today()
 
     print(time)
 
-    return 'Hello World, tenantId: {}     serverId: {}    json: {}!!!'.format(tenantId, serverId, attrlist)
+    return 'Hello World, tenantId: {}     serverId: {}    json: {}!!!'.format(tenantid, serverid, attrlist)
 
 
 
