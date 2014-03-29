@@ -1,6 +1,7 @@
 __author__ = 'fla'
 
 import redis
+from package.mylist import mylist
 
 
 class Redis(object):
@@ -26,15 +27,16 @@ class Redis(object):
         return self.r.lrange('prueba', -100, 100)
 
     def media(self, lista):
-        return self.sum(lista) / float(len(lista))
+        return self.sum(lista) / len(lista)
 
     def sum(self, lista):
         if len(lista) > 1:
-            return float(lista[0]) + self.sum(lista[1:])
+            result = mylist.sum(lista)
+            return result
         elif len(lista) == 1:
-            return float(lista[0])
+            return lista[0]
         else:
-            return float(0)
+            return '[]'
 
     def delete(self):
         self.r.delete('prueba')

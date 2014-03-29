@@ -5,6 +5,41 @@ from mylist import mylist
 
 #{'serverId': 'serverId', 'cpu': 80, 'mem': 80, 'time': '2014-03-24 16:21:29.384631'}
 if __name__ == "__main__":
+    p1 = [[1,2,3]]
+    p2 = ['[1, 2, 3]']
+
+    print p1
+    print p2
+
+    print isinstance(p1[0], list)
+    print isinstance(p2[0], list)
+    print isinstance(p2[0], str)
+
+    p3 = p2[0].lstrip().replace('[','').replace(']','').split(',')
+
+    p3 = [int(i) for i in p3]
+
+    print p3
+
+
+    p1 = [[1,2,3], [1,2,3], [1,2,3]]
+    p2 = ['[1, 2, 3]', '[4, 5, 6]', '[7, 8, 9]']
+    p4 = []
+
+    for i in range(0, len(p2)):
+        p3 = p2[i].lstrip().replace('[','').replace(']','').split(',')
+
+        p3 = [int(j) for j in p3]
+
+        p4.append(p3)
+
+    print p4
+
+
+
+
+
+    '''
     r = Redis()
 
     r.insert(1)
@@ -31,12 +66,9 @@ if __name__ == "__main__":
 
     print message1
 
-
-
     print "Prueba con listas \n"
 
     list = [1, 2, 3, 4]
-
 
     r.delete()
 
@@ -52,6 +84,4 @@ if __name__ == "__main__":
     print list
     print list[0]
     print list[1:]
-
-
-
+    '''
