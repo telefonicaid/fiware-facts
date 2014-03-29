@@ -11,32 +11,33 @@ class myredis(object):
     """
     def __init__(self):
         self.r = redis.StrictRedis(host='localhost', port=6379, db=0)
-        self.r.delete('prueba')
+        self.r.delete('policymanager')
 
     def insert(self, data):
         ''' we need to check that data is a list and the exact number of
         element is equal to 4
         '''
         if isinstance(data, list) and len(data) == 4:
-            self.r.rpush('prueba', data)
-            self.r.ltrim('prueba', -5, -1)
+            self.r.rpush('policymanager', data)
+            self.r.ltrim('policymanager', -5, -1)
         else:
             return "error"
 
     def range(self):
-        return self.r.lrange('prueba', -100, 100)
+        return self.r.lrange('policymanager', -100, 100)
 
     def media(self, lista):
         return self.sum(lista) / len(lista)
 
     def sum(self, lista):
         if len(lista) > 1:
-            result = mylist.sum(lista)
-            return result
+            return mylist.sum(lista)
         elif len(lista) == 1:
-            return lista[0]
+            r1 = mylist()
+            r1.insert(lista)
+            return r1
         else:
             return '[]'
 
     def delete(self):
-        self.r.delete('prueba')
+        self.r.delete('policymanager')

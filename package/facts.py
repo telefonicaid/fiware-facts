@@ -1,9 +1,13 @@
 __author__ = 'fla'
 
-from flask import Flask, request, jsonify, abort
+from flask import Flask, request, abort
+from package.myredis import myredis
+from package.mylist import mylist
+
 import datetime
 
 app = Flask(__name__)
+mredis = myredis()
 
 import gevent.monkey
 from gevent.pywsgi import WSGIServer
@@ -21,19 +25,28 @@ def hello_world(tenantid, serverid):
 
     # Get the parsed contents of the form data
     json = request.json
-    print(json)
 
     attrlist = request.json['contextResponses'][0]['contextElement']['attributes']
 
-    print(len(attrlist))
+    data = list()
 
     for item in attrlist:
-        print item['name']
-        print item['contextValue']
+        name = item['name']
+        value = item['contextValue']
 
-    time = datetime.datetime.today()
+        if name == 'usedMemPct' or name == 'cpuLoadPct':
+            data.insert(len(data), float(value))
 
-    print(time)
+    data.insert(0, serverid)
+    data.insert(3, datetime.datetime.today().isoformat())
+
+    data[0] = str(data[0])
+
+    mredis.insert(data)
+
+    lo = mredis.media(mredis.range())
+
+    print "media: ",lo.data
 
     return 'Hello World, tenantId: {}     serverId: {}    json: {}!!!'.format(tenantid, serverid, attrlist)
 

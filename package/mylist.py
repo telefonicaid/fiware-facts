@@ -6,38 +6,42 @@ class mylist(object):
     def __init__(self, data=None):
         self.insert(data)
 
+    @staticmethod
+    def parselist(data):
+        p3 = data.lstrip().replace('[','').replace(']','').split(',')
+
+        #p3 = [int(j) for j in p3]
+        p3[0] = str(p3[0].replace("u","").replace("'",""))
+
+        p3[1] = float(p3[1])
+        p3[2] = float(p3[2])
+
+        p3[3] = str(p3[3].lstrip().replace("'",""))
+
+        return p3
+
     def insert(self, data):
         if isinstance(data, list) == False:
             self.data = []
         else:
-            if isinstance(data[0], list) or isinstance(data[0], int):
+            if isinstance(data[0], list) or isinstance(data[0], int) or (isinstance(data[0], str) and data[0][0] != '['):
                 self.data = data
             else:
                 if isinstance(data[0], str):
                     p4 = []
 
                     for i in range(0, len(data)):
-                        p3 = data[i].lstrip().replace('[','').replace(']','').split(',')
-
-                        p3 = [int(j) for j in p3]
+                        p3 = mylist.parselist(data[i])
 
                         p4.append(p3)
 
-                        self.data = p4
+                    self.data = p4
 
     def delete(self):
         self.data = []
 
     @staticmethod
     def sum(data):
-        '''
-        if len(data) > 1:
-            return mylist(data[0]) + mylist.sum(data[1:])
-        elif len(data) == 1:
-            return mylist(data[0])
-        else:
-            return float(0)
-        '''
         aux = mylist(data).get()
         if len(aux) > 1:
             return mylist(aux[0]) + mylist.sum(data[1:])

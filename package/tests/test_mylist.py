@@ -104,7 +104,7 @@ class Testmylist(TestCase):
     def testmedia(self):
         """check the media of a list of data"""
 
-        expectedvalue = [1, 8, 9.75, 4]
+        expectedvalue = ['1', 8, 9.75, '4']
 
         p1 = ['[1, 2, 3, 4]', '[5, 6, 7, 8]', '[9, 10, 11, 12]', '[13, 14, 18, 16]']
 
@@ -117,7 +117,7 @@ class Testmylist(TestCase):
         """check the sum of a list of strings but with commas"""
         p1 = ['[1, 2, 3, 4]', '[1, 2, 3, 4]', '[1, 2, 3, 4]', '[1, 2, 3, 4]']
 
-        expectedvalue = [1, 8, 12, 4]
+        expectedvalue = ['1', 8, 12, '4']
 
         result = mylist.sum(p1)
 
@@ -129,7 +129,7 @@ class Testmylist(TestCase):
 
         r1 = mylist()
 
-        expectedvalue = [[1, 2, 3, 4]]
+        expectedvalue = [['1', 2, 3, '4']]
 
         r1.insert(p1)
 
@@ -143,7 +143,7 @@ class Testmylist(TestCase):
 
         r1 = mylist()
 
-        expectedvalue = [[1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4]]
+        expectedvalue = [['1', 2, 3, '4'], ['1', 2, 3, '4'], ['1', 2, 3, '4'], ['1', 2, 3, '4']]
 
         r1.insert(p1)
 
@@ -153,3 +153,50 @@ class Testmylist(TestCase):
 
         self.assertEqual(expectedvalue, result)
 
+    def testRealInsert(self):
+        """test insertion of real data"""
+
+        expectedvalue = [[u'44', 1.0, 0.14, '2014-03-29T19:18:25.784424']]
+        p1 = ["[u'44', 1.0, 0.14, '2014-03-29T19:18:25.784424']"]
+
+        r1 = mylist()
+        r1.insert(p1)
+
+        result = r1.get()
+
+        print result
+
+        self.assertEqual(expectedvalue, result)
+
+    def testRealInsert2(self):
+        """test insertion of real data"""
+
+        expectedvalue = [u'44', 1.0, 0.14, '2014-03-29T19:18:25.784424']
+        p1 = "[u'44', 1.0, 0.14, '2014-03-29T19:18:25.784424']"
+
+        print mylist.parselist(p1)
+
+        r1 = mylist()
+        r1.insert(mylist.parselist(p1))
+
+        result = r1.get()
+
+        print result
+
+        self.assertEqual(expectedvalue, result)
+
+    def testReadMedia1Data(self):
+        """test the insertion of a real data and calculate its media"""
+
+        p1 = [u'44', 1.0, 0.14, '2014-03-29T23:02:46.973949']
+        expectedvalue = [u'44', 1.0, 0.14, '2014-03-29T23:02:46.973949']
+
+        p1[0] = str(p1[0])
+
+        p2 = list()
+
+        p2.insert(0, p1)
+
+        result = mylist.sum(p2) / len(p2)
+
+        self.assertEqual(expectedvalue, result.data)
