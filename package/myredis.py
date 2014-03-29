@@ -4,7 +4,7 @@ import redis
 from package.mylist import mylist
 
 
-class Redis(object):
+class myredis(object):
     """ class to create lists on redis distribution. it is asumed
     that there is an installed version of redis in the localhost
     in the port 6379 (by default) and the server executed (redis-server).
