@@ -4,8 +4,6 @@ from unittest import TestCase
 
 from package.mylist import mylist
 
-__author__ = 'fla'
-
 
 class Testmylist(TestCase):
     pass

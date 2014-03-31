@@ -27,7 +27,12 @@ class myredis(object):
         return self.r.lrange('policymanager', -100, 100)
 
     def media(self, lista):
-        return self.sum(lista) / len(lista)
+        if len(lista) >= 5:
+            return self.sum(lista) / len(lista)
+        else:
+            result = mylist()
+            result.data = []
+            return result
 
     def sum(self, lista):
         if len(lista) > 1:
