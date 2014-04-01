@@ -4,22 +4,10 @@ from flask import Flask, request, abort, Response, json
 from package.myredis import myredis
 
 import datetime
-from package.configuration import LOGGING_PATH
-
-import logging
+from package.log import logger
 
 app = Flask(__name__)
 mredis = myredis()
-
-logger = logging.getLogger('environments')
-logger.setLevel(logging.DEBUG)
-fh = logging.FileHandler(LOGGING_PATH + 'fiware-facts.log')
-fh.setLevel(logging.DEBUG)
-#formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s')
-# formatter = logging.Formatter('%(asctime)s %(levelname)s %(message1)s [%(message2)s] %(message3)s')
-formatter = logging.Formatter('%(asctime)s %(levelname)s policymanager.facts %(message)s')
-fh.setFormatter(formatter)
-logger.addHandler(fh)
 
 import gevent.monkey
 from gevent.pywsgi import WSGIServer
@@ -44,10 +32,10 @@ def facts(tenantid, serverid):
         try:
             user_submission = json.loads(request.data)
         except ValueError:
-            message = "\[{}\] received {} from ip {}:{}"\
+            message = "[{}] received {} from ip {}:{}"\
                 .format("-", json, request.environ['REMOTE_ADDR'], request.environ['REMOTE_PORT'])
 
-            logger.warning()
+            logger.warning(message)
 
 
             return Response(response="{\"error\":\"The payload is not well-defined json format\"}",
@@ -70,7 +58,7 @@ def facts(tenantid, serverid):
 def process_request(request, serverid):
     # Get the parsed contents of the form data
     json = request.json
-    message = "\[{}\] received {} from ip {}:{}"\
+    message = "[{}] received {} from ip {}:{}"\
         .format("-", json, request.environ['REMOTE_ADDR'], request.environ['REMOTE_PORT'])
 
     logger.info(message)

@@ -2,6 +2,8 @@ __author__ = 'fla'
 
 import redis
 from package.mylist import mylist
+from redis.exceptions import ConnectionError
+from package.log import logger
 
 
 class myredis(object):
@@ -11,7 +13,13 @@ class myredis(object):
     """
     def __init__(self):
         self.r = redis.StrictRedis(host='localhost', port=6379, db=0)
-        self.r.delete('policymanager')
+
+        try:
+            self.r.delete('policymanager')
+        except ConnectionError:
+            message = "[{}] Cannot delete the list. Possiblely redis is down".format("-")
+
+            logger.error(message)
 
     def insert(self, data):
         ''' we need to check that data is a list and the exact number of
