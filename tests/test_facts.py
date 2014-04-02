@@ -21,39 +21,15 @@
 # For those usages not covered by the Apache version 2.0 License please
 # contact with opensource@tid.es
 #
+__author__ = 'fla'
 
-[common]
-LOGGING_PATH = u"/var/log/fiware-facts/"
-brokerPort: 5000
+from flask.ext.testing import TestCase
 
-[loggers]
-keys: root
-
-[handlers]
-keys: console, file
-
-[formatters]
-keys: standard
-
-[formatter_standard]
-class: logging.Formatter
-format: %(asctime)s [%(levelname)s] %(message)s
-
-[logger_root]
-level: INFO
-handlers: console, file
-
-[handler_console]
-level: DEBUG
-class: StreamHandler
-formatter: standard
-args: (sys.stdout,)
-
-[handler_file]
-level: DEBUG
-class: handlers.RotatingFileHandler
-formatter: standard
-logFileName: nova_event_listener.log
-logMaxFiles: 3
-logMaxSize: 5*1024*1024  ; 5 MB
-args: ('%(logFileName)s', 'a', %(logMaxSize)s, %(logMaxFiles)s)
+""" Class to test the flask application
+"""
+class MyTest(TestCase):
+    def test_some_json(self):
+        """ Test that the POST operation over the API returns a json message
+        """
+        response = self.client.post("/v1.0/33/servers/44/")
+        self.assertEquals(response.json, dict(success=True))

@@ -21,19 +21,20 @@
 # For those usages not covered by the Apache version 2.0 License please
 # contact with opensource@tid.es
 #
-from unittest import TestCase
 
-from facts.myredis import myredis
-from facts.mylist import mylist
+from unittest import TestCase
+from module.myredis import myredis
+from module.mylist import mylist
 
 __author__ = 'fla'
 
-
+""" Class to test the interaction with redis
+"""
 class TestRedis(TestCase):
     pass
 
     def testInsertListWithOneElement(self):
-        """testInsertOneElement should always return [] due to we insert a list with no 4 elements"""
+        """testInsertOneElement should always return [] due to we insert a list with no elements"""
         p = myredis()
 
         expectedvalue = []
@@ -43,7 +44,7 @@ class TestRedis(TestCase):
         self.assertEqual(expectedvalue, result)
 
     def testInsertListWithFourElements(self):
-        """testInsertOneElement should always return [] due to we insert a list with no 4 elements"""
+        """testInsertOneElement should always return [] due to we insert a list with one element"""
         p = myredis()
 
         expectedvalue = ['[1, 2, 3, 4]']
@@ -51,7 +52,6 @@ class TestRedis(TestCase):
         result = p.range()
 
         self.assertEqual(expectedvalue, result)
-
 
     def testInsertTwoCorrectElements(self):
         """testInsertTwoElement should always return two element in the list"""
@@ -64,13 +64,14 @@ class TestRedis(TestCase):
 
         self.assertEqual(expectedvalue, result)
 
-
     def testInsertGTFiveElement(self):
         """testInsertGTFiveElement should always return five element if we have
         five or more than five element in the list"""
         p = myredis()
 
-        expectedvalue = ["['5', 6, 7, '8']", "['9', 10, 11, '12']", "['13', 14, 15, '16']", "['17', 18, 19, '20']", "['21', 22, 23, '24']"]
+        expectedvalue = ["['5', 6, 7, '8']", "['9', 10, 11, '12']", "['13', 14, 15, '16']",
+                         "['17', 18, 19, '20']", "['21', 22, 23, '24']"]
+
         p.insert(['1', 2, 3, '4'])
         p.insert(['5', 6, 7, '8'])
         p.insert(['9', 10, 11, '12'])
@@ -141,7 +142,7 @@ class TestRedis(TestCase):
         self.assertEqual(expected, result.data)
 
     def testMediaListof4Values(self):
-        """ return the media of a list of values
+        """ return the media of a list of 4 values
         """
         p = myredis()
 

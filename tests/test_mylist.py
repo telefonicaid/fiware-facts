@@ -24,8 +24,7 @@
 __author__ = 'fla'
 
 from unittest import TestCase
-
-from facts.mylist import mylist
+from module.mylist import mylist
 
 
 class Testmylist(TestCase):
@@ -111,7 +110,7 @@ class Testmylist(TestCase):
         self.assertEqual(expectedvalue, result.data)
 
     def testdivlistFloat(self):
-        """check the division by a integer the list except the first one"""
+        """check the division by a float the list except the first one"""
         p1 = [1, 3, 5, 8]
 
         expectedvalue = [1, 1.5, 2.5, 8]
@@ -132,7 +131,6 @@ class Testmylist(TestCase):
         result = mylist.sum(p1) / len(p1)
 
         self.assertEqual(expectedvalue, result.data)
-
 
     def testsum2(self):
         """check the sum of a list of strings but with commas"""

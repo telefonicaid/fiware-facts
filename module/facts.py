@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 #
-# Copyright 2014 Telefonica Investigación y Desarrollo, S.A.U
+# Copyright 2014 Telefónica Investigación y Desarrollo, S.A.U
 #
 # This file is part of FI-WARE project.
 #
@@ -22,55 +22,46 @@
 # For those usages not covered by the Apache version 2.0 License please
 # contact with opensource@tid.es
 #
-__version__         = '1.0.0'
-__version_info__    = tuple([int(num) for num in __version__.split('.')])
-__description__     = 'Facts Listener'
+
+__version__ = '1.0.0'
+__version_info__ = tuple([int(num) for num in __version__.split('.')])
+__description__ = 'Facts Listener'
 __author__ = 'fla'
 
 from flask import Flask, request, Response, json
-import logging.config
-from ConfigParser import SafeConfigParser
-import os.path
-import sys
 from myredis import myredis
-
-import datetime
-
-app = Flask(__name__)
-mredis = myredis()
-
-import gevent.monkey
 from gevent.pywsgi import WSGIServer
+import logging.config
+import sys
+import datetime
+import gevent.monkey
+
 
 gevent.monkey.patch_all()
 
-"""Default configuration.
+from logconfig import config, cfg_filename, cfg_defaults
 
-The configuration `cfg_defaults` can be superseded with that read from `cfg_filename` (at path `conf/<progname>.cfg`),
-if file exists.
+"""Flask server initialization.
+
+Uses Redis server as a message queue and server exchange with the fiware-cloto.
 """
-name = os.path.splitext(os.path.basename(__file__))[0]
-cfg_filename = os.path.join(os.path.dirname(__file__), 'conf', '%s.cfg' % name)
-cfg_defaults = {
-    'brokerPort':           5000,                      # Port of our facts broker
-    'LOGGING_PATH':         'u"/var/log/facts/"',      # place where it puts the log file
-    'retries':              2,                         # number of retries (exponential backoff)
-    'factor':               2,                         # factor for exponential backoff
-    'randomize':            False,                     # enable randomization for exponential backoff
-    'minRetryTime':         1000,                      # minimum time for exponential backoff (millis)
-    'maxRetryTime':         sys.maxint,                # maximum time for exponential backoff (millis)
-    'logLevel':             'INFO',
-    'logFormat':            '%(asctime)s %(levelname)s policymanager.facts %(message)s'
-}
+app = Flask(__name__)
 
+"""
+Initialize the redis connection library
+"""
+mredis = myredis()
 
-# need to send {'serverId': 'serverId', 'cpu': 80, 'mem': 80, 'time': '2014-03-24 16:21:29.384631'}
+# Flask/Gevent serverneed to send {'serverId': 'serverId', 'cpu': 80, 'mem': 80, 'time': '2014-03-24 16:21:29.384631'}
 # to the topic
 
 
 @app.route('/v1.0/<tenantid>/servers/<serverid>', methods=['POST'])
 def facts(tenantid, serverid):
-    """API endpoint for submitting data to
+    """API endpoint for receiving data from Monitoring system
+
+    :param string tenantid:    the id of the tenant
+    :param string serverid:    the id of the monitored instance (server)
 
     :return: status code 405 - invalid JSON or invalid request type
     :return: status code 400 - unsupported Content-Type or invalid publisher
@@ -78,20 +69,21 @@ def facts(tenantid, serverid):
     """
     # Ensure post's Content-Type is supported
     if request.headers['content-type'] == 'application/json':
-        # Ensure data is a valid JSON
         try:
-            user_submission = json.loads(request.data)
+            # Ensure that received data is a valid JSON
+            user_submission = json.loads(request.data)  # @UnusedVariable
         except ValueError:
+            # Data is not a well-formed json
             message = "[{}] received {} from ip {}:{}"\
                 .format("-", json, request.environ['REMOTE_ADDR'], request.environ['REMOTE_PORT'])
 
             logging.warning(message)
 
-
             return Response(response="{\"error\":\"The payload is not well-defined json format\"}",
                             status=405,
                             content_type="application/json")
 
+        # It is a valid payload and we start to process it
         result = process_request(request, serverid)
 
         if result == True:
@@ -99,20 +91,28 @@ def facts(tenantid, serverid):
         else:
             return Response(status=405)
 
-    # User submitted an unsupported Content-Type
+    # User submitted an unsupported Content-Type (only is valid application/json)
     else:
         return Response(response="{\"error\":\"Bad request. Content-type is not application/json\"}",
                         status=400,
                         content_type="application/json")
 
+
 def process_request(request, serverid):
-    # Get the parsed contents of the form data
+    """Get the parsed contents of the form data
+
+    :param string request:     The information of the received request
+    :param string serverid:    the id of the monitored instance (server)
+
+    :return: True
+    """
     json = request.json
     message = "[{}] received {} from ip {}:{}"\
         .format("-", json, request.environ['REMOTE_ADDR'], request.environ['REMOTE_PORT'])
 
     logging.info(message)
 
+    # Extract the list of attributes from the NGSI message
     attrlist = request.json['contextResponses'][0]['contextElement']['attributes']
 
     data = list()
@@ -121,37 +121,47 @@ def process_request(request, serverid):
         name = item['name']
         value = item['contextValue']
 
+        # Obtain the information of used memory and cpu
         if name == 'usedMemPct' or name == 'cpuLoadPct':
             data.insert(len(data), float(value))
 
-    data.insert(0, serverid)
+    # fix the first value of the list with the server identity
+    data.insert(0, str(serverid))
+
+    # fix the last value with the current date and time
     data.insert(3, datetime.datetime.today().isoformat())
 
-    data[0] = str(data[0])
-
+    # Insert the result into the queue system
     mredis.insert(data)
 
+    # If the queue has the number of facts defined by the windows size, it returns the
+    # last window-size values (range) and calculates the media of them (in terms of memory and cpu)
     lo = mredis.media(mredis.range())
 
-    print "media: ", lo.data
-
+    # If the number of facts is lt window size, the previous operation returns a null lists
     if len(lo) != 0:
-        #message = "\{'serverId': {}, 'cpu': {}, 'mem': {}, 'time': {}\}".format(lo.data[0], lo.data[1], lo.data[2], lo.data[3])
-        message = "{\"serverId\": \"%s\", \"cpu\": %d, \"mem\": %d, \"time\": \"%s\"}" % (lo.data[0], lo.data[1], lo.data[2], lo.data[3])
-        print message
+        message = "{\"serverId\": \"%s\", \"cpu\": %d, \"mem\": %d, \"time\": \"%s\"}" \
+                  % (lo.data[0], lo.data[1], lo.data[2], lo.data[3])
+
+        logging_message = "[{}] sending message {}".format("-", message)
+
+        logging.info(logging_message)
+
+        # Send the message to the RabbitMQ components.
 
     return True
 
 if __name__ == '__main__':
+
     # process configuration file (if exists) and setup logging
-    config = SafeConfigParser(cfg_defaults)
-    config.add_section('common')
-    for key, value in cfg_defaults.items(): config.set('common', key, str(value))
     if config.read(cfg_filename):
         logging.config.fileConfig(cfg_filename)
     else:
         logging.basicConfig(stream=sys.stdout, level=cfg_defaults['logLevel'], format=cfg_defaults['logFormat'])
 
+    # Define the port of our server, by default 5000
+    port = config.getint('common', 'brokerPort')
 
-    http = WSGIServer(('', int(config.get('common', 'brokerPort'))), app)
+    # execute the flask server, WSGI server
+    http = WSGIServer(('', port), app)
     http.serve_forever()

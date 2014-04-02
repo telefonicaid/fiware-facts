@@ -23,41 +23,61 @@
 #
 __author__ = 'fla'
 
-import redis
+from logconfig import config
 from mylist import mylist
 from redis.exceptions import ConnectionError
 import logging
+import redis
 
+nqueue = config.get('common', 'redisQueue')
 
 class myredis(object):
-    """ class to create lists on redis distribution. it is asumed
-    that there is an installed version of redis in the localhost
-    in the port 6379 (by default) and the server executed (redis-server).
+    """
+    Class to create lists on redis distribution. it is assumed
+    that a redis-server is running at host:port.
     """
     def __init__(self):
-        self.r = redis.StrictRedis(host='localhost', port=6379, db=0)
+        """ Initialize the class and create a connection with a redis server instance.
+        The initialization includes the deletion of the previous queue
+        """
+        host = config.get('common', 'redisHost')
+        port = config.getint('common', 'redisPort')
+        self.r = redis.StrictRedis(host=host, port=port, db=0)
 
         try:
-            self.r.delete('policymanager')
+            self.r.delete(nqueue)
         except ConnectionError:
-            message = "[{}] Cannot delete the list. Possiblely redis is down".format("-")
-
+            message = "[{}] Cannot delete the list. Possibly redis is down".format("-")
             logging.error(message)
 
     def insert(self, data):
+        """ Insert data into the redis queue.
+
+        :param list data:     The list of data to be stored in the queue
+        :return               This operation does not return anything except when the data
+                              is no list or the number of element is not equal to 4.
+        """
         ''' we need to check that data is a list and the exact number of
         element is equal to 4
         '''
         if isinstance(data, list) and len(data) == 4:
-            self.r.rpush('policymanager', data)
-            self.r.ltrim('policymanager', -5, -1)
+            self.r.rpush(nqueue, data)
+            self.r.ltrim(nqueue, -5, -1)
         else:
             return "error"
 
     def range(self):
-        return self.r.lrange('policymanager', -100, 100)
+        """ Return the list of element stored the que queue.
+         :return a list of lists
+        """
+        return self.r.lrange(nqueue, -100, 100)
 
     def media(self, lista):
+        """ Calculate the media of a list of lidts
+
+         :param mylist lista     The mylist instance with the data to be added.
+         :return mylist          The media of the data
+        """
         if len(lista) >= 5:
             return self.sum(lista) / len(lista)
         else:
@@ -66,6 +86,11 @@ class myredis(object):
             return result
 
     def sum(self, lista):
+        """ Calculate the sum of a list of data
+
+        :param mylist lista:     The lists of lists which will be added.
+        return mylist            The new mylist instance with the result of the operation.
+        """
         if len(lista) > 1:
             return mylist.sum(lista)
         elif len(lista) == 1:
@@ -76,4 +101,6 @@ class myredis(object):
             return '[]'
 
     def delete(self):
-        self.r.delete('policymanager')
+        """ Delete a especific queue from the redis system.
+        """
+        self.r.delete(nqueue)
