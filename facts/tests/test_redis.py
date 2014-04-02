@@ -1,7 +1,30 @@
+# -*- encoding: utf-8 -*-
+#
+# Copyright 2014 Telefonica Investigación y Desarrollo, S.A.U
+#
+# This file is part of FI-WARE project.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+#
+# You may obtain a copy of the License at:
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# For those usages not covered by the Apache version 2.0 License please
+# contact with opensource@tid.es
+#
 from unittest import TestCase
 
-from package.myredis import myredis
-from package.mylist import mylist
+from facts.myredis import myredis
+from facts.mylist import mylist
 
 __author__ = 'fla'
 
@@ -122,12 +145,13 @@ class TestRedis(TestCase):
         """
         p = myredis()
 
-        expected = ['1', 8, 9.75, '4']
+        expected = ['1', 10, 11.6, '4']
 
         p.insert([1, 2, 3, 4])
         p.insert([5, 6, 7, 8])
         p.insert([9, 10, 11, 12])
         p.insert([13, 14, 18, 16])
+        p.insert([17, 18, 19, 20])
 
         li = p.range()
 
@@ -141,10 +165,30 @@ class TestRedis(TestCase):
 
         p1 = "[u'44', 1.0, 0.14, '2014-03-29T19:18:25.784424']"
 
+        expected = []
+
+        p2 = mylist.parselist(p1)
+
+        p.insert(p2)
+        p.insert(p2)
+
+        result = p.media(p.range())
+
+        self.assertEqual(expected, result.data)
+
+    def testRealData2(self):
+        """Test with real data"""
+        p = myredis()
+
+        p1 = "[u'44', 1.0, 0.14, '2014-03-29T19:18:25.784424']"
+
         expected = ['44', 1.0, 0.14, '2014-03-29T19:18:25.784424']
 
         p2 = mylist.parselist(p1)
 
+        p.insert(p2)
+        p.insert(p2)
+        p.insert(p2)
         p.insert(p2)
         p.insert(p2)
 
