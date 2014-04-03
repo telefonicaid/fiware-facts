@@ -1,0 +1,11 @@
+# Requirements.txt
+#
+# The different package that should be used in order to
+# execute this component.
+#
+# __author__ = fla
+
+redis==2.9.1
+Flask==0.10.1
+gevent==1.0
+pika==0.9.13

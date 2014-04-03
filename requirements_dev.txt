@@ -1,0 +1,8 @@
+# Requirements_dev.txt
+#
+# The different package that should be used in order to
+# execute the test on this component.
+#
+# __author__ = fla
+
+Flask-Testing==0.4.1
