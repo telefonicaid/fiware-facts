@@ -24,11 +24,10 @@
 __author__ = 'fla'
 
 import sys
+import pika
 
 
 class myqueue(object):
-    #!/usr/bin/env python
-    import pika
 
     def __init__(self):
         self.connection = pika.BlockingConnection(pika.ConnectionParameters(

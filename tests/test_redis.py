@@ -23,13 +23,15 @@
 #
 
 from unittest import TestCase
-from module.myredis import myredis
-from module.mylist import mylist
+from facts.myredis import myredis
+from facts.mylist import mylist
 
 __author__ = 'fla'
 
 """ Class to test the interaction with redis
 """
+
+
 class TestRedis(TestCase):
     pass
 

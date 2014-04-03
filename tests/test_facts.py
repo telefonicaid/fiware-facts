@@ -27,6 +27,8 @@ from flask.ext.testing import TestCase
 
 """ Class to test the flask application
 """
+
+
 class MyTest(TestCase):
     def test_some_json(self):
         """ Test that the POST operation over the API returns a json message

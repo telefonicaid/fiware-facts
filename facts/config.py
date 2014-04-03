@@ -35,20 +35,20 @@ The configuration `cfg_defaults` can be superseded with that read from `cfg_file
 (at path `../conf/<progname>.cfg`), if file exists.
 """
 
-name = os.path.splitext(os.path.basename(__file__))[0]
+name = 'fiware-facts'
 cfg_filename = os.path.join(os.path.dirname(__file__), '..', 'conf', '%s.cfg' % name)
 cfg_defaults = {
-    'brokerPort':   5000,             # port of our module broker
+    'brokerPort':   5000,             # port of our facts broker
     'redisPort':    6379,             # port of Redis
     'redisHost':    'localhost',      # host of Redis
     'redisQueue':   'policymanager',  # name of the queue in redis
     'logLevel':     'INFO',
-    'logFormat':    '%(asctime)s %(levelname)s policymanager.module %(message)s'
+    'logFormat':    '%(asctime)s %(levelname)s policymanager.facts %(message)s'
 }
 
 config = SafeConfigParser(cfg_defaults)
 
-# Create the common section in the same way that we have in the configuration file: logconfig.cfg
+# Create the common section in the same way that we have in the configuration file: fiware-facts.cfg
 config.add_section('common')
 
 # Initialize the content of the config parameters

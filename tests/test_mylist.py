@@ -24,7 +24,7 @@
 __author__ = 'fla'
 
 from unittest import TestCase
-from module.mylist import mylist
+from facts.mylist import mylist
 
 
 class Testmylist(TestCase):

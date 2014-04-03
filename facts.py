@@ -29,7 +29,7 @@ __description__ = 'Facts Listener'
 __author__ = 'fla'
 
 from flask import Flask, request, Response, json
-from myredis import myredis
+from facts.myredis import myredis
 from gevent.pywsgi import WSGIServer
 import logging.config
 import sys
@@ -39,7 +39,7 @@ import gevent.monkey
 
 gevent.monkey.patch_all()
 
-from logconfig import config, cfg_filename, cfg_defaults
+from facts.config import config, cfg_filename, cfg_defaults
 
 """Flask server initialization.
 
@@ -80,7 +80,7 @@ def facts(tenantid, serverid):
             logging.warning(message)
 
             return Response(response="{\"error\":\"The payload is not well-defined json format\"}",
-                            status=405,
+                            status=400,
                             content_type="application/json")
 
         # It is a valid payload and we start to process it

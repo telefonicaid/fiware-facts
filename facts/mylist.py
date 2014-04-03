@@ -23,9 +23,11 @@
 #
 __author__ = 'fla'
 
-""" Sspecific list class in order to work with the appropriate representation
+""" Specific list class in order to work with the appropriate representation
 of message data.
 """
+
+
 class mylist(object):
     def __init__(self, data=None):
         """Initialize the list of data
@@ -142,7 +144,6 @@ class mylist(object):
         """
         if isinstance(other, int):
             result = mylist(self.data)
-            #result.data = self.data
             for i in range(1, len(self.data) - 1):
                 result.data[i] = self.data[i] / float(other)
 

@@ -23,13 +23,14 @@
 #
 __author__ = 'fla'
 
-from logconfig import config
+from config import config
 from mylist import mylist
 from redis.exceptions import ConnectionError
 import logging
 import redis
 
 nqueue = config.get('common', 'redisQueue')
+
 
 class myredis(object):
     """
