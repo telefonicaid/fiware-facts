@@ -5,8 +5,8 @@ from flask import Flask
 import urllib2
 import json
 
-class MyTest(TestCase):
 
+class MyTest(TestCase):
     def create_app(self):
         app = Flask(__name__)
         app.config['TESTING'] = True
@@ -33,15 +33,7 @@ class MyTest(TestCase):
 
         req.add_header('Content-Type', 'application/json')
 
-        print req.get_method()
-
-        print req.get_full_url()
-        print req.data
-
-
         try:
-            #req = urllib2.Request('http://www.example.com/', data="abc", headers={'Content-type': 'text/plain'})
-            #response = urllib2.urlopen(req)
             response = urllib2.urlopen(req, json.dumps(data))
 
         except (ValueError), err:

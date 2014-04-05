@@ -31,11 +31,13 @@ __author__ = 'fla'
 from flask import Flask, request, Response, json
 from facts.myredis import myredis
 from facts.queue import myqueue
+from facts.jsoncheck import jsoncheck
 from gevent.pywsgi import WSGIServer
 import logging.config
 import sys
 import datetime
 import gevent.monkey
+import os
 
 
 gevent.monkey.patch_all()
@@ -52,6 +54,11 @@ app = Flask(__name__)
 Initialize the redis connection library
 """
 mredis = myredis()
+
+"""
+Initialize the pid of the process
+"""
+pid = 0
 
 # Flask/Gevent serverneed to send {'serverId': 'serverId', 'cpu': 80, 'mem': 80, 'time': '2014-03-24 16:21:29.384631'}
 # to the topic
@@ -124,11 +131,19 @@ def process_request(request, serverid):
 
     logging.info(message)
 
+
+    key = ['contextResponses', 'contextElement', 'attributes']
+
+    # Check that it contains the previous keys
     try:
-        # Extract the list of attributes from the NGSI message
-        attrlist = request.json['contextResponses'][0]['contextElement']['attributes']
-    except ValueError:
-        print "unknow json data"
+        jsoncheck.checkit(json, key, 0)
+    except (Exception), err:
+        logging.error(err)
+        return False
+
+
+    # Extract the list of attributes from the NGSI message
+    attrlist = request.json['contextResponses'][0]['contextElement']['attributes']
 
     data = list()
 
@@ -173,8 +188,22 @@ def process_request(request, serverid):
 
     return True
 
-if __name__ == '__main__':
 
+def info(port):
+    """Show some information about the execution of the process.
+    """
+
+    data = config.get('common', 'name')
+    pid = os.getpid()
+
+    print "\n\n\n                    {} {}\n".format(data, __version__)
+    print "                    Running in stand alone mode"
+    print "                    Port: {}".format(port)
+    print "                    PID: {}\n".format(pid)
+    print "                    https://github.hi.inet/telefonicaid/fiware-facts\n\n\n"
+
+
+if __name__ == '__main__':
     # process configuration file (if exists) and setup logging
     if config.read(cfg_filename):
         logging.config.fileConfig(cfg_filename)
@@ -183,6 +212,8 @@ if __name__ == '__main__':
 
     # Define the port of our server, by default 5000
     port = config.getint('common', 'brokerPort')
+
+    info(port)
 
     # execute the flask server, WSGI server
     http = WSGIServer(('', port), app)
