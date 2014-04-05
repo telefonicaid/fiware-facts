@@ -20,7 +20,7 @@
 #
 # For those usages not covered by the Apache version 2.0 License please
 # contact with opensource@tid.es
-#__author__ = 'fla'
+__author__ = 'fla'
 
 from unittest import TestCase
 from facts.jsoncheck import jsoncheck
@@ -64,7 +64,7 @@ mydict1 = {
 }
 
 
-mydict2 = {"uno": 1, "dos": "dos", "tres":"tres"}
+mydict2 = {"uno": 1, "dos": "dos", "tres": "tres"}
 
 mydict3 = {"contextResponses": 1}
 

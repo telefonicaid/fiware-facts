@@ -51,7 +51,7 @@ class jsoncheck(object):
             # Check the dictionary in order to detect if the key is there,
             # in that case it returns the value of that key.
             # Otherwise, it returns a null list '[]'
-            result = reduce(lambda x,y:
+            result = reduce(lambda x, y:
                             dictionary.get(y) and x.append(dictionary[y]) or x, key, [])
 
             # If it cannot find the key in the dictionary
@@ -71,4 +71,4 @@ class jsoncheck(object):
             else:
                 result = result[0]
 
-            self.checkit(result, restkey, cycle+1)
+            self.checkit(result, restkey, cycle + 1)

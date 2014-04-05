@@ -131,7 +131,6 @@ def process_request(request, serverid):
 
     logging.info(message)
 
-
     key = ['contextResponses', 'contextElement', 'attributes']
 
     # Check that it contains the previous keys
@@ -140,7 +139,6 @@ def process_request(request, serverid):
     except (Exception), err:
         logging.error(err)
         return False
-
 
     # Extract the list of attributes from the NGSI message
     attrlist = request.json['contextResponses'][0]['contextElement']['attributes']
