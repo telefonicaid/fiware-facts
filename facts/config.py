@@ -42,6 +42,7 @@ cfg_defaults = {
     'redisPort':    6379,             # port of Redis
     'redisHost':    'localhost',      # host of Redis
     'redisQueue':   'policymanager',  # name of the queue in redis
+    'rabbitMQ':     '130.206.81.71',     # IP of the RabbitMQ server
     'logLevel':     'INFO',
     'logFormat':    '%(asctime)s %(levelname)s policymanager.facts %(message)s'
 }

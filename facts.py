@@ -30,6 +30,7 @@ __author__ = 'fla'
 
 from flask import Flask, request, Response, json
 from facts.myredis import myredis
+from facts.queue import myqueue
 from gevent.pywsgi import WSGIServer
 import logging.config
 import sys
@@ -56,6 +57,15 @@ mredis = myredis()
 # to the topic
 
 
+@app.route('/v1.0/<tenantid>/servers/<serverid>', methods=['GET'])
+def factsinfo(tenantid, serverid):
+    """API endpoint for receiving keep alice information
+    """
+    return Response(response="{\"fiware-facts\":\"Up and running...\"}",
+                    status=200,
+                    content_type="application/json")
+
+
 @app.route('/v1.0/<tenantid>/servers/<serverid>', methods=['POST'])
 def facts(tenantid, serverid):
     """API endpoint for receiving data from Monitoring system
@@ -79,7 +89,7 @@ def facts(tenantid, serverid):
 
             logging.warning(message)
 
-            return Response(response="{\"error\":\"The payload is not well-defined json format\"}",
+            return Response(response="{\"error\":\"Bad request. The payload is not well-defined json format\"}",
                             status=400,
                             content_type="application/json")
 
@@ -89,7 +99,9 @@ def facts(tenantid, serverid):
         if result == True:
             return Response(status=200)
         else:
-            return Response(status=405)
+            return Response(response="{\"error\":\"Internal Server Error. Unable to contact with RabbitMQ process\"}",
+                            status=500,
+                            content_type="application/json")
 
     # User submitted an unsupported Content-Type (only is valid application/json)
     else:
@@ -112,8 +124,11 @@ def process_request(request, serverid):
 
     logging.info(message)
 
-    # Extract the list of attributes from the NGSI message
-    attrlist = request.json['contextResponses'][0]['contextElement']['attributes']
+    try:
+        # Extract the list of attributes from the NGSI message
+        attrlist = request.json['contextResponses'][0]['contextElement']['attributes']
+    except ValueError:
+        print "unknow json data"
 
     data = list()
 
@@ -140,14 +155,21 @@ def process_request(request, serverid):
 
     # If the number of facts is lt window size, the previous operation returns a null lists
     if len(lo) != 0:
-        message = "{\"serverId\": \"%s\", \"cpu\": %d, \"mem\": %d, \"time\": \"%s\"}" \
-                  % (lo.data[0], lo.data[1], lo.data[2], lo.data[3])
+        try:
+            rabbit = myqueue()
 
-        logging_message = "[{}] sending message {}".format("-", message)
+            message = "{\"serverId\": \"%s\", \"cpu\": %d, \"mem\": %d, \"time\": \"%s\"}" \
+                      % (lo.data[0], lo.data[1], lo.data[2], lo.data[3])
 
-        logging.info(logging_message)
+            logging_message = "[{}] sending message {}".format("-", message)
 
-        # Send the message to the RabbitMQ components.
+            logging.info(logging_message)
+
+            result = rabbit.publish_message('tenantid', logging_message)
+
+            # Send the message to the RabbitMQ components.
+        except Exception:
+            return False
 
     return True
 
