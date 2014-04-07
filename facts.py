@@ -197,7 +197,7 @@ def info(port):
     data = config.get('common', 'name')
     pid = os.getpid()
 
-    logging.info("\n\n\n                    {} {}\n".format(data, __version__))
+    logging.info("                    {} {}\n".format(data, __version__))
     logging.info("                    Running in stand alone mode")
     logging.info("                    Port: {}".format(port))
     logging.info("                    PID: {}\n".format(pid))
