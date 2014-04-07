@@ -30,14 +30,20 @@ __author__ = 'fla'
 
 from flask import Flask, request, Response, json
 from facts.myredis import myredis
+from facts.queue import myqueue
+from facts.jsoncheck import jsoncheck
 from gevent.pywsgi import WSGIServer
 import logging.config
 import sys
 import datetime
 import gevent.monkey
+import os
+import httplib
 
 
 gevent.monkey.patch_all()
+
+content_type = 'application/json'
 
 from facts.config import config, cfg_filename, cfg_defaults
 
@@ -52,8 +58,22 @@ Initialize the redis connection library
 """
 mredis = myredis()
 
+"""
+Initialize the pid of the process
+"""
+pid = 0
+
 # Flask/Gevent serverneed to send {'serverId': 'serverId', 'cpu': 80, 'mem': 80, 'time': '2014-03-24 16:21:29.384631'}
 # to the topic
+
+
+@app.route('/v1.0/<tenantid>/servers/<serverid>', methods=['GET'])
+def factsinfo(tenantid, serverid):
+    """API endpoint for receiving keep alive information
+    """
+    return Response(response="{\"fiware-facts\":\"Up and running...\"}",
+                    status=httplib.OK,
+                    content_type=content_type)
 
 
 @app.route('/v1.0/<tenantid>/servers/<serverid>', methods=['POST'])
@@ -68,7 +88,7 @@ def facts(tenantid, serverid):
     :return: status code 200 - successful submission
     """
     # Ensure post's Content-Type is supported
-    if request.headers['content-type'] == 'application/json':
+    if request.headers['content-type'] == content_type:
         try:
             # Ensure that received data is a valid JSON
             user_submission = json.loads(request.data)  # @UnusedVariable
@@ -79,23 +99,25 @@ def facts(tenantid, serverid):
 
             logging.warning(message)
 
-            return Response(response="{\"error\":\"The payload is not well-defined json format\"}",
-                            status=400,
-                            content_type="application/json")
+            return Response(response="{\"error\":\"Bad request. The payload is not well-defined json format\"}",
+                            status=httplib.BAD_REQUEST,
+                            content_type=content_type)
 
         # It is a valid payload and we start to process it
         result = process_request(request, serverid)
 
         if result == True:
-            return Response(status=200)
+            return Response(status=httplib.OK)
         else:
-            return Response(status=405)
+            return Response(response="{\"error\":\"Internal Server Error. Unable to contact with RabbitMQ process\"}",
+                            status=httplib.INTERNAL_SERVER_ERROR,
+                            content_type=content_type)
 
     # User submitted an unsupported Content-Type (only is valid application/json)
     else:
         return Response(response="{\"error\":\"Bad request. Content-type is not application/json\"}",
-                        status=400,
-                        content_type="application/json")
+                        status=httplib.BAD_REQUEST,
+                        content_type=content_type)
 
 
 def process_request(request, serverid):
@@ -111,6 +133,15 @@ def process_request(request, serverid):
         .format("-", json, request.environ['REMOTE_ADDR'], request.environ['REMOTE_PORT'])
 
     logging.info(message)
+
+    key = ['contextResponses', 'contextElement', 'attributes']
+
+    # Check that it contains the previous keys
+    try:
+        jsoncheck.checkit(json, key, 0)
+    except (Exception), err:
+        logging.error(err)
+        return False
 
     # Extract the list of attributes from the NGSI message
     attrlist = request.json['contextResponses'][0]['contextElement']['attributes']
@@ -140,19 +171,40 @@ def process_request(request, serverid):
 
     # If the number of facts is lt window size, the previous operation returns a null lists
     if len(lo) != 0:
-        message = "{\"serverId\": \"%s\", \"cpu\": %d, \"mem\": %d, \"time\": \"%s\"}" \
-                  % (lo.data[0], lo.data[1], lo.data[2], lo.data[3])
+        try:
+            rabbit = myqueue()
 
-        logging_message = "[{}] sending message {}".format("-", message)
+            message = "{\"serverId\": \"%s\", \"cpu\": %d, \"mem\": %d, \"time\": \"%s\"}" \
+                      % (lo.data[0], lo.data[1], lo.data[2], lo.data[3])
 
-        logging.info(logging_message)
+            logging_message = "[{}] sending message {}".format("-", message)
 
-        # Send the message to the RabbitMQ components.
+            logging.info(logging_message)
+
+            result = rabbit.publish_message('tenantid', logging_message)  # @UnusedVariable
+
+            # Send the message to the RabbitMQ components.
+        except Exception:
+            return False
 
     return True
 
-if __name__ == '__main__':
 
+def info(port):
+    """Show some information about the execution of the process.
+    """
+
+    data = config.get('common', 'name')
+    pid = os.getpid()
+
+    logging.info("{} {}\n".format(data, __version__))
+    logging.info("Running in stand alone mode")
+    logging.info("Port: {}".format(port))
+    logging.info("PID: {}\n".format(pid))
+    logging.info("https://github.hi.inet/telefonicaid/fiware-facts\n\n\n")
+
+
+if __name__ == '__main__':
     # process configuration file (if exists) and setup logging
     if config.read(cfg_filename):
         logging.config.fileConfig(cfg_filename)
@@ -164,4 +216,8 @@ if __name__ == '__main__':
 
     # execute the flask server, WSGI server
     http = WSGIServer(('', port), app)
+
+    # show general information about the execution of the process
+    info(port)
+
     http.serve_forever()

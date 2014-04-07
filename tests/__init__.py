@@ -23,5 +23,6 @@
 #
 __author__ = 'fla'
 
-from tests.test_mylist import *
-from tests.test_redis import *
+import test_mylist
+import test_redis
+import test_queue
