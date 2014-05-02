@@ -6,6 +6,7 @@
 virtualenv ENV
 source ENV/bin/activate
 mkdir /var/log/fiware-facts
+mkdir -p target/site/cobertura
 chmod 777 /var/log/fiware-cloto
 pip install -r requirements.txt
 pip install -r requirements_dev.txt
