@@ -59,9 +59,9 @@ class myredis(object):
                               is no list or the number of element is not equal to 4.
         """
         ''' we need to check that data is a list and the exact number of
-        element is equal to 4
+        element is equal to 3 - Magic Number
         '''
-        if isinstance(data, list) and len(data) == 4:
+        if isinstance(data, list) and len(data) == 3:
             self.r.rpush(nqueue, data)
             self.r.ltrim(nqueue, -5, -1)
         else:
