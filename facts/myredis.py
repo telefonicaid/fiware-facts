@@ -31,6 +31,9 @@ import redis
 
 nqueue = config.get('common', 'redisQueue')
 
+# TODO: change the default queue in redis to incorporate the server ID.
+# TODO: Check the temporal mark when we want to calculate the media of data.
+# TODO: Review Kalman filter in order to change the estimation of the data in the windows size.
 
 class myredis(object):
     """
@@ -46,6 +49,7 @@ class myredis(object):
         self.r = redis.StrictRedis(host=host, port=port, db=0)
 
         try:
+            # TODO: We need to delete all the queues.
             self.r.delete(nqueue)
         except ConnectionError:
             message = "[{}] Cannot delete the list. Possibly redis is down".format("-")
