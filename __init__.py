@@ -21,44 +21,4 @@
 # For those usages not covered by the Apache version 2.0 License please
 # contact with opensource@tid.es
 #
-
-[common]
-brokerPort: 5000
-redisPort:  6379
-redisHost:  localhost
-redisQueue: policymanager
-rabbitMQ:   localhost
-name:       policymanager.facts
-
-[loggers]
-keys: root
-
-[handlers]
-keys: console, file
-
-[formatters]
-keys: standard
-
-[formatter_standard]
-class: logging.Formatter
-format: %(asctime)s %(levelname)s policymanager.facts %(message)s
-
-[logger_root]
-level: INFO
-handlers: console, file
-
-[handler_console]
-level: DEBUG
-class: StreamHandler
-formatter: standard
-args: (sys.stdout,)
-
-[handler_file]
-level: DEBUG
-class: handlers.RotatingFileHandler
-formatter: standard
-logFilePath: /var/log/fiware-facts
-logFileName: fiware-facts.log
-logMaxFiles: 3
-logMaxSize: 5*1024*1024  ; 5 MB
-args: ('%(logFilePath)s/%(logFileName)s', 'a', %(logMaxSize)s, %(logMaxFiles)s)
+__author__ = 'fla'

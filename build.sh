@@ -22,43 +22,19 @@
 # contact with opensource@tid.es
 #
 
-[common]
-brokerPort: 5000
-redisPort:  6379
-redisHost:  localhost
-redisQueue: policymanager
-rabbitMQ:   localhost
-name:       policymanager.facts
+# File to execute the cobertura and unit test and generate the information
+# to be shown in sonar
+#
+# __author__ = 'fla'
 
-[loggers]
-keys: root
-
-[handlers]
-keys: console, file
-
-[formatters]
-keys: standard
-
-[formatter_standard]
-class: logging.Formatter
-format: %(asctime)s %(levelname)s policymanager.facts %(message)s
-
-[logger_root]
-level: INFO
-handlers: console, file
-
-[handler_console]
-level: DEBUG
-class: StreamHandler
-formatter: standard
-args: (sys.stdout,)
-
-[handler_file]
-level: DEBUG
-class: handlers.RotatingFileHandler
-formatter: standard
-logFilePath: /var/log/fiware-facts
-logFileName: fiware-facts.log
-logMaxFiles: 3
-logMaxSize: 5*1024*1024  ; 5 MB
-args: ('%(logFilePath)s/%(logFileName)s', 'a', %(logMaxSize)s, %(logMaxFiles)s)
+virtualenv ENV
+source ENV/bin/activate
+mkdir /var/log/fiware-facts
+mkdir -p target/site/cobertura
+mkdir -p target/surefire-reports
+chmod 777 /var/log/fiware-cloto
+pip install -r requirements.txt
+pip install -r requirements_dev.txt
+python facts.py &
+nosetests -s -v --cover-package=facts --with-cover --cover-xml-file=target/site/cobertura/coverage.xml --cover-inclusive --cover-erase --cover-branches --cover-xml --with-xunit --xunit-file=target/surefire-reports/TEST-nosetests.xml
+kill $(lsof -t -i:5000)

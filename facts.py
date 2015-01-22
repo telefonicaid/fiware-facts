@@ -207,20 +207,19 @@ def info(port):
     logging.info("https://github.hi.inet/telefonicaid/fiware-facts\n\n\n")
 
 
-if __name__ == '__main__':
-    # process configuration file (if exists) and setup logging
-    if config.read(cfg_filename):
-        logging.config.fileConfig(cfg_filename)
-    else:
-        logging.basicConfig(stream=sys.stdout, level=cfg_defaults['logLevel'], format=cfg_defaults['logFormat'])
+# process configuration file (if exists) and setup logging
+if config.read(cfg_filename):
+    logging.config.fileConfig(cfg_filename)
+else:
+    logging.basicConfig(stream=sys.stdout, level=cfg_defaults['logLevel'], format=cfg_defaults['logFormat'])
 
-    # Define the port of our server, by default 5000
-    port = config.getint('common', 'brokerPort')
+# Define the port of our server, by default 5000
+port = config.getint('common', 'brokerPort')
 
-    # execute the flask server, WSGI server
-    http = WSGIServer(('', port), app)
+# execute the flask server, WSGI server
+http = WSGIServer(('', port), app)
 
-    # show general information about the execution of the process
-    info(port)
+# show general information about the execution of the process
+info(port)
 
-    http.serve_forever()
+http.serve_forever()
