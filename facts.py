@@ -63,15 +63,15 @@ Initialize the pid of the process
 """
 pid = 0
 
-# Flask/Gevent serverneed to send {'serverId': 'serverId', 'cpu': 80, 'mem': 80, 'time': '2014-03-24 16:21:29.384631'}
+# Flask/Gevent server need to send {'serverId': 'serverId', 'cpu': 80, 'mem': 80, 'time': '2014-03-24 16:21:29.384631'}
 # to the topic
 
 
-@app.route('/v1.0/<tenantid>/servers/<serverid>', methods=['GET'])
-def factsinfo(tenantid, serverid):
+@app.route('/v1.0', methods=['GET'])
+def factsinfo():
     """API endpoint for receiving keep alive information
     """
-    return Response(response="{\"fiware-facts\":\"Up and running...\"}",
+    return Response(response="{\"fiware-facts\":\"Up and running...\"}\n",
                     status=httplib.OK,
                     content_type=content_type)
 
@@ -99,7 +99,7 @@ def facts(tenantid, serverid):
 
             logging.warning(message)
 
-            return Response(response="{\"error\":\"Bad request. The payload is not well-defined json format\"}",
+            return Response(response="{\"error\":\"Bad request. The payload is not well-defined json format\"}\n",
                             status=httplib.BAD_REQUEST,
                             content_type=content_type)
 
@@ -109,13 +109,13 @@ def facts(tenantid, serverid):
         if result == True:
             return Response(status=httplib.OK)
         else:
-            return Response(response="{\"error\":\"Internal Server Error. Unable to contact with RabbitMQ process\"}",
+            return Response(response="{\"error\":\"Internal Server Error. Unable to contact with RabbitMQ process\"}\n",
                             status=httplib.INTERNAL_SERVER_ERROR,
                             content_type=content_type)
 
     # User submitted an unsupported Content-Type (only is valid application/json)
     else:
-        return Response(response="{\"error\":\"Bad request. Content-type is not application/json\"}",
+        return Response(response="{\"error\":\"Bad request. Content-type is not application/json\"}\n",
                         status=httplib.BAD_REQUEST,
                         content_type=content_type)
 
@@ -164,6 +164,8 @@ def process_request(request, serverid):
 
     # Insert the result into the queue system
     mredis.insert(data)
+    logging.info(data)
+
 
     # If the queue has the number of facts defined by the windows size, it returns the
     # last window-size values (range) and calculates the media of them (in terms of memory and cpu)
@@ -181,10 +183,11 @@ def process_request(request, serverid):
 
             logging.info(logging_message)
 
-            result = rabbit.publish_message('tenantid', logging_message)  # @UnusedVariable
-
             # Send the message to the RabbitMQ components.
+            result = rabbit.publish_message('tenantid', message)  # @UnusedVariable
+
         except Exception:
+            #logging.info(lo.get())
             return False
 
     return True

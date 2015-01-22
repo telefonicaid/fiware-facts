@@ -1,0 +1,36 @@
+{"contextResponses": [
+        {
+            "contextElement": {
+                "attributes": [
+                    {
+                        "contextValue": "6",
+                        "name": "users",
+                        "type": "string"
+                    },
+                    {
+                        "contextValue": "1",
+                        "name": "usedMemPct",
+                        "type": "string"
+                    },
+                    {
+                        "contextValue": "0.14",
+                        "name": "cpuLoadPct",
+                        "type": "string"
+                    },
+                    {
+                        "contextValue": "0.856240",
+                        "name": "freeSpacePct",
+                        "type": "string"
+                    }
+                ],
+                "id": "Trento:193.205.211.69",
+                "isPattern": "false",
+                "type": "host"
+            },
+            "statusCode": {
+                "code": "200",
+                "reasonPhrase": "OK"
+            }
+        }
+    ]
+}
