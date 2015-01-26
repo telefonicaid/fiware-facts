@@ -104,7 +104,7 @@ def facts(tenantid, serverid):
                             content_type=content_type)
 
         # It is a valid payload and we start to process it
-        result = process_request(request, serverid)
+        result = process_request(request, tenantid, serverid)
 
         if result == True:
             return Response(status=httplib.OK)
@@ -120,7 +120,7 @@ def facts(tenantid, serverid):
                         content_type=content_type)
 
 
-def process_request(request, serverid):
+def process_request(request, tenantid, serverid):
     """Get the parsed contents of the form data
 
     :param string request:     The information of the received request
@@ -141,7 +141,7 @@ def process_request(request, serverid):
         jsoncheck.checkit(json, key, 0)
     except (Exception), err:
         logging.error(err)
-        return False
+        return Falsechmod
 
     # Extract the list of attributes from the NGSI message
     attrlist = request.json['contextResponses'][0]['contextElement']['attributes']
@@ -163,13 +163,12 @@ def process_request(request, serverid):
     data.insert(3, datetime.datetime.today().isoformat())
 
     # Insert the result into the queue system
-    mredis.insert(data)
+    mredis.insert(tenantid, serverid, data)
     logging.info(data)
-
 
     # If the queue has the number of facts defined by the windows size, it returns the
     # last window-size values (range) and calculates the media of them (in terms of memory and cpu)
-    lo = mredis.media(mredis.range())
+    lo = mredis.media(mredis.range(tenantid, serverid))
 
     # If the number of facts is lt window size, the previous operation returns a null lists
     if len(lo) != 0:
@@ -184,7 +183,7 @@ def process_request(request, serverid):
             logging.info(logging_message)
 
             # Send the message to the RabbitMQ components.
-            result = rabbit.publish_message('tenantid', message)  # @UnusedVariable
+            result = rabbit.publish_message(tenantid, message)  # @UnusedVariable
 
         except Exception:
             #logging.info(lo.get())
