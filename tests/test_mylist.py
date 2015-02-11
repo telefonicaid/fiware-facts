@@ -111,9 +111,9 @@ class Testmylist(TestCase):
 
     def testdivlist(self):
         """check the division by a integer the list except the first one"""
-        p1 = [2, 4, 8]
+        p1 = ['serverId', 2, 4, 8]
 
-        expectedvalue = [1, 2, 8]
+        expectedvalue = ['serverId', 1, 2, 8]
 
         p1mylist = mylist(p1)
 
@@ -123,9 +123,9 @@ class Testmylist(TestCase):
 
     def testdivlistFloat(self):
         """check the division by a float the list except the first one"""
-        p1 = [3, 5, 8]
+        p1 = ['serverId', 3, 5, 8]
 
-        expectedvalue = [1.5, 2.5, 8]
+        expectedvalue = ['serverId', 1.5, 2.5, 8]
 
         p1mylist = mylist(p1)
 
@@ -136,9 +136,9 @@ class Testmylist(TestCase):
     def testmedia(self):
         """check the media of a list of data"""
 
-        expectedvalue = [7, 8, 18]
+        expectedvalue = ['serverIdserverIdserverIdserverId', 7, 8, 18]
 
-        p1 = [[1, 2, 3], [5, 6, 7], [9, 10, 11], [13, 14, 18]]
+        p1 = [['serverId', 1, 2, 3], ['serverId', 5, 6, 7], ['serverId', 9, 10, 11], ['serverId', 13, 14, 18]]
 
         result = mylist.sum(p1) / len(p1)
 
@@ -146,9 +146,9 @@ class Testmylist(TestCase):
 
     def testsum2(self):
         """check the sum of a list of strings but with commas"""
-        p1 = ['[1, 2, 1]', '[1, 2, 2]', '[1, 2, 3]', '[1, 2, 4]']
+        p1 = ['[serverId, 1, 2, 1]', '[serverId, 1, 2, 2]', '[serverId, 1, 2, 3]', '[serverId, 1, 2, 4]']
 
-        expectedvalue = [4.0, 8.0, '4']
+        expectedvalue = ['serverIdserverIdserverIdserverId', 4.0, 8.0, '4']
 
         result = mylist.sum(p1)
 
@@ -156,11 +156,11 @@ class Testmylist(TestCase):
 
     def testinsert(self):
         """check the insertion of list of strings"""
-        p1 = ['[1, 2, 4]']
+        p1 = ['[serverId, 1, 2, 4]']
 
         r1 = mylist()
 
-        expectedvalue = [[1, 2, '4']]
+        expectedvalue = [['serverId', 1, 2, '4']]
 
         r1.insert(p1)
 
@@ -170,11 +170,11 @@ class Testmylist(TestCase):
 
     def testinsert2(self):
         """check the insertion of list of strings"""
-        p1 = ['[1, 2, 4]', '[1, 2, 4]', '[1, 2, 4]', '[1, 2, 4]']
+        p1 = ['[serverId, 1, 2, 4]', '[serverId, 1, 2, 4]', '[serverId, 1, 2, 4]', '[serverId, 1, 2, 4]']
 
         r1 = mylist()
 
-        expectedvalue = [[1, 2, '4'], [1, 2, '4'], [1, 2, '4'], [1, 2, '4']]
+        expectedvalue = [['serverId', 1.0, 2.0, '4'], ['serverId', 1.0, 2.0, '4'], ['serverId', 1.0, 2.0, '4'], ['serverId', 1.0, 2.0, '4']]
 
         r1.insert(p1)
 
@@ -185,8 +185,8 @@ class Testmylist(TestCase):
     def testRealInsert(self):
         """test insertion of real data"""
 
-        expectedvalue = [[1.0, 0.14, '2014-03-29T19:18:25.784424']]
-        p1 = ["[1.0, 0.14, '2014-03-29T19:18:25.784424']"]
+        expectedvalue = [['serverId', 1.0, 0.14, '2014-03-29T19:18:25.784424']]
+        p1 = ["[serverId, 1.0, 0.14, '2014-03-29T19:18:25.784424']"]
 
         r1 = mylist()
         r1.insert(p1)
@@ -198,8 +198,8 @@ class Testmylist(TestCase):
     def testRealInsert2(self):
         """test insertion of real data"""
 
-        expectedvalue = [1.0, 0.14, '2014-03-29T19:18:25.784424']
-        p1 = "[1.0, 0.14, '2014-03-29T19:18:25.784424']"
+        expectedvalue = ['serverId', 1.0, 0.14, '2014-03-29T19:18:25.784424']
+        p1 = "[serverId, 1.0, 0.14, '2014-03-29T19:18:25.784424']"
 
         r1 = mylist()
         r1.insert(mylist.parselist(p1))
@@ -211,8 +211,8 @@ class Testmylist(TestCase):
     def testReadMedia1Data(self):
         """test the insertion of a real data and calculate its media"""
 
-        fact = [1.0, 0.14, '2014-03-29T23:02:46.973949']
-        expectedvalue = [1.0, 0.14, '2014-03-29T23:02:46.973949']
+        fact = ['serverId', 1.0, 0.14, '2014-03-29T23:02:46.973949']
+        expectedvalue = ['serverIdserverId', 1.0, 0.14, '2014-03-29T23:02:46.973949']
 
         p2 = list()
 

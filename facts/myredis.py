@@ -51,7 +51,9 @@ class myredis(object):
 
         try:
             # TODO: We need to delete all the queues.
-            self.r.delete(nqueue)
+            self.r.flushall()
+            #self.r.delete(nqueue)
+
         except ConnectionError:
             message = "[{}] Cannot delete the list. Possibly redis is down".format("-")
             logging.error(message)
