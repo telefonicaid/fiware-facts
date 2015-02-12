@@ -36,7 +36,7 @@ class MyTest(TestCase):
         app = Flask(__name__)
         app.config['TESTING'] = True
         self.url = 'http://127.0.0.1:5000/v1.0/33/servers/44'
-
+        self.url2 = 'http://127.0.0.1:5000/v1.0'
         return app
 
     def test_server_is_up_and_running(self):
@@ -45,7 +45,7 @@ class MyTest(TestCase):
 
         :return       200 Ok
         """
-        response = urllib2.urlopen(self.url)
+        response = urllib2.urlopen(self.url2)
         self.assertEqual(response.code, 200)
 
     def test_some_json(self):
