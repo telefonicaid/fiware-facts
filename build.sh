@@ -57,8 +57,8 @@ sudo /sbin/service rabbitmq-server start
 
 python server.py &
 export PYTHONPATH=$PWD
-nosetests -s -v --cover-package=facts --with-cover --cover-xml-file=target/site/cobertura/coverage.xml --cover-inclusive --cover-erase --cover-branches --cover-xml --with-xunit --xunit-file=target/surefire-reports/TEST-nosetests.xml
-#nosetests --with-cover --cover-xml-file=target/site/cobertura/coverage.xml --cover-package=facts
+#nosetests -s -v --cover-package=facts --with-cover --cover-xml-file=target/site/cobertura/coverage.xml --cover-inclusive --cover-erase --cover-branches --cover-xml --with-xunit --xunit-file=target/surefire-reports/TEST-nosetests.xml
+nosetests -s -v --cover-package=facts --with-cover --cover-xml-file=target/site/cobertura/coverage.xml --cover-xml
 sudo /sbin/service rabbitmq-server stop
 kill -9 $(lsof -t -i:5000)
 kill -9 $(lsof -t -i:6379)
