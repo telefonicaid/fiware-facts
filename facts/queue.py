@@ -63,13 +63,13 @@ class myqueue(object):
         :param str message:       The well-formatted message to send
         """
         if self.channel:
-            self.channel.exchange_declare(exchange="update_" + tenantid,
-                                          type='fanout')
+            self.channel.exchange_declare(exchange="facts",
+                                 exchange_type='direct')
 
             try:
                 # Send a message
-                self.channel.basic_publish(exchange="update_" + tenantid,
-                                           routing_key='',
+                self.channel.basic_publish(exchange="facts",
+                                           routing_key=tenantid,
                                            body=message)
 
                 logging_message = "[{}] Sent message to RabbitMQ".format("-")

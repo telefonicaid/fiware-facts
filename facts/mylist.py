@@ -53,7 +53,7 @@ class mylist(object):
 
         aux = len(p3) - 1
         # Convert the %cpu and %memory into a float value
-        for i in range(0, aux):
+        for i in range(1, aux):
             p3[i] = float(p3[i])
 
         # delete white spaces and ''' in the last value
@@ -145,7 +145,7 @@ class mylist(object):
         """
         if isinstance(other, int):
             result = mylist(self.data)
-            for i in range(0, len(self.data) - 1):
+            for i in range(1, len(self.data) - 1):
                 result.data[i] = self.data[i] / float(other)
 
             return result

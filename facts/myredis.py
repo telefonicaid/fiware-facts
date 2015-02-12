@@ -35,6 +35,7 @@ nqueue = config.get('common', 'redisQueue')
 # TODO: Check the temporal mark when we want to calculate the media of data.
 # TODO: Review Kalman filter in order to change the estimation of the data in the windows size.
 
+
 class myredis(object):
     """
     Class to create lists on redis distribution. it is assumed
@@ -50,12 +51,14 @@ class myredis(object):
 
         try:
             # TODO: We need to delete all the queues.
-            self.r.delete(nqueue)
+            self.r.flushall()
+            #self.r.delete(nqueue)
+
         except ConnectionError:
             message = "[{}] Cannot delete the list. Possibly redis is down".format("-")
             logging.error(message)
 
-    def insert(self, data):
+    def insert(self, tenantid, serverid, data):
         """ Insert data into the redis queue.
 
         :param list data:     The list of data to be stored in the queue
@@ -65,17 +68,17 @@ class myredis(object):
         ''' we need to check that data is a list and the exact number of
         element is equal to 3 - Magic Number
         '''
-        if isinstance(data, list) and len(data) == 3:
-            self.r.rpush(nqueue, data)
-            self.r.ltrim(nqueue, -5, -1)
+        if isinstance(data, list) and len(data) == 4:
+            self.r.rpush(tenantid + "." + serverid, data)
+            self.r.ltrim(tenantid + "." + serverid, -5, -1)
         else:
             return "error"
 
-    def range(self):
+    def range(self, tenantid, serverid):
         """ Return the list of element stored the que queue.
          :return a list of lists
         """
-        return self.r.lrange(nqueue, -100, 100)
+        return self.r.lrange(tenantid + "." + serverid, -100, 100)
 
     def media(self, lista):
         """ Calculate the media of a list of lidts

@@ -31,6 +31,9 @@ __author__ = 'fla'
 """ Class to test the interaction with redis
 """
 
+serverid = ""
+tenantid = ""
+
 
 class TestRedis(TestCase):
     pass
@@ -40,8 +43,8 @@ class TestRedis(TestCase):
         p = myredis()
 
         expectedvalue = []
-        p.insert([1])
-        result = p.range()
+        p.insert(serverid, tenantid, [1])
+        result = p.range(serverid, tenantid)
 
         self.assertEqual(expectedvalue, result)
 
@@ -49,9 +52,9 @@ class TestRedis(TestCase):
         """testInsertOneElement should always return [] due to we insert a list with one element"""
         p = myredis()
 
-        expectedvalue = ['[1, 2, 3]']
-        p.insert([1, 2, 3])
-        result = p.range()
+        expectedvalue = ["['', 1, 2, 3]"]
+        p.insert(serverid, tenantid, [serverid, 1, 2, 3])
+        result = p.range(serverid, tenantid)
 
         self.assertEqual(expectedvalue, result)
 
@@ -60,8 +63,8 @@ class TestRedis(TestCase):
         p = myredis()
 
         expectedvalue = []
-        p.insert([1, 2, 3, 4])
-        result = p.range()
+        p.insert(serverid, tenantid, [serverid, 1, 2, 3, 4])
+        result = p.range(serverid, tenantid)
 
         self.assertEqual(expectedvalue, result)
 
@@ -69,10 +72,10 @@ class TestRedis(TestCase):
         """testInsertTwoElement should always return two element in the list"""
         p = myredis()
 
-        expectedvalue = ['[1, 2, 3]', '[5, 6, 7]']
-        p.insert([1, 2, 3])
-        p.insert([5, 6, 7])
-        result = p.range()
+        expectedvalue = ["['', 1, 2, 3]", "['', 5, 6, 7]"]
+        p.insert(serverid, tenantid, [serverid, 1, 2, 3])
+        p.insert(serverid, tenantid, [serverid, 5, 6, 7])
+        result = p.range(serverid, tenantid)
 
         self.assertEqual(expectedvalue, result)
 
@@ -81,16 +84,16 @@ class TestRedis(TestCase):
         five or more than five element in the list"""
         p = myredis()
 
-        expectedvalue = ["[5, 6, '8']", "[9, 10, '12']", "[13, 14, '16']",
-                         "[17, 18, '20']", "[21, 22, '24']"]
+        expectedvalue = ["['', 5, 6, '8']", "['', 9, 10, '12']", "['', 13, 14, '16']",
+                         "['', 17, 18, '20']", "['', 21, 22, '24']"]
 
-        p.insert([1, 2, '4'])
-        p.insert([5, 6, '8'])
-        p.insert([9, 10, '12'])
-        p.insert([13, 14, '16'])
-        p.insert([17, 18, '20'])
-        p.insert([21, 22, '24'])
-        result = p.range()
+        p.insert(serverid, tenantid, [serverid, 1, 2, '4'])
+        p.insert(serverid, tenantid, [serverid, 5, 6, '8'])
+        p.insert(serverid, tenantid, [serverid, 9, 10, '12'])
+        p.insert(serverid, tenantid, [serverid, 13, 14, '16'])
+        p.insert(serverid, tenantid, [serverid, 17, 18, '20'])
+        p.insert(serverid, tenantid, [serverid, 21, 22, '24'])
+        result = p.range(serverid, tenantid)
 
         self.assertEqual(expectedvalue, result)
 
@@ -98,9 +101,9 @@ class TestRedis(TestCase):
         """testSumValores should return the sum of a list
          of values"""
         p = myredis()
-        expected = [[1.0, 2.0, '3']]
-        p.insert([1, 2, 3])
-        result = p.sum(p.range())
+        expected = [["''", 1.0, 2.0, '3']]
+        p.insert(serverid, tenantid, [serverid, 1, 2, 3])
+        result = p.sum(p.range(serverid, tenantid))
 
         self.assertEqual(expected, result.data)
 
@@ -109,7 +112,7 @@ class TestRedis(TestCase):
          of values"""
         p = myredis()
         expected = '[]'
-        result = p.sum(p.range())
+        result = p.sum(p.range(serverid, tenantid))
 
         self.assertEqual(expected, result)
 
@@ -118,14 +121,14 @@ class TestRedis(TestCase):
          of values"""
         p = myredis()
 
-        expected = [4, 8, '3']
+        expected = ["''''''''", 4, 8, '3']
 
-        p.insert([1, 2, 3])
-        p.insert([1, 2, 3])
-        p.insert([1, 2, 3])
-        p.insert([1, 2, 3])
+        p.insert(serverid, tenantid, [serverid, 1, 2, 3])
+        p.insert(serverid, tenantid, [serverid, 1, 2, 3])
+        p.insert(serverid, tenantid, [serverid, 1, 2, 3])
+        p.insert(serverid, tenantid, [serverid, 1, 2, 3])
 
-        li = p.range()
+        li = p.range(serverid, tenantid)
 
         result = p.sum(li)
 
@@ -136,18 +139,18 @@ class TestRedis(TestCase):
         5 values of the list of values"""
         p = myredis()
 
-        expected = [1111100, 2222200, '3000000']
+        expected = ["''''''''''", 1111100, 2222200, '3000000']
 
-        p.insert([1, 2, '4'])
-        p.insert([10, 20, '40'])
+        p.insert(serverid, tenantid, [serverid, 1, 2, '4'])
+        p.insert(serverid, tenantid, [serverid, 10, 20, '40'])
 
-        p.insert([100,         200,     300])
-        p.insert([1000,       2000,    3000])
-        p.insert([10000,     20000,   30000])
-        p.insert([100000,   200000,  300000])
-        p.insert([1000000, 2000000, 3000000])
+        p.insert(serverid, tenantid, [serverid, 100,         200,     300])
+        p.insert(serverid, tenantid, [serverid, 1000,       2000,    3000])
+        p.insert(serverid, tenantid, [serverid, 10000,     20000,   30000])
+        p.insert(serverid, tenantid, [serverid, 100000,   200000,  300000])
+        p.insert(serverid, tenantid, [serverid, 1000000, 2000000, 3000000])
 
-        li = p.range()
+        li = p.range(serverid, tenantid)
 
         result = p.sum(li)
 
@@ -158,15 +161,15 @@ class TestRedis(TestCase):
         """
         p = myredis()
 
-        expected = [6, 7, '14']
+        expected = ["''''''''''", 6, 7, '14']
 
-        p.insert([0, 1, 2])
-        p.insert([3, 4, 5])
-        p.insert([6, 7, 8])
-        p.insert([9, 10, 11])
-        p.insert([12, 13, 14])
+        p.insert(serverid, tenantid, [serverid, 0, 1, 2])
+        p.insert(serverid, tenantid, [serverid, 3, 4, 5])
+        p.insert(serverid, tenantid, [serverid, 6, 7, 8])
+        p.insert(serverid, tenantid, [serverid, 9, 10, 11])
+        p.insert(serverid, tenantid, [serverid, 12, 13, 14])
 
-        li = p.range()
+        li = p.range(serverid, tenantid)
 
         result = p.media(li)
 
@@ -182,10 +185,10 @@ class TestRedis(TestCase):
 
         p2 = mylist.parselist(p1)
 
-        p.insert(p2)
-        p.insert(p2)
+        p.insert(serverid, tenantid, p2)
+        p.insert(serverid, tenantid, p2)
 
-        result = p.media(p.range())
+        result = p.media(p.range(serverid, tenantid))
 
         self.assertEqual(expected, result.data)
 
@@ -193,18 +196,18 @@ class TestRedis(TestCase):
         """Test with real data"""
         p = myredis()
 
-        p1 = "[1.0, 0.14, '2014-03-29T19:18:25.784424']"
+        p1 = "[, 1.0, 0.14, '2014-03-29T19:18:25.784424']"
 
-        expected = [1.0, 0.14, '2014-03-29T19:18:25.784424']
+        expected = ["''''''''''", 1.0, 0.14, '2014-03-29T19:18:25.784424']
 
         p2 = mylist.parselist(p1)
 
-        p.insert(p2)
-        p.insert(p2)
-        p.insert(p2)
-        p.insert(p2)
-        p.insert(p2)
+        p.insert(serverid, tenantid, p2)
+        p.insert(serverid, tenantid, p2)
+        p.insert(serverid, tenantid, p2)
+        p.insert(serverid, tenantid, p2)
+        p.insert(serverid, tenantid, p2)
 
-        result = p.media(p.range())
+        result = p.media(p.range(serverid, tenantid))
 
         self.assertEqual(expected, result.data)
