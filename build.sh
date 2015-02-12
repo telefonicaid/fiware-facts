@@ -53,6 +53,7 @@ sleep 10
 yum install erlang
 rpm --import http://www.rabbitmq.com/rabbitmq-signing-key-public.asc
 yum install rabbitmq-server-3.4.3-1.noarch.rpm
+rm -rf rabbitmq-server-3.4.3-1.noarch.rpm
 sudo /sbin/service rabbitmq-server start
 
 python server.py &
