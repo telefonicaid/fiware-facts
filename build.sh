@@ -31,8 +31,8 @@
 virtualenv ENV
 source ENV/bin/activate
 mkdir /var/log/fiware-facts
-mkdir -p target/site/cobertura
-mkdir -p target/surefire-reports
+mkdir -m 777 -p target/site/cobertura
+mkdir -m 777 -p target/surefire-reports
 chmod 777 /var/log/fiware-cloto
 sudo pip install -r requirements.txt
 sudo pip install -r requirements_dev.txt
