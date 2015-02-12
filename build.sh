@@ -56,8 +56,8 @@ yum install rabbitmq-server-3.4.3-1.noarch.rpm
 sudo /sbin/service rabbitmq-server start
 
 python server.py &
-nosetests -s -v --cover-package=facts --with-cover --cover-xml-file=target/site/cobertura/coverage.xml --cover-inclusive --cover-erase --cover-branches --cover-xml --with-xunit --xunit-file=target/surefire-reports/TEST-nosetests.xml
 export PYTHONPATH=$PWD
+nosetests -s -v --cover-package=facts --with-cover --cover-xml-file=target/site/cobertura/coverage.xml --cover-inclusive --cover-erase --cover-branches --cover-xml --with-xunit --xunit-file=target/surefire-reports/TEST-nosetests.xml
 #nosetests --with-cover --cover-xml-file=target/site/cobertura/coverage.xml --cover-package=facts
 sudo /sbin/service rabbitmq-server stop
 kill -9 $(lsof -t -i:5000)
