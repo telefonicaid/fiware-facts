@@ -9,5 +9,11 @@ install:
 
 services:
   - rabbitmq
+  - redis
 
-script: nosetests tests tests/integration
+script:
+  - python fiware-pep8.py .
+  - sudo ./build.sh
+
+after_success:
+  - coveralls
