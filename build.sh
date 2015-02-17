@@ -31,11 +31,11 @@
 virtualenv ENV
 source ENV/bin/activate
 mkdir /var/log/fiware-facts
-mkdir -p target/site/cobertura
-mkdir -p target/surefire-reports
+mkdir -m 777 -p target/site/cobertura
+mkdir -m 777 -p target/surefire-reports
 chmod 777 /var/log/fiware-cloto
-pip install -r requirements.txt
-pip install -r requirements_dev.txt
+sudo pip install -r requirements.txt
+sudo pip install -r requirements_dev.txt
 
 #INSTALLING REDIS
 wget -O redis.tar.gz http://download.redis.io/releases/redis-2.8.19.tar.gz
@@ -49,14 +49,17 @@ cd ../..
 
 #INSTALLING RABBITMQ
 wget http://www.rabbitmq.com/releases/rabbitmq-server/v3.4.3/rabbitmq-server-3.4.3-1.noarch.rpm
-sleep 60
+sleep 10
 yum install erlang
 rpm --import http://www.rabbitmq.com/rabbitmq-signing-key-public.asc
 yum install rabbitmq-server-3.4.3-1.noarch.rpm
-/sbin/service rabbitmq-server start
+rm -rf rabbitmq-server-3.4.3-1.noarch.rpm
+sudo /sbin/service rabbitmq-server start
 
 python server.py &
-nosetests -s -v --cover-package=facts --with-cover --cover-xml-file=target/site/cobertura/coverage.xml --cover-inclusive --cover-erase --cover-branches --cover-xml --with-xunit --xunit-file=target/surefire-reports/TEST-nosetests.xml
-/sbin/service rabbitmq-server stop
-kill $(lsof -t -i:5000)
-kill $(lsof -t -i:6379)
+export PYTHONPATH=$PWD
+#nosetests -s -v --cover-package=facts --with-cover --cover-xml-file=target/site/cobertura/coverage.xml --cover-inclusive --cover-erase --cover-branches --cover-xml --with-xunit --xunit-file=target/surefire-reports/TEST-nosetests.xml
+nosetests -s -v --cover-package=facts --with-cover --cover-xml-file=target/site/cobertura/coverage.xml --cover-xml
+sudo /sbin/service rabbitmq-server stop
+kill -9 $(lsof -t -i:5000)
+kill -9 $(lsof -t -i:6379)
