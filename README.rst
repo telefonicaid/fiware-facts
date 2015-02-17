@@ -1,0 +1,49 @@
+FIWARE Policy Manager GE - Facts
+____________________
+
+
+| |Build Status| |Coverage Status| |Pypi Version| |Pypi License|
+
+
+Description
+===========
+
+This module is part of FIWARE Policy Manager. 
+
+Server to process the incoming facts from the [Orion Context Broker][orion_ref].
+
+Installation
+============
+
+TO-DO
+
+Usage
+=====
+
+TO-DO
+
+Changelog
+=========
+Version 1.0.0
+
+* Initial release
+
+License
+=======
+
+\(c) 2014 Telefónica Investigación y Desarrollo S.A.U., Apache License 2.0
+
+.. IMAGES
+
+.. |Build Status| image:: https://travis-ci.org/telefonicaid/fiware-cloto.svg?branch=develop
+   :target: https://travis-ci.org/telefonicaid/fiware-cloto
+.. |Coverage Status| image:: https://coveralls.io/repos/telefonicaid/fiware-cloto/badge.png?branch=develop
+   :target: https://coveralls.io/r/telefonicaid/fiware-cloto
+.. |Pypi Version| image:: https://pypip.in/v/fiware-cloto/badge.png
+   :target: https://pypi.python.org/pypi/fiware-cloto/
+.. |Pypi License| image:: https://pypip.in/license/fiware-cloto/badge.png
+   :target: https://pypi.python.org/pypi/fiware-cloto/
+   
+[orion_ref]:
+http://catalogue.fi-ware.org/enablers/publishsubscribe-context-broker-orion-context-broker
+"Orion Context Broker"
