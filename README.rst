@@ -10,7 +10,7 @@ Description
 
 This module is part of FIWARE Policy Manager. 
 
-Server to process the incoming facts from the [Orion Context Broker][orion_ref].
+Server to process the incoming facts from the `Orion Context Broker <http://catalogue.fi-ware.org/enablers/publishsubscribe-context-broker-orion-context-broker>`.
 
 Installation
 ============
@@ -35,15 +35,11 @@ License
 
 .. IMAGES
 
-.. |Build Status| image:: https://travis-ci.org/telefonicaid/fiware-cloto.svg?branch=develop
-   :target: https://travis-ci.org/telefonicaid/fiware-cloto
+.. |Build Status| image:: https://travis-ci.org/geonexus/fiware-cloto.svg?branch=develop
+   :target: https://travis-ci.org/geonexus/fiware-cloto
 .. |Coverage Status| image:: https://coveralls.io/repos/telefonicaid/fiware-cloto/badge.png?branch=develop
    :target: https://coveralls.io/r/telefonicaid/fiware-cloto
 .. |Pypi Version| image:: https://pypip.in/v/fiware-cloto/badge.png
    :target: https://pypi.python.org/pypi/fiware-cloto/
 .. |Pypi License| image:: https://pypip.in/license/fiware-cloto/badge.png
    :target: https://pypi.python.org/pypi/fiware-cloto/
-   
-[orion_ref]:
-http://catalogue.fi-ware.org/enablers/publishsubscribe-context-broker-orion-context-broker
-"Orion Context Broker"
