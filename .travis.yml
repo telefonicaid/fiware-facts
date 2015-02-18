@@ -12,8 +12,7 @@ services:
   - redis
 
 script:
-  - python fiware-pep8.py .
-  - sudo ./build.sh
+  - sudo ./build.sh travis_build
 
 after_success:
   - coveralls
