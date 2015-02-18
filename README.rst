@@ -1,6 +1,7 @@
 FIWARE Policy Manager GE - Facts
 ____________________
 
+.. image:: https://coveralls.io/repos/geonexus/fiware-facts/badge.svg :target: https://coveralls.io/r/geonexus/fiware-facts
 
 | |Build Status| |Coverage Status| |Pypi Version| |Pypi License|
 
