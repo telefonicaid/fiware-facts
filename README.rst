@@ -3,8 +3,6 @@ ____________________
 
 | |Build Status| |Coverage Status|
 
-.. image:: https://coveralls.io/repos/telefonicaid/fiware-facts/badge.svg :target: https://coveralls.io/r/telefonicaid/fiware-facts
-
 Description
 ===========
 
