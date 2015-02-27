@@ -1,7 +1,7 @@
 FIWARE Policy Manager GE - Facts
 ____________________
 
-| |Build Status| |Coverage Status|
+| |Build Status| |Coverage Status| |Pypi Version| |Pypi License|
 
 Description
 ===========
