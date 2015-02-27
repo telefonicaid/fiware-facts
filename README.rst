@@ -8,9 +8,9 @@ ____________________
 Description
 ===========
 
-This module is part of FIWARE Policy Manager. 
+This module is part of FIWARE Policy Manager.
 
-Server to process the incoming facts from the `Orion Context Broker <http://catalogue.fi-ware.org/enablers/publishsubscribe-context-broker-orion-context-broker>`.
+Server to process the incoming facts from the `Orion Context Broker <http://catalogue.fi-ware.org/enablers/publishsubscribe-context-broker-orion-context-broker>`__.
 
 Installation
 ============
