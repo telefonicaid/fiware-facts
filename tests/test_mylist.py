@@ -101,9 +101,9 @@ class Testmylist(TestCase):
 
     def testsum(self):
         """check the sum of list"""
-        p1 = [[1, 2, 3], [1, 2, 4], [1, 2, 5]]
+        p1 = [['serverId', 1, 2, 3], ['serverId', 1, 2, 4], ['serverId', 1, 2, 5]]
 
-        expectedvalue = [3, 6, 5]
+        expectedvalue = ['serverId', 3, 6, 5]
 
         result = mylist.sum(p1)
 
@@ -136,7 +136,7 @@ class Testmylist(TestCase):
     def testmedia(self):
         """check the media of a list of data"""
 
-        expectedvalue = ['serverIdserverIdserverIdserverId', 7, 8, 18]
+        expectedvalue = ['serverId', 7, 8, 18]
 
         p1 = [['serverId', 1, 2, 3], ['serverId', 5, 6, 7], ['serverId', 9, 10, 11], ['serverId', 13, 14, 18]]
 
@@ -148,7 +148,7 @@ class Testmylist(TestCase):
         """check the sum of a list of strings but with commas"""
         p1 = ['[serverId, 1, 2, 1]', '[serverId, 1, 2, 2]', '[serverId, 1, 2, 3]', '[serverId, 1, 2, 4]']
 
-        expectedvalue = ['serverIdserverIdserverIdserverId', 4.0, 8.0, '4']
+        expectedvalue = ['serverId', 4.0, 8.0, '4']
 
         result = mylist.sum(p1)
 
@@ -212,7 +212,7 @@ class Testmylist(TestCase):
         """test the insertion of a real data and calculate its media"""
 
         fact = ['serverId', 1.0, 0.14, '2014-03-29T23:02:46.973949']
-        expectedvalue = ['serverIdserverId', 1.0, 0.14, '2014-03-29T23:02:46.973949']
+        expectedvalue = ['serverId', 1.0, 0.14, '2014-03-29T23:02:46.973949']
 
         p2 = list()
 
