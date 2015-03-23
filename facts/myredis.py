@@ -66,7 +66,7 @@ class myredis(object):
                               is no list or the number of element is not equal to 4.
         """
         ''' we need to check that data is a list and the exact number of
-        element is equal to 3 - Magic Number
+        element is equal to 4 - Magic Number
         '''
         if isinstance(data, list) and len(data) == 4:
             self.r.rpush(tenantid + "." + serverid, data)

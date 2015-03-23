@@ -130,7 +130,7 @@ class mylist(object):
 
             limit = len(self.data) - 1
 
-            for i in range(0, limit):
+            for i in range(1, limit):
                 result.data[i] = self.data[i] + other.data[i]
 
             result.data[limit] = other.data[limit]
