@@ -112,16 +112,3 @@ class myredis(object):
         """ Delete a especific queue from the redis system.
         """
         self.r.delete(nqueue)
-
-    def check_time_stamps(self, lista):
-        """
-        Check if the list is valid checking last item time-stamp with the new item time-stamp
-        :param lista: Checks if
-        :return:
-        """
-        #mediaresponse = mediaMOVIl x Windowsize
-        #if (tmax)- t(min) > mediaresponse
-        #clearlist()
-        #addItem2list
-
-
