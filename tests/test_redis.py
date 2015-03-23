@@ -208,6 +208,7 @@ class TestRedis(TestCase):
         p.insert(serverid, tenantid, p2)
         p.insert(serverid, tenantid, p2)
 
+
         result = p.media(p.range(serverid, tenantid))
 
         self.assertEqual(expected, result.data)
