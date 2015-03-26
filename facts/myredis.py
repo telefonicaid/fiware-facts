@@ -112,3 +112,22 @@ class myredis(object):
         """ Delete a especific queue from the redis system.
         """
         self.r.delete(nqueue)
+
+    def check_time_stamps(self, tenantid, serverid, lista, data):
+        """
+        Check if the list is valid checking last item time-stamp with the new item time-stamp
+        :return:
+        """
+        import dateutil.parser
+        textmin = lista[-1].split("'")
+        textmax = data.split("'")
+        datemin = dateutil.parser.parse(textmin[-2], fuzzy=True)
+        datemax = dateutil.parser.parse(textmax[-2], fuzzy=True)
+        from config import windowsize_facts
+
+        timediff = datemax - datemin
+        if  timediff > windowsize_facts:
+            self.r.delete(tenantid + "." + serverid)
+            return False
+        else:
+            return True
