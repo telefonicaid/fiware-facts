@@ -118,11 +118,11 @@ class myredis(object):
         Check if the list is valid checking last item time-stamp with the new item time-stamp
         :return:
         """
-        import dateutil.parser
+        from dateutil import parser
         textmin = lista[-1].split("'")
         textmax = data.split("'")
-        datemin = dateutil.parser.parse(textmin[-2], fuzzy=True)
-        datemax = dateutil.parser.parse(textmax[-2], fuzzy=True)
+        datemin = parser.parse(textmin[-2], fuzzy=True)
+        datemax = parser.parse(textmax[-2], fuzzy=True)
         from config import windowsize_facts
 
         timediff = datemax - datemin
