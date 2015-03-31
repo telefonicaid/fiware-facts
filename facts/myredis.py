@@ -23,7 +23,7 @@
 #
 __author__ = 'fla'
 
-from config import config
+from config import config, fact_attributes
 from mylist import mylist
 from redis.exceptions import ConnectionError
 import logging
@@ -65,10 +65,7 @@ class myredis(object):
         :return               This operation does not return anything except when the data
                               is no list or the number of element is not equal to 4.
         """
-        ''' we need to check that data is a list and the exact number of
-        element is equal to 4 - Magic Number
-        '''
-        if isinstance(data, list) and len(data) == 4:
+        if isinstance(data, list) and len(data) == len(fact_attributes):
             self.r.rpush(tenantid + "." + serverid, data)
             self.r.ltrim(tenantid + "." + serverid, -5, -1)
         else:

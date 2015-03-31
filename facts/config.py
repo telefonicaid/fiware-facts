@@ -59,3 +59,5 @@ for key, value in cfg_defaults.items():
     config.set('common', key, str(value))
 
 windowsize_facts = datetime.timedelta(seconds=10)
+
+fact_attributes = ['serverId', 'CpuValue', 'MemValue', 'DataTime']
