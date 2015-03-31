@@ -163,7 +163,8 @@ def process_request(request, tenantid, serverid):
     data.insert(3, datetime.datetime.today().isoformat())
 
     # Check data coherency of time stamps
-    mredis.check_time_stamps()
+    if len(mredis.range(tenantid, serverid)) > 2:
+        mredis.check_time_stamps(tenantid, serverid, mredis.range(tenantid, serverid), data)
 
     # Insert the result into the queue system
     mredis.insert(tenantid, serverid, data)

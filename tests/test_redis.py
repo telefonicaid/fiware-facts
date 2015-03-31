@@ -208,7 +208,48 @@ class TestRedis(TestCase):
         p.insert(serverid, tenantid, p2)
         p.insert(serverid, tenantid, p2)
 
-
         result = p.media(p.range(serverid, tenantid))
 
         self.assertEqual(expected, result.data)
+
+    def testCheckTimeStamp(self):
+        """Test if the time stamp of the new element is valid comparing to the last element."""
+        p = myredis()
+
+        p1 = "['serverId', 1.0, 0.14, '2014-03-29T19:18:25.784424']"
+        p2 = "['serverId', 1.0, 0.14, '2014-03-29T19:18:30.784424']"
+        p3 = "['serverId', 1.0, 0.14, '2014-03-29T19:18:35.784424']"
+        p4 = "['serverId', 1.0, 0.14, '2014-03-29T19:18:40.784424']"
+        p5 = "['serverId', 1.0, 0.14, '2014-03-29T19:18:45.784424']"
+
+        expected = True
+
+        p.insert(serverid, tenantid, mylist.parselist(p1))
+        p.insert(serverid, tenantid, mylist.parselist(p2))
+        p.insert(serverid, tenantid, mylist.parselist(p3))
+        p.insert(serverid, tenantid, mylist.parselist(p4))
+
+        result = p.check_time_stamps(tenantid, serverid, p.range(serverid, tenantid), p5)
+
+        self.assertEqual(expected, result)
+
+    def testCheckTimeStampInvalid(self):
+        """Test if the time stamp of the new element is invalid comparing to the last element."""
+        p = myredis()
+
+        p1 = "['serverId', 1.0, 0.14, '2014-03-29T19:18:25.784424']"
+        p2 = "['serverId', 1.0, 0.14, '2014-03-29T19:18:30.784424']"
+        p3 = "['serverId', 1.0, 0.14, '2014-03-29T19:18:35.784424']"
+        p4 = "['serverId', 1.0, 0.14, '2014-03-29T19:18:40.784424']"
+        p5 = "['serverId', 1.0, 0.14, '2014-03-30T19:18:45.784424']"
+
+        expected = False
+
+        p.insert(serverid, tenantid, mylist.parselist(p1))
+        p.insert(serverid, tenantid, mylist.parselist(p2))
+        p.insert(serverid, tenantid, mylist.parselist(p3))
+        p.insert(serverid, tenantid, mylist.parselist(p4))
+
+        result = p.check_time_stamps(tenantid, serverid, p.range(serverid, tenantid), p5)
+
+        self.assertEqual(expected, result)

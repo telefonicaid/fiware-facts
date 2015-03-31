@@ -26,6 +26,7 @@ __author__ = 'fla'
 
 from ConfigParser import SafeConfigParser
 import os.path
+import datetime
 
 
 """
@@ -56,3 +57,7 @@ config.add_section('common')
 # Initialize the content of the config parameters
 for key, value in cfg_defaults.items():
     config.set('common', key, str(value))
+
+windowsize_facts = datetime.timedelta(seconds=10)
+
+fact_attributes = ['serverId', 'CpuValue', 'MemValue', 'DataTime']
