@@ -23,7 +23,7 @@
 #
 __author__ = 'fla'
 
-from config import config
+from config import config, fact_attributes
 from mylist import mylist
 from redis.exceptions import ConnectionError
 import logging
@@ -65,10 +65,7 @@ class myredis(object):
         :return               This operation does not return anything except when the data
                               is no list or the number of element is not equal to 4.
         """
-        ''' we need to check that data is a list and the exact number of
-        element is equal to 3 - Magic Number
-        '''
-        if isinstance(data, list) and len(data) == 4:
+        if isinstance(data, list) and len(data) == len(fact_attributes):
             self.r.rpush(tenantid + "." + serverid, data)
             self.r.ltrim(tenantid + "." + serverid, -5, -1)
         else:
@@ -112,3 +109,22 @@ class myredis(object):
         """ Delete a especific queue from the redis system.
         """
         self.r.delete(nqueue)
+
+    def check_time_stamps(self, tenantid, serverid, lista, data):
+        """
+        Check if the list is valid checking last item time-stamp with the new item time-stamp
+        :return:
+        """
+        from dateutil import parser
+        textmin = lista[-1].split("'")
+        textmax = data.split("'")
+        datemin = parser.parse(textmin[-2], fuzzy=True)
+        datemax = parser.parse(textmax[-2], fuzzy=True)
+        from config import windowsize_facts
+
+        timediff = datemax - datemin
+        if  timediff > windowsize_facts:
+            self.r.delete(tenantid + "." + serverid)
+            return False
+        else:
+            return True

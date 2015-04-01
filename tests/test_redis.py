@@ -121,7 +121,7 @@ class TestRedis(TestCase):
          of values"""
         p = myredis()
 
-        expected = ["''''''''", 4, 8, '3']
+        expected = ["''", 4, 8, '3']
 
         p.insert(serverid, tenantid, [serverid, 1, 2, 3])
         p.insert(serverid, tenantid, [serverid, 1, 2, 3])
@@ -139,7 +139,7 @@ class TestRedis(TestCase):
         5 values of the list of values"""
         p = myredis()
 
-        expected = ["''''''''''", 1111100, 2222200, '3000000']
+        expected = ["''", 1111100, 2222200, '3000000']
 
         p.insert(serverid, tenantid, [serverid, 1, 2, '4'])
         p.insert(serverid, tenantid, [serverid, 10, 20, '40'])
@@ -161,7 +161,7 @@ class TestRedis(TestCase):
         """
         p = myredis()
 
-        expected = ["''''''''''", 6, 7, '14']
+        expected = ["''", 6, 7, '14']
 
         p.insert(serverid, tenantid, [serverid, 0, 1, 2])
         p.insert(serverid, tenantid, [serverid, 3, 4, 5])
@@ -198,7 +198,7 @@ class TestRedis(TestCase):
 
         p1 = "[, 1.0, 0.14, '2014-03-29T19:18:25.784424']"
 
-        expected = ["''''''''''", 1.0, 0.14, '2014-03-29T19:18:25.784424']
+        expected = ["''", 1.0, 0.14, '2014-03-29T19:18:25.784424']
 
         p2 = mylist.parselist(p1)
 
@@ -211,3 +211,45 @@ class TestRedis(TestCase):
         result = p.media(p.range(serverid, tenantid))
 
         self.assertEqual(expected, result.data)
+
+    def testCheckTimeStamp(self):
+        """Test if the time stamp of the new element is valid comparing to the last element."""
+        p = myredis()
+
+        p1 = "['serverId', 1.0, 0.14, '2014-03-29T19:18:25.784424']"
+        p2 = "['serverId', 1.0, 0.14, '2014-03-29T19:18:30.784424']"
+        p3 = "['serverId', 1.0, 0.14, '2014-03-29T19:18:35.784424']"
+        p4 = "['serverId', 1.0, 0.14, '2014-03-29T19:18:40.784424']"
+        p5 = "['serverId', 1.0, 0.14, '2014-03-29T19:18:45.784424']"
+
+        expected = True
+
+        p.insert(serverid, tenantid, mylist.parselist(p1))
+        p.insert(serverid, tenantid, mylist.parselist(p2))
+        p.insert(serverid, tenantid, mylist.parselist(p3))
+        p.insert(serverid, tenantid, mylist.parselist(p4))
+
+        result = p.check_time_stamps(tenantid, serverid, p.range(serverid, tenantid), p5)
+
+        self.assertEqual(expected, result)
+
+    def testCheckTimeStampInvalid(self):
+        """Test if the time stamp of the new element is invalid comparing to the last element."""
+        p = myredis()
+
+        p1 = "['serverId', 1.0, 0.14, '2014-03-29T19:18:25.784424']"
+        p2 = "['serverId', 1.0, 0.14, '2014-03-29T19:18:30.784424']"
+        p3 = "['serverId', 1.0, 0.14, '2014-03-29T19:18:35.784424']"
+        p4 = "['serverId', 1.0, 0.14, '2014-03-29T19:18:40.784424']"
+        p5 = "['serverId', 1.0, 0.14, '2014-03-30T19:18:45.784424']"
+
+        expected = False
+
+        p.insert(serverid, tenantid, mylist.parselist(p1))
+        p.insert(serverid, tenantid, mylist.parselist(p2))
+        p.insert(serverid, tenantid, mylist.parselist(p3))
+        p.insert(serverid, tenantid, mylist.parselist(p4))
+
+        result = p.check_time_stamps(tenantid, serverid, p.range(serverid, tenantid), p5)
+
+        self.assertEqual(expected, result)
