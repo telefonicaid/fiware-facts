@@ -175,6 +175,7 @@ def process_request(request, tenantid, serverid):
     if windowsize is []:
         from facts import cloto_client
         windowsize = cloto_client.get_window_size(tenantid)
+        mredis.insert_window_size(tenantid, windowsize)
 
     # If the queue has the number of facts defined by the windows size, it returns the
     # last window-size values (range) and calculates the media of them (in terms of memory and cpu)
@@ -249,18 +250,20 @@ def windowsize_updater():
                            queue=queue_name,
                            routing_key="windowsizes")
 
-        print('Waiting for windowizes')
+        logging.info('Waiting for windowsizes')
 
         def callback(ch, method, properties, body):
             try:
-
-                print("received fact: %s" % body)
+                logging.info("received fact: %s" % body)
+                tenantid = body.split(" ")[0]
+                windowsize = body.split(" ")[1]
+                mredis.insert_window_size(tenantid, windowsize)
 
             except ValueError:
-                print("receiving an invalid body: " + body)
+                logging.info("receiving an invalid body: " + body)
 
             except Exception as ex:
-                print("ERROR UPDATING WINDOWSIZE: " + ex.message)
+                logging.info("ERROR UPDATING WINDOWSIZE: " + ex.message)
 
         channel.basic_consume(callback,
                               queue=queue_name,
@@ -269,7 +272,7 @@ def windowsize_updater():
         channel.start_consuming()
     except Exception as ex:
         if ex.message:
-            print("Error %s:" % ex.message)
+            logging.error("Error %s:" % ex.message)
     finally:
         connection.close()
 
