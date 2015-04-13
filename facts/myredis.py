@@ -23,7 +23,7 @@
 #
 __author__ = 'fla'
 
-from config import config, fact_attributes
+from config import config, fact_attributes, windowsize_attributes
 from mylist import mylist
 from redis.exceptions import ConnectionError
 import logging
@@ -77,13 +77,13 @@ class myredis(object):
         """
         return self.r.lrange(tenantid + "." + serverid, -100, 100)
 
-    def media(self, lista):
+    def media(self, lista, windowsize):
         """ Calculate the media of a list of lidts
 
          :param mylist lista     The mylist instance with the data to be added.
          :return mylist          The media of the data
         """
-        if len(lista) >= 5:
+        if len(lista) >= windowsize:
             return self.sum(lista) / len(lista)
         else:
             result = mylist()
@@ -109,6 +109,23 @@ class myredis(object):
         """ Delete a especific queue from the redis system.
         """
         self.r.delete(nqueue)
+
+    def insert_window_size(self, tenantid, data):
+        """ Insert data into the redis queue.
+
+        :param list data:     The list of data to be stored in the queue
+        :return               This operation does not return anything except when the data
+                              is no list or the number of element is not equal to 4.
+        """
+        if isinstance(data, list):
+            self.r.rpush("windowsize" + "." + tenantid, data)
+            self.r.ltrim("windowsize" + "." + tenantid, -1, -1)
+
+    def get_windowsize(self, tenantid):
+        """ Return the list of element stored the que queue for the tenant.
+         :return a list of lists
+        """
+        return self.r.lrange("windowsize" + "." + tenantid, -100, 100)
 
     def check_time_stamps(self, tenantid, serverid, lista, data):
         """

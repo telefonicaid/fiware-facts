@@ -170,9 +170,15 @@ def process_request(request, tenantid, serverid):
     mredis.insert(tenantid, serverid, data)
     logging.info(data)
 
+    # Get the windowsize for the tenant from a redis queue
+    windowsize = mredis.get_windowsize(tenantid)
+    if windowsize is []:
+        from facts import cloto_client
+        windowsize = cloto_client.get_window_size(tenantid)
+
     # If the queue has the number of facts defined by the windows size, it returns the
     # last window-size values (range) and calculates the media of them (in terms of memory and cpu)
-    lo = mredis.media(mredis.range(tenantid, serverid))
+    lo = mredis.media(mredis.range(tenantid, serverid), windowsize)
 
     # If the number of facts is lt window size, the previous operation returns a null lists
     if len(lo) != 0:
@@ -225,4 +231,48 @@ http = WSGIServer(('', port), app)
 # show general information about the execution of the process
 info(port)
 
+
+def windowsize_updater():
+    try:
+        import pika
+        connection = pika.BlockingConnection(pika.ConnectionParameters(
+                host="localhost"))
+        channel = connection.channel()
+
+        channel.exchange_declare(exchange="windowsizes",
+                                 exchange_type='direct')
+
+        result = channel.queue_declare(exclusive=True)
+        queue_name = result.method.queue
+
+        channel.queue_bind(exchange="windowsizes",
+                           queue=queue_name,
+                           routing_key="windowsizes")
+
+        print('Waiting for windowizes')
+
+        def callback(ch, method, properties, body):
+            try:
+
+                print("received fact: %s" % body)
+
+            except ValueError:
+                print("receiving an invalid body: " + body)
+
+            except Exception as ex:
+                print("ERROR UPDATING WINDOWSIZE: " + ex.message)
+
+        channel.basic_consume(callback,
+                              queue=queue_name,
+                              no_ack=True)
+
+        channel.start_consuming()
+    except Exception as ex:
+        if ex.message:
+            print("Error %s:" % ex.message)
+    finally:
+        connection.close()
+
+import gevent
+gevent.spawn(windowsize_updater)
 http.serve_forever()

@@ -33,6 +33,7 @@ __author__ = 'fla'
 
 serverid = ""
 tenantid = ""
+windowsize = 5
 
 
 class TestRedis(TestCase):
@@ -171,7 +172,7 @@ class TestRedis(TestCase):
 
         li = p.range(serverid, tenantid)
 
-        result = p.media(li)
+        result = p.media(li, windowsize)
 
         self.assertEqual(expected, result.data)
 
@@ -188,7 +189,7 @@ class TestRedis(TestCase):
         p.insert(serverid, tenantid, p2)
         p.insert(serverid, tenantid, p2)
 
-        result = p.media(p.range(serverid, tenantid))
+        result = p.media(p.range(serverid, tenantid), windowsize)
 
         self.assertEqual(expected, result.data)
 
@@ -208,7 +209,7 @@ class TestRedis(TestCase):
         p.insert(serverid, tenantid, p2)
         p.insert(serverid, tenantid, p2)
 
-        result = p.media(p.range(serverid, tenantid))
+        result = p.media(p.range(serverid, tenantid), windowsize)
 
         self.assertEqual(expected, result.data)
 
@@ -253,3 +254,32 @@ class TestRedis(TestCase):
         result = p.check_time_stamps(tenantid, serverid, p.range(serverid, tenantid), p5)
 
         self.assertEqual(expected, result)
+
+    def testILikethegirlwhoisnext2me(self):
+        """test should return a window size of a given tenant."""
+        p = myredis()
+
+        expectedvalue = ["['tenantid', 4]"]
+        p.insert_window_size(tenantid, ['tenantid', 4])
+        result = p.get_windowsize(tenantid)
+
+        self.assertEqual(expectedvalue, result)
+
+    def testILikethegirlwhoisnext2me(self):
+        """test should return a window size of a given tenant."""
+        p = myredis()
+
+        expectedvalue = ["['tenantid', 4]"]
+        p.insert_window_size(tenantid, ['tenantid', 4])
+        result = p.get_windowsize(tenantid)
+
+        self.assertEqual(expectedvalue, result)
+
+    def testMendrugo(self):
+        """test should return an error retriving a window size of an unexisting tenant."""
+        p = myredis()
+
+        expectedvalue = []
+        result = p.get_windowsize(tenantid)
+
+        self.assertEqual(expectedvalue, result)

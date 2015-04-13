@@ -41,9 +41,12 @@ cfg_filename = os.path.join(os.path.dirname(__file__), '..', 'conf', '%s.cfg' % 
 cfg_defaults = {
     'brokerPort':   5000,                   # port of our facts broker
     'redisPort':    6379,                   # port of Redis
+    'clotoPort':    8000,                   # port of fiware-cloto
+    'clotoVersion': 'v1.0',                 # Cloto API version
     'redisHost':    'localhost',            # host of Redis
     'redisQueue':   'policymanager',        # name of the queue in redis
     'rabbitMQ':     'localhost',        # IP of the RabbitMQ server
+    'cloto':        'localhost',             # IP of fiware-cloto component
     'name':         'policymanager.facts',  # name of the server
     'logLevel':     'INFO',
     'logFormat':    '%(asctime)s %(levelname)s policymanager.facts %(message)s'
@@ -61,3 +64,5 @@ for key, value in cfg_defaults.items():
 windowsize_facts = datetime.timedelta(seconds=10)
 
 fact_attributes = ['serverId', 'CpuValue', 'MemValue', 'DataTime']
+
+windowsize_attributes = ['tenantId', 'value']
