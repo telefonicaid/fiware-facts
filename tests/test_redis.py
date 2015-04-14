@@ -255,7 +255,7 @@ class TestRedis(TestCase):
 
         self.assertEqual(expected, result)
 
-    def testILikethegirlwhoisnext2me(self):
+    def testGetWindowSize(self):
         """test should return a window size of a given tenant."""
         p = myredis()
 
@@ -265,18 +265,8 @@ class TestRedis(TestCase):
 
         self.assertEqual(expectedvalue, result)
 
-    def testILikethegirlwhoisnext2me(self):
-        """test should return a window size of a given tenant."""
-        p = myredis()
-
-        expectedvalue = ["['tenantid', 4]"]
-        p.insert_window_size(tenantid, ['tenantid', 4])
-        result = p.get_windowsize(tenantid)
-
-        self.assertEqual(expectedvalue, result)
-
-    def testMendrugo(self):
-        """test should return an error retriving a window size of an unexisting tenant."""
+    def testGetWidowSizeOfAnUnexistingTenant(self):
+        """test should return an empty list retriving a window size of an unexisting tenant."""
         p = myredis()
 
         expectedvalue = []
