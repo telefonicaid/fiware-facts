@@ -33,6 +33,8 @@ __author__ = 'fla'
 
 serverid = ""
 tenantid = ""
+serverid2 = "different_server_id"
+tenantid2 = "different_tenant_id"
 windowsize = 5
 
 
@@ -273,3 +275,47 @@ class TestRedis(TestCase):
         result = p.get_windowsize(tenantid)
 
         self.assertEqual(expectedvalue, result)
+
+    def testGetWindowSize_diferent_tenants(self):
+        """test should return the window size of different tenant to check multitenacy"""
+        p = myredis()
+
+        expectedvalue1 = ["['tenantid', 4]"]
+        expectedvalue2 = ["['different_tenant_id', 5]"]
+        p.insert_window_size(tenantid, ['tenantid', 4])
+        p.insert_window_size(tenantid2, [tenantid2, 5])
+        result = p.get_windowsize(tenantid)
+        result2 = p.get_windowsize(tenantid2)
+
+        self.assertEqual(expectedvalue1, result)
+        self.assertEqual(expectedvalue2, result2)
+
+    def testMultitenacyData(self):
+        """Test with real data to check if multitenacy is working"""
+        p = myredis()
+
+        p1 = "[, 1.0, 0.14, '2014-03-29T19:18:25.784424']"
+        p2 = "[different_server_id, 2.0, 0.48, '2014-03-29T19:18:26.784424']"
+
+        expected = ["''", 1.0, 0.14, '2014-03-29T19:18:25.784424']
+        expected2 = ["'different_server_id'", 2.0, 0.48, '2014-03-29T19:18:26.784424']
+
+        p11 = mylist.parselist(p1)
+        p21 = mylist.parselist(p2)
+
+        p.insert(serverid, tenantid, p11)
+        p.insert(serverid, tenantid, p11)
+        p.insert(serverid, tenantid, p11)
+        p.insert(serverid, tenantid, p11)
+        p.insert(serverid, tenantid, p11)
+        p.insert(serverid2, tenantid2, p21)
+        p.insert(serverid2, tenantid2, p21)
+        p.insert(serverid2, tenantid2, p21)
+        p.insert(serverid2, tenantid2, p21)
+        p.insert(serverid2, tenantid2, p21)
+
+        result = p.media(p.range(serverid, tenantid), windowsize)
+        result2 = p.media(p.range(serverid2, tenantid2), windowsize)
+
+        self.assertEqual(expected, result.data)
+        self.assertEqual(expected2, result2.data)
