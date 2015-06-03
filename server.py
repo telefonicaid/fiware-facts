@@ -214,7 +214,7 @@ def info(port):
     logging.info("Running in stand alone mode")
     logging.info("Port: {}".format(port))
     logging.info("PID: {}\n".format(pid))
-    logging.info("https://github.hi.inet/telefonicaid/fiware-facts\n\n\n")
+    logging.info("https://github.com/telefonicaid/fiware-facts\n\n\n")
 
 
 # process configuration file (if exists) and setup logging
@@ -236,6 +236,7 @@ info(port)
 def windowsize_updater():
     try:
         import pika
+        connection = None
         connection = pika.BlockingConnection(pika.ConnectionParameters(
                 host="localhost"))
         channel = connection.channel()
@@ -274,7 +275,10 @@ def windowsize_updater():
         if ex.message:
             logging.error("Error %s:" % ex.message)
     finally:
-        connection.close()
+        if connection == None:
+            logging.error("There is no connection with RabbitMQ. Please, check if it is alive")
+        else:
+            connection.close()
 
 import gevent
 gevent.spawn(windowsize_updater)
