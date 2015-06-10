@@ -119,8 +119,9 @@ class myredis(object):
         :return               This operation does not return anything except when the data
                               is no list or the number of element is not equal to 4.
         """
-        self.r.rpush("windowsize" + "." + tenantid, data)
-        self.r.ltrim("windowsize" + "." + tenantid, -1, -1)
+        if isinstance(data, int) or isinstance(data, long):
+            self.r.rpush("windowsize" + "." + tenantid, data)
+            self.r.ltrim("windowsize" + "." + tenantid, -1, -1)
 
     def get_windowsize(self, tenantid):
         """ Return the list of element stored the que queue for the tenant.
