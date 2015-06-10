@@ -108,7 +108,7 @@ class myredis(object):
             return '[]'
 
     def delete(self):
-        """ Delete a especific queue from the redis system.
+        """ Delete a specific queue from the redis system.
         """
         self.r.delete(nqueue)
 

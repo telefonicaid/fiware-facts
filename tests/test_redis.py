@@ -36,6 +36,7 @@ tenantid = ""
 serverid2 = "different_server_id"
 tenantid2 = "different_tenant_id"
 windowsize = 5
+windowsize_list = [5]
 
 
 class TestRedis(TestCase):
@@ -160,7 +161,7 @@ class TestRedis(TestCase):
         self.assertEqual(expected, result.data)
 
     def testMediaListof4Values(self):
-        """ return the media of a list of 4 values
+        """ return the media of a list of 4 values with window size in a list
         """
         p = myredis()
 
@@ -174,7 +175,7 @@ class TestRedis(TestCase):
 
         li = p.range(serverid, tenantid)
 
-        result = p.media(li, windowsize)
+        result = p.media(li, windowsize_list)
 
         self.assertEqual(expected, result.data)
 
@@ -223,7 +224,7 @@ class TestRedis(TestCase):
         p2 = "['serverId', 1.0, 0.14, '2014-03-29T19:18:30.784424']"
         p3 = "['serverId', 1.0, 0.14, '2014-03-29T19:18:35.784424']"
         p4 = "['serverId', 1.0, 0.14, '2014-03-29T19:18:40.784424']"
-        p5 = "['serverId', 1.0, 0.14, '2014-03-29T19:18:45.784424']"
+        p5 = ['serverId', 1.0, 0.14, '2014-03-29T19:18:45.784424']
 
         expected = True
 
@@ -244,7 +245,7 @@ class TestRedis(TestCase):
         p2 = "['serverId', 1.0, 0.14, '2014-03-29T19:18:30.784424']"
         p3 = "['serverId', 1.0, 0.14, '2014-03-29T19:18:35.784424']"
         p4 = "['serverId', 1.0, 0.14, '2014-03-29T19:18:40.784424']"
-        p5 = "['serverId', 1.0, 0.14, '2014-03-30T19:18:45.784424']"
+        p5 = ['serverId', 1.0, 0.14, '2014-03-30T19:18:45.784424']
 
         expected = False
 
@@ -261,8 +262,8 @@ class TestRedis(TestCase):
         """test should return a window size of a given tenant."""
         p = myredis()
 
-        expectedvalue = ["['tenantid', 4]"]
-        p.insert_window_size(tenantid, ['tenantid', 4])
+        expectedvalue = ["4"]
+        p.insert_window_size(tenantid, 4)
         result = p.get_windowsize(tenantid)
 
         self.assertEqual(expectedvalue, result)
@@ -280,10 +281,10 @@ class TestRedis(TestCase):
         """test should return the window size of different tenant to check multitenacy"""
         p = myredis()
 
-        expectedvalue1 = ["['tenantid', 4]"]
-        expectedvalue2 = ["['different_tenant_id', 5]"]
-        p.insert_window_size(tenantid, ['tenantid', 4])
-        p.insert_window_size(tenantid2, [tenantid2, 5])
+        expectedvalue1 = ["4"]
+        expectedvalue2 = ["5"]
+        p.insert_window_size(tenantid, 4)
+        p.insert_window_size(tenantid2, 5)
         result = p.get_windowsize(tenantid)
         result2 = p.get_windowsize(tenantid2)
 
