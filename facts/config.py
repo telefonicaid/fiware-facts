@@ -45,21 +45,34 @@ cfg_defaults = {
     'clotoVersion': 'v1.0',                 # Cloto API version
     'redisHost':    'localhost',            # host of Redis
     'redisQueue':   'policymanager',        # name of the queue in redis
-    'rabbitMQ':     'localhost',        # IP of the RabbitMQ server
-    'cloto':        'localhost',             # IP of fiware-cloto component
+    'rabbitMQ':     'localhost',            # IP of the RabbitMQ server
+    'cloto':        '127.0.0.1',            # IP of fiware-cloto component
+    'clotoVersion': 'v1.0',                 # Cloto API version
     'name':         'policymanager.facts',  # name of the server
     'logLevel':     'INFO',
     'logFormat':    '%(asctime)s %(levelname)s policymanager.facts %(message)s'
+}
+
+cfg_mysql_defaults = {
+    'host':   'localhost',                   # host of Cloto Mysql database
+    'charset':    'utf8',                   # charset of the data base
+    'user':    '',                   # user of cloto database
+    'password': '',                 # password for the user
+    'db':    'cloto',            # name of the cloto dataBase, default: cloto
 }
 
 config = SafeConfigParser(cfg_defaults)
 
 # Create the common section in the same way that we have in the configuration file: fiware-facts.cfg
 config.add_section('common')
+config.add_section('mysql')
 
 # Initialize the content of the config parameters
 for key, value in cfg_defaults.items():
     config.set('common', key, str(value))
+
+for key, value in cfg_mysql_defaults.items():
+    config.set('mysql', key, str(value))
 
 windowsize_facts = datetime.timedelta(seconds=10)
 

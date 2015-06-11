@@ -78,11 +78,13 @@ class myredis(object):
         return self.r.lrange(tenantid + "." + serverid, -100, 100)
 
     def media(self, lista, windowsize):
-        """ Calculate the media of a list of lidts
+        """ Calculate the media of a list of data
 
          :param mylist lista     The mylist instance with the data to be added.
          :return mylist          The media of the data
         """
+        if isinstance(windowsize, list) and len(windowsize) == 1:
+            windowsize = int(windowsize[0])
         if len(lista) >= windowsize:
             return self.sum(lista) / len(lista)
         else:
@@ -106,7 +108,7 @@ class myredis(object):
             return '[]'
 
     def delete(self):
-        """ Delete a especific queue from the redis system.
+        """ Delete a specific queue from the redis system.
         """
         self.r.delete(nqueue)
 
@@ -117,7 +119,7 @@ class myredis(object):
         :return               This operation does not return anything except when the data
                               is no list or the number of element is not equal to 4.
         """
-        if isinstance(data, list):
+        if isinstance(data, int) or isinstance(data, long):
             self.r.rpush("windowsize" + "." + tenantid, data)
             self.r.ltrim("windowsize" + "." + tenantid, -1, -1)
 
@@ -134,9 +136,8 @@ class myredis(object):
         """
         from dateutil import parser
         textmin = lista[-1].split("'")
-        textmax = data.split("'")
         datemin = parser.parse(textmin[-2], fuzzy=True)
-        datemax = parser.parse(textmax[-2], fuzzy=True)
+        datemax = parser.parse(data[-1], fuzzy=True)
         from config import windowsize_facts
 
         timediff = datemax - datemin

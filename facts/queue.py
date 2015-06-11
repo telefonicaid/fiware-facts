@@ -82,7 +82,7 @@ class myqueue(object):
             logging.error('AMQP channel not properly created...')
             raise Exception("AMQP channel not properly created...")
 
-        if self.connection:
+        if self.connection and self.connection.is_open:
             # Close the connection
             self.connection.close()
         else:
