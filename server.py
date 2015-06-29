@@ -154,7 +154,7 @@ def process_request(request, tenantid, serverid):
 
     for item in attrlist:
         name = item['name']
-        value = item['value']
+        value = item['contextValue']
 
         # Obtain the information of used memory and cpu
         if name == 'usedMemPct' or name == 'cpuLoadPct':
