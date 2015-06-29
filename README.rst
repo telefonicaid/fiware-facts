@@ -47,8 +47,8 @@ License
    :target: https://travis-ci.org/telefonicaid/fiware-facts
 .. |Coverage Status| image:: https://coveralls.io/repos/telefonicaid/fiware-facts/badge.png?branch=develop
     :target: https://coveralls.io/r/telefonicaid/fiware-facts
-.. |Pypi Version| image:: https://pypip.in/v/fiware-facts/badge.png
+.. |Pypi Version| image:: https://badge.fury.io/py/fiware-facts.svg
    :target: https://pypi.python.org/pypi/fiware-facts/
-.. |Pypi License| image:: https://pypip.in/license/fiware-facts/badge.png
+.. |Pypi License| image:: https://img.shields.io/pypi/l/fiware-facts.svg
    :target: https://pypi.python.org/pypi/fiware-facts/
 

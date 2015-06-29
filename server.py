@@ -23,7 +23,7 @@
 # contact with opensource@tid.es
 #
 
-__version__ = '1.3.0'
+__version__ = '1.4.0'
 __version_info__ = tuple([int(num) for num in __version__.split('.')])
 __description__ = 'Facts Listener'
 __author__ = 'fla'
@@ -33,6 +33,7 @@ from facts.myredis import myredis
 from facts.queue import myqueue
 from facts.jsoncheck import jsoncheck
 from gevent.pywsgi import WSGIServer
+from keystoneclient.exceptions import NotFound
 import logging.config
 import sys
 import datetime
@@ -104,7 +105,10 @@ def facts(tenantid, serverid):
                             content_type=content_type)
 
         # It is a valid payload and we start to process it
-        result = process_request(request, tenantid, serverid)
+        try:
+            result = process_request(request, tenantid, serverid)
+        except NotFound as ex:
+            return Response(response=ex.message, status=ex.http_status, content_type=content_type)
 
         if result == True:
             return Response(status=httplib.OK)
@@ -172,9 +176,10 @@ def process_request(request, tenantid, serverid):
 
     # Get the windowsize for the tenant from a redis queue
     windowsize = mredis.get_windowsize(tenantid)
-    if windowsize is []:
-        from facts import cloto_client
-        windowsize = cloto_client.get_window_size(tenantid)
+    if windowsize == []:
+        from facts import cloto_db_client
+        myClotoDBClient = cloto_db_client.cloto_db_client()
+        windowsize = myClotoDBClient.get_window_size(tenantid)
         mredis.insert_window_size(tenantid, windowsize)
 
     # If the queue has the number of facts defined by the windows size, it returns the
@@ -214,7 +219,7 @@ def info(port):
     logging.info("Running in stand alone mode")
     logging.info("Port: {}".format(port))
     logging.info("PID: {}\n".format(pid))
-    logging.info("https://github.hi.inet/telefonicaid/fiware-facts\n\n\n")
+    logging.info("https://github.com/telefonicaid/fiware-facts\n\n\n")
 
 
 # process configuration file (if exists) and setup logging
@@ -236,6 +241,7 @@ info(port)
 def windowsize_updater():
     try:
         import pika
+        connection = None
         connection = pika.BlockingConnection(pika.ConnectionParameters(
                 host="localhost"))
         channel = connection.channel()
@@ -274,7 +280,10 @@ def windowsize_updater():
         if ex.message:
             logging.error("Error %s:" % ex.message)
     finally:
-        connection.close()
+        if connection == None:
+            logging.error("There is no connection with RabbitMQ. Please, check if it is alive")
+        else:
+            connection.close()
 
 import gevent
 gevent.spawn(windowsize_updater)
