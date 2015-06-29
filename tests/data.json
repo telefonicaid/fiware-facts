@@ -3,22 +3,22 @@
             "contextElement": {
                 "attributes": [
                     {
-                        "contextValue": "6",
+                        "value": "6",
                         "name": "users",
                         "type": "string"
                     },
                     {
-                        "contextValue": "1",
+                        "value": "1",
                         "name": "usedMemPct",
                         "type": "string"
                     },
                     {
-                        "contextValue": "0.14",
+                        "value": "0.14",
                         "name": "cpuLoadPct",
                         "type": "string"
                     },
                     {
-                        "contextValue": "0.856240",
+                        "value": "0.856240",
                         "name": "freeSpacePct",
                         "type": "string"
                     }
