@@ -23,7 +23,7 @@
 # contact with opensource@tid.es
 #
 from distutils.core import setup
-__version__ = '1.5.0'
+from server import __version__
 setup(
   name='fiware-facts',
   packages=['fiware-facts'],  # this must be the same as the name above

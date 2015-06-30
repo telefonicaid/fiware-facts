@@ -145,7 +145,7 @@ def process_request(request, tenantid, serverid):
         jsoncheck.checkit(json, key, 0)
     except (Exception), err:
         logging.error(err)
-        return Falsechmod
+        return False
 
     # Extract the list of attributes from the NGSI message
     attrlist = request.json['contextResponses'][0]['contextElement']['attributes']
