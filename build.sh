@@ -38,7 +38,7 @@ sudo pip install -r requirements_dev.txt
 
 if [ ! $1 = "travis_build" ];
 then
-    virtualenv ENV
+    virtualenv --system-site-packages ENV
     source ENV/bin/activate
     #INSTALLING REDIS
     wget -O redis.tar.gz http://download.redis.io/releases/redis-2.8.19.tar.gz
@@ -62,7 +62,6 @@ fi
 
 python server.py &
 export PYTHONPATH=$PWD
-#nosetests -s -v --cover-package=facts --with-cover --cover-xml-file=target/site/cobertura/coverage.xml --cover-inclusive --cover-erase --cover-branches --cover-xml --with-xunit --xunit-file=target/surefire-reports/TEST-nosetests.xml
 nosetests -s -v --cover-package=facts --with-cover --cover-xml-file=target/site/cobertura/coverage.xml --cover-xml
 sudo /sbin/service rabbitmq-server stop
 kill -9 $(lsof -t -i:5000)

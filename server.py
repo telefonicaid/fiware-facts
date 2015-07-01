@@ -23,7 +23,7 @@
 # contact with opensource@tid.es
 #
 
-__version__ = '1.4.0'
+__version__ = '1.5.0'
 __version_info__ = tuple([int(num) for num in __version__.split('.')])
 __description__ = 'Facts Listener'
 __author__ = 'fla'
@@ -145,7 +145,7 @@ def process_request(request, tenantid, serverid):
         jsoncheck.checkit(json, key, 0)
     except (Exception), err:
         logging.error(err)
-        return Falsechmod
+        return False
 
     # Extract the list of attributes from the NGSI message
     attrlist = request.json['contextResponses'][0]['contextElement']['attributes']

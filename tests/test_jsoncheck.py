@@ -80,11 +80,8 @@ class Testjsoncheck(TestCase):
         key = ['contextResponses', 'contextElement', 'attributes']
 
         expectedvalue = ""
-
-        try:
-            jsoncheck.checkit(mydict1, key, 0)
-        except (Exception), err:
-            self.assertEqual(expectedvalue, err.message)
+        result = jsoncheck.checkit(mydict1, key, 0)
+        self.assertEqual(result, None)
 
     def test_unknowkeyvalue(self):
         """ Check that not all keys are content in the dict¡onary
