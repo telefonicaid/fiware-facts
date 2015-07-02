@@ -36,8 +36,9 @@ chmod 777 /var/log/fiware-cloto
 sudo pip install -r requirements.txt
 sudo pip install -r requirements_dev.txt
 
-if [ ! $1 = "travis_build" ];
+if [[ ! $1 == "travis_build" ]];
 then
+    echo "Building with Jenkins"
     virtualenv --system-site-packages ENV
     source ENV/bin/activate
     #INSTALLING REDIS
@@ -58,6 +59,8 @@ then
     yum install rabbitmq-server-3.4.3-1.noarch.rpm
     rm -rf rabbitmq-server-3.4.3-1.noarch.rpm
     sudo /sbin/service rabbitmq-server start
+else
+    echo "Building with travis"
 fi
 
 python server.py &
