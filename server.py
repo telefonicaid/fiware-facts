@@ -191,7 +191,7 @@ def process_request(request, tenantid, serverid):
         try:
             rabbit = myqueue()
 
-            message = "{\"serverId\": \"%s\", \"cpu\": %d, \"mem\": %d, \"time\": \"%s\"}" \
+            message = "{\"serverId\": \"%s\", \"cpu\": %s, \"mem\": %s, \"time\": \"%s\"}" \
                       % (lo.data[0], lo.data[1], lo.data[2], lo.data[3])
 
             logging_message = "[{}] sending message {}".format("-", message)
