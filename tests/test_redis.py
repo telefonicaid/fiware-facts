@@ -67,7 +67,7 @@ class TestRedis(TestCase):
         p = myredis()
 
         expectedvalue = []
-        p.insert(serverid, tenantid, [serverid, 1, 2, 3, 4, 5, 6 ])
+        p.insert(serverid, tenantid, [serverid, 1, 2, 3, 4, 5, 6])
         result = p.range(serverid, tenantid)
 
         self.assertEqual(expectedvalue, result)
@@ -167,7 +167,7 @@ class TestRedis(TestCase):
 
         expected = ["''", 10.8, 11.8, 12.8, 14, '25']
 
-        p.insert(serverid, tenantid, [serverid, 0, 1, 2 ,4 ,5])
+        p.insert(serverid, tenantid, [serverid, 0, 1, 2, 4, 5])
         p.insert(serverid, tenantid, [serverid, 6, 7, 8, 9, 10])
         p.insert(serverid, tenantid, [serverid, 11, 12, 13, 14, 15])
         p.insert(serverid, tenantid, [serverid, 16, 17, 18, 19, 20])

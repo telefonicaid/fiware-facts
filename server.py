@@ -114,7 +114,8 @@ def facts(tenantid, serverid):
         if result == True:
             return Response(status=httplib.OK)
         else:
-            return Response(response="{\"error\":\"Internal Server Error. Unable to contact with RabbitMQ process\"}\n",
+            return Response(response="{\"error\":\"Internal Server Error. "
+                                     "Unable to contact with RabbitMQ process\"}\n",
                             status=httplib.INTERNAL_SERVER_ERROR,
                             content_type=content_type)
 
