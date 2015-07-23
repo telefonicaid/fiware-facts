@@ -174,7 +174,8 @@ class Testmylist(TestCase):
 
         r1 = mylist()
 
-        expectedvalue = [['serverId', 1.0, 2.0, '4'], ['serverId', 1.0, 2.0, '4'], ['serverId', 1.0, 2.0, '4'], ['serverId', 1.0, 2.0, '4']]
+        expectedvalue = [['serverId', 1.0, 2.0, '4'], ['serverId', 1.0, 2.0, '4'], ['serverId', 1.0, 2.0, '4'],
+                         ['serverId', 1.0, 2.0, '4']]
 
         r1.insert(p1)
 

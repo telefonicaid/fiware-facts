@@ -34,6 +34,7 @@ from facts.queue import myqueue
 from facts.jsoncheck import jsoncheck
 from gevent.pywsgi import WSGIServer
 from keystoneclient.exceptions import NotFound
+from facts.config import fact_attributes
 import logging.config
 import sys
 import datetime
@@ -113,7 +114,8 @@ def facts(tenantid, serverid):
         if result == True:
             return Response(status=httplib.OK)
         else:
-            return Response(response="{\"error\":\"Internal Server Error. Unable to contact with RabbitMQ process\"}\n",
+            return Response(response="{\"error\":\"Internal Server Error. "
+                                     "Unable to contact with RabbitMQ process\"}\n",
                             status=httplib.INTERNAL_SERVER_ERROR,
                             content_type=content_type)
 
@@ -164,7 +166,7 @@ def process_request(request, tenantid, serverid):
     data.insert(0, str(serverid))
 
     # fix the last value with the current date and time
-    data.insert(3, datetime.datetime.today().isoformat())
+    data.insert(len(fact_attributes) - 1, datetime.datetime.today().isoformat())
 
     # Check data coherency of time stamps
     if len(mredis.range(tenantid, serverid)) > 2:
@@ -191,8 +193,8 @@ def process_request(request, tenantid, serverid):
         try:
             rabbit = myqueue()
 
-            message = "{\"serverId\": \"%s\", \"cpu\": %s, \"mem\": %s, \"time\": \"%s\"}" \
-                      % (lo.data[0], lo.data[1], lo.data[2], lo.data[3])
+            message = "{\"serverId\": \"%s\", \"cpu\": %s, \"mem\": %s, \"hdd\": %s, \"net\": %s, \"time\": \"%s\"}" \
+                      % (lo.data[0], lo.data[1], lo.data[2], lo.data[3], lo.data[4], lo.data[5])
 
             logging_message = "[{}] sending message {}".format("-", message)
 
@@ -202,7 +204,6 @@ def process_request(request, tenantid, serverid):
             result = rabbit.publish_message(tenantid, message)  # @UnusedVariable
 
         except Exception:
-            #logging.info(lo.get())
             return False
 
     return True

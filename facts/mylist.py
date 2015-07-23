@@ -139,7 +139,7 @@ class mylist(object):
 
     def __div__(self, other):
         """ Operator overloading: division of the list by a integer number
-        :param int other:       The divisor of the list (except the last value). It is not necessary to check if it is 0
+        :param int other:       The divisor of the list (except the last value). It is not necessary to check if it's 0
                                 due to it will be manage by the caller of the function.
         :return mylist:         A new mylist instance with the result of the division.
         """

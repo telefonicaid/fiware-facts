@@ -76,6 +76,6 @@ for key, value in cfg_mysql_defaults.items():
 
 windowsize_facts = datetime.timedelta(seconds=10)
 
-fact_attributes = ['serverId', 'CpuValue', 'MemValue', 'DataTime']
+fact_attributes = ['serverId', 'CpuValue', 'MemValue', 'HddValue', 'NetValue', 'DataTime']
 
 windowsize_attributes = ['tenantId', 'value']
