@@ -63,7 +63,6 @@ else
     echo "Building with travis"
 fi
 
-python server.py &
 export PYTHONPATH=$PWD
 nosetests -s -v --cover-package=facts --with-cover --cover-xml-file=target/site/cobertura/coverage.xml --cover-xml
 sudo /sbin/service rabbitmq-server stop

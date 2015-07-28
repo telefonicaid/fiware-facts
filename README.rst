@@ -28,7 +28,7 @@ git clone git@github.com:telefonicaid/fiware-facts.git
 Usage
 =====
 
-Execute command "gunicorn --check-config server.py" inside the folder where you downloaded fiware-facts
+Execute command "gunicorn facts.server:app" inside the folder where you downloaded fiware-facts
 
 Changelog
 =========

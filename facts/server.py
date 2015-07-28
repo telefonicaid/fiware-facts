@@ -35,12 +35,14 @@ from facts.jsoncheck import jsoncheck
 from gevent.pywsgi import WSGIServer
 from keystoneclient.exceptions import NotFound
 from facts.config import fact_attributes
+from facts import cloto_db_client
 import logging.config
 import sys
 import datetime
 import gevent.monkey
 import os
 import httplib
+import gevent
 
 
 gevent.monkey.patch_all()
@@ -59,6 +61,12 @@ app = Flask(__name__)
 Initialize the redis connection library
 """
 mredis = myredis()
+
+"""
+Initialize the mysql connection library
+"""
+
+myClotoDBClient = cloto_db_client.cloto_db_client()
 
 """
 Initialize the pid of the process
@@ -93,9 +101,13 @@ def facts(tenantid, serverid):
     if request.headers['content-type'] == content_type:
         try:
             # Ensure that received data is a valid JSON
+            print "Esto es request: %s" % request.data
+
             user_submission = json.loads(request.data)  # @UnusedVariable
-        except ValueError:
+        except ValueError as v:
             # Data is not a well-formed json
+            print "ESTO ES EL ERROR: %s" % v
+
             message = "[{}] received {} from ip {}:{}"\
                 .format("-", json, request.environ['REMOTE_ADDR'], request.environ['REMOTE_PORT'])
 
@@ -135,9 +147,12 @@ def process_request(request, tenantid, serverid):
     :return: True
     """
     json = request.json
-    message = "[{}] received {} from ip {}:{}"\
-        .format("-", json, request.environ['REMOTE_ADDR'], request.environ['REMOTE_PORT'])
-
+    if request.remote_addr:
+        message = "[{}] received {} from ip {}:{}"\
+            .format("-", json, request.environ['REMOTE_ADDR'], request.environ['REMOTE_PORT'])
+    else:
+        message = "[{}] received {} from test client"\
+            .format("-", json)
     logging.info(message)
 
     key = ['contextResponses', 'contextElement', 'attributes']
@@ -179,8 +194,6 @@ def process_request(request, tenantid, serverid):
     # Get the windowsize for the tenant from a redis queue
     windowsize = mredis.get_windowsize(tenantid)
     if windowsize == []:
-        from facts import cloto_db_client
-        myClotoDBClient = cloto_db_client.cloto_db_client()
         windowsize = myClotoDBClient.get_window_size(tenantid)
         mredis.insert_window_size(tenantid, windowsize)
 
@@ -194,7 +207,7 @@ def process_request(request, tenantid, serverid):
             rabbit = myqueue()
 
             message = "{\"serverId\": \"%s\", \"cpu\": %s, \"mem\": %s, \"hdd\": %s, \"net\": %s, \"time\": \"%s\"}" \
-                      % (lo.data[0], lo.data[1], lo.data[2], lo.data[3], lo.data[4], lo.data[5])
+                      % (lo.data[0][1:-1], lo.data[1], lo.data[2], lo.data[3], lo.data[4], lo.data[5])
 
             logging_message = "[{}] sending message {}".format("-", message)
 
@@ -286,6 +299,11 @@ def windowsize_updater():
         else:
             connection.close()
 
-import gevent
 gevent.spawn(windowsize_updater)
-http.serve_forever()
+
+
+def start_server():
+    http.serve_forever()
+
+if __name__ == '__main__':
+    start_server()

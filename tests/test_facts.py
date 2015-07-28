@@ -24,20 +24,60 @@ __author__ = 'fla'
 
 from flask.ext.testing import TestCase
 from flask import Flask
+from mockito import *
+from mock import patch, MagicMock
 import urllib2
 import json
+import unittest
+from facts import server as server
+
+
+class MyCursor(MagicMock):
+
+    # Mock of a mysql cursor
+    result = None
+
+    def execute(self, query):
+        # Generates mocked results depending of the MYSQL query content
+        if query.startswith("SELECT * FROM ") \
+                and query.__contains__("cloto.cloto_tenantinfo")\
+                and query.__contains__("WHERE tenantId=\"tenantId\""):
+            self.result = [["tenantId", 5]]
+
+    def fetchall(self):
+        # returns the result of the query
+        return self.result
+
+
+class MyAppTest(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(self):
+        # Put Flask into TESTING mode for the TestClient
+        server.app.config['TESTING'] = True
+        # Disable CSRF checking for WTForms
+        server.app.config['WTF_CSRF_ENABLED'] = False
+        # Point SQLAlchemy to a test database location
+        # (set in virtualenv normally, but fall back to sqlite if not defined)
+        self.app = server.app.test_client()
+        self.app.post()
+
 
 """Class to test the flask, gevent process
 """
 
 
-class MyTest(TestCase):
-    def create_app(self):
-        app = Flask(__name__)
-        app.config['TESTING'] = True
-        self.url = 'http://127.0.0.1:5000/v1.0/33/servers/44'
-        self.url2 = 'http://127.0.0.1:5000/v1.0'
-        return app
+class MyTest(MyAppTest):
+
+    def setUp(self):
+        self.tenantId = "tenantId"
+        self.mockedClient = mock()
+        mockedCursor = MyCursor()
+        when(self.mockedClient).cursor().thenReturn(mockedCursor)
+        server.myClotoDBClient.conn = self.mockedClient
+        self.url = '/v1.0/33/servers/44'
+        self.url2 = '/v1.0'
+        self.url3 = '/v1.0/tenantId/servers/44'
 
     def test_server_is_up_and_running(self):
         """ Test that a fiware-facts is up and running and return
@@ -45,14 +85,14 @@ class MyTest(TestCase):
 
         :return       200 Ok
         """
-        response = urllib2.urlopen(self.url2)
-        self.assertEqual(response.code, 200)
+        response = self.app.get(self.url2)
+        self.assertEqual(response.status_code, 200)
 
     def test_some_json(self):
         """ Test that the POST operation over the API returns a error if
         content-type is not application/json.
 
-        :return       500 Ok
+        :return       500 Internal Server error
         """
         data = {'ids': [12, 3, 4, 5, 6]}
 
@@ -61,8 +101,55 @@ class MyTest(TestCase):
         req.add_header('Content-Type', 'application/json')
 
         try:
-            response = urllib2.urlopen(req, json.dumps(data))
+            response = self.app.post(self.url, json.dumps(data))
 
         except (urllib2.HTTPError), err:
-            self.assertEqual(err.code, 500)
-            self.assertEqual(err.msg, "INTERNAL SERVER ERROR")
+            self.assertEqual(err.status_code, 500)
+            self.assertEqual(err.data, "INTERNAL SERVER ERROR")
+
+    def test_context_broker_message(self):
+        """ Test that the POST operation over the API returns a valid response if message is built correctly.
+
+        :return       200 Ok
+        """
+        data = {'ids': [12, 3, 4, 5, 6]}
+        data2 = {"contextResponses": [
+                    {
+                        "contextElement": {
+                            "attributes": [
+                                {
+                                    "value": "99.12",
+                                    "name": "usedMemPct",
+                                    "type": "string"
+                                },
+                                {
+                                    "value": "99.14",
+                                    "name": "cpuLoadPct",
+                                    "type": "string"
+                                },
+                                {
+                                    "value": "99.856240",
+                                    "name": "freeSpacePct",
+                                    "type": "string"
+                                },
+                                {
+                                    "value": "99.8122",
+                                    "name": "netLoadPct",
+                                    "type": "string"
+                                }
+                            ],
+                            "id": "Trento:193.205.211.69",
+                            "isPattern": "false",
+                            "type": "host"
+                        },
+                        "statusCode": {
+                            "code": "200",
+                            "reasonPhrase": "OK"
+                        }
+
+                    }
+                ]
+            }
+
+        response = self.app.post(self.url3, data=json.dumps(data2), headers={'Content-Type': 'application/json'})
+        self.assertEqual(response.status_code, 200)
