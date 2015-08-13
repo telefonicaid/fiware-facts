@@ -1,148 +1,186 @@
 FIWARE Policy Manager GE - Facts
-____________________
+________________________________
 
 | |Build Status| |Coverage Status| |Pypi Version| |Pypi License|
 
-Description
-===========
 
-This module is part of FIWARE Policy Manager.
+GEi overall description
+=======================
+Policy Manager is called Bosun.
 
-Server to process the incoming facts from the `Orion Context Broker <http://catalogue.fi-ware.org/enablers/publishsubscribe-context-broker-orion-context-broker>`__.
+Bosun GEri offers decision-making ability, independently of the type of resource (physical/virtual resources,
+network, service, etc.)  being able to solve complex problems within the Cloud field by reasoning about the knowledge
+base, represented by facts and rules.
+Bosun GEri provides the basic management of cloud resources based on rules, as well as management of the corresponding
+resources within FIWARE Cloud instances based on infrastructure physical monitoring, resources and services
+security monitoring or whatever that could be defined by facts, actions and rules.
 
-Prerequisites
-=============
+The baseline for the Bosun GEri is PyCLIPS, which is a module to interact with CLIPS expert system implemented in
+python language. The reason to take PyCLIPS is to extend the OpenStack ecosystem with an expert system, written in
+the same language as the rest of the OpenStack services.
+Besides, It provides notification service to your own HTTP server where you can define your
+own actions based on the notifications launched by Policy Manager.
+Last but not least, Bosun is integrated with the Monitoring GEri in order to recover the information of the (virtual)
+system and calculate any possible change on it based on the knowledge database defined for it.
+
+Components
+----------
+
+Fiware-Cloto
+    Fiware-cloto is part of FIWARE Policy Manager. It provides an API-REST to create rules associated to servers,
+    subscribe servers to Context Broker to get information about resources consumption of that servers and launch actions
+    described in rules when conditions are given.
+
+Fiware-Facts
+    Server to process the incoming facts from the
+    `Orion Context Broker <http://catalogue.fi-ware.org/enablers/publishsubscribe-context-broker-orion-context-broker>`__
+    and publish the result into a RabbitMQ queue to be analysed by Fiware-Cloto. The facts are the result of the server
+    resources consumption.
+
+For more information, please refer to the `documentation <doc/README.rst>`_.
+
+Build and Install
+=================
+
+Requirements
+------------
+
+- Operating systems: CentOS (RedHat) and Ubuntu (Debian), being CentOS 6.3 the
+  reference operating system.
+
 To install this module you have to install some components:
 
 - Python 2.7
 - Fiware-cloto module (https://github.com/telefonicaid/fiware-cloto)
 - Redis 2.9.1 or above
-- gunicorn 19.1.1 or above
+- RabbitMQ Server 3.3.0 or above (http://www.rabbitmq.com/download.html)
 
 Installation
-============
+------------
 Download the component by executing the following instruction:
 
 git clone git@github.com:telefonicaid/fiware-facts.git
 
-Usage
-=====
+Note: we recommend you to download this component into this location:
+``/opt/policyManager``
+
+
+Configuration file
+------------------
+The configuration used by the fiware-facts component is optionally read from the file
+``conf/fiware-facts.cfg``
+
+Default values are found in ``facts/config.py``.
+
+MYSQL cloto configuration must be filled before starting fiware-facts component, user and password are empty by default.
+
+Running fiware-facts
+====================
 
 Execute command "gunicorn --check-config server.py" inside the folder where you downloaded fiware-facts
 
-Changelog
-=========
+API Overview
+============
 
-v1.5.0 (2015-07-28)
--------------------
+Servers will update their context. The context information contains the description of the CPU, Memory, Disk and
+Network usages.
 
-Fix
-~~~
+An example of this operation could be:
 
-- Fixing imprecision while parsing from string to a number. [Guillermo
-  Jimenez Prieto]
+::
 
-- Updating build.sh file to build in jenkins. [Guillermo Jimenez Prieto]
+        curl --include \
+             --request POST \
+             --header "Content-Type: application/json" \
+             --data-binary "{"contextResponses": [
+                {
+                    "contextElement": {
+                        "attributes": [
+                            {
+                                "value": "6",
+                                "name": "users",
+                                "type": "string"
+                            },
+                            {
+                                "value": "1",
+                                "name": "usedMemPct",
+                                "type": "string"
+                            },
+                            {
+                                "value": "0.14",
+                                "name": "cpuLoadPct",
+                                "type": "string"
+                            },
+                            {
+                                "value": "0.856240",
+                                "name": "freeSpacePct",
+                                "type": "string"
+                            }
+                        ],
+                        "id": "Trento:193.205.211.69",
+                        "isPattern": "false",
+                        "type": "host"
+                    },
+                    "statusCode": {
+                        "code": "200",
+                        "reasonPhrase": "OK"
+                    }
+                }
+            ]
+        }" \
+        'http://policymanager-host.org:5000/v1.0/d3fdddc6324c439780a6fd963a9fa148/servers/52415800-8b69-11e0-9b19-734f6af67565'
 
-- Fixing context value. NGSI parameter is called value in the latest
-  release of NGSI. [Guillermo Jimenez Prieto]
+This message follows the NGSI-10 information model but using JSON format.
 
-- Context value parameter is called value in the last specification of
-  NGSI. [Guillermo Jimenez Prieto]
 
-v1.4.0 (2015-06-29)
--------------------
+The response has no body and should return 200 OK.
 
-Fix
-~~~
+API Reference Documentation
+---------------------------
 
-- Checking if window size is instance of integer or long. [Guillermo
-  Jimenez Prieto]
+- `FIWARE Policy Manager v1 (Apiary)`__
 
-- Fixing tests about getting windowsizes from cloto component.
-  [Guillermo Jimenez Prieto]
+__ `FIWARE Policy Manager - Apiary`_
 
-- Fixing Facts component cannot access to the tenant Windowsize without
-  a valid tenant token via API. [Guillermo Jimenez Prieto]
 
-- Adding new variables to the configuration for the new windowsize
-  retriving method. [Guillermo Jimenez Prieto]
+Testing
+=======
 
-- Checking that connection to rabbitMQ is open before close it.
-  [Guillermo Jimenez Prieto]
+Unit tests
+----------
 
-- Fixing some bugs with the windowsize representation. [Guillermo
-  Jimenez Prieto]
+To execute the unit tests you must have a redis-server and a rabbitmq-server up and running.
 
-- Checking that there is a connection before close it. [Guillermo
-  Jimenez Prieto]
+After that, you can execute this folloing commands:
 
-v1.3.0 (2015-06-01)
--------------------
+::
 
-New
-~~~
+    $ python server.py &
+    $ export PYTHONPATH=$PWD
+    $ nosetests -s -v --cover-package=facts --with-cover
 
-- Added Windows Size support for tenants. [Guillermo Jimenez Prieto]
+End-to-end tests
+----------------
 
-Fix
-~~~
+Please refer to the `Installation and administration guide
+<https://github.com/telefonicaid/fiware-cloto/tree/develop/doc/admin_guide.rst#end-to-end-testing>`_ for details.
 
-- Updated Readme File with new installation information. [Guillermo
-  Jimenez Prieto]
+Acceptance tests
+----------------
 
-v1.2.0 (2015-04-01)
--------------------
+In the following document you will find the steps to execute automated
+tests for the Policy Manager GE:
 
-New
-~~~
+- `Policy Manager acceptance tests <https://github.com/telefonicaid/fiware-cloto/tree/develop/cloto/tests/acceptance_tests/README.md>`_
 
-- New: dev: preparing release @release. [Guillermo Jimenez Prieto]
 
-Fix
-~~~
+Advanced topics
+===============
 
-- Fixing some magic numbers. [Guillermo Jimenez Prieto]
-
-- Fixing coverage. [Guillermo Jimenez Prieto]
-
-- Improving signal stability checking each fact with the previous one.
-  [Guillermo Jimenez Prieto]
-
-- Fixing a multitenacy bug. [Guillermo Jimenez Prieto]
-
-- Fixing a multitenacy bug. [Guillermo Jimenez Prieto]
-
-- Repaired multitenacy bug with serverid in lists. [Guillermo Jimenez
-  Prieto]
-
-v1.1.0 (2015-03-04)
--------------------
-
-New
-~~~
-
-- New: dev: preparing release @release. [Guillermo Jimenez Prieto]
-
-v1.0.0 (2015-02-24)
--------------------
-
-New
-~~~
-
-- Building travis. [Guillermo Jimenez Prieto]
-
-Fix
-~~~
-
-- Fixing an acceptance test and cobertura. [Guillermo Jimenez Prieto]
-
-- Updating unittests and adding new data to build.sh in order to build
-  in jenkins. [Guillermo Jimenez Prieto]
-
-- Fixing multitenacy bug and gunicorn deployment. [Guillermo Jimenez
-  Prieto]
-
+- `Installation and administration <https://github.com/telefonicaid/fiware-cloto/tree/develop/doc/admin_guide.rst>`_
+- `User and programmers guide <https://github.com/telefonicaid/fiware-cloto/doc/tree/develop/user_guide.rst>`_
+- `Open RESTful API Specification <https://github.com/telefonicaid/fiware-cloto/tree/develop/doc/open_spec.rst>`_
+- `Architecture Description <https://github.com/telefonicaid/fiware-cloto/tree/develop/doc/architecture.rst>`_
 
 License
 =======
@@ -160,3 +198,7 @@ License
 .. |Pypi License| image:: https://img.shields.io/pypi/l/fiware-facts.svg
    :target: https://pypi.python.org/pypi/fiware-facts/
 
+
+.. REFERENCES
+
+.. _FIWARE Policy Manager - Apiary: https://jsapi.apiary.io/apis/policymanager/reference.html
