@@ -1,5 +1,6 @@
+================================
 FIWARE Policy Manager GE - Facts
-________________________________
+================================
 
 | |Build Status| |Coverage Status| |Pypi Version| |Pypi License|
 
@@ -33,11 +34,11 @@ Fiware-Cloto
 
 Fiware-Facts
     Server to process the incoming facts from the
-    `Orion Context Broker <http://catalogue.fi-ware.org/enablers/publishsubscribe-context-broker-orion-context-broker>`__
+    `Orion Context Broker <https://github.com/telefonicaid/fiware-orion>`__
     and publish the result into a RabbitMQ queue to be analysed by Fiware-Cloto. The facts are the result of the server
     resources consumption.
 
-For more information, please refer to the `documentation <doc/README.rst>`_.
+For more information, please refer to the `documentation <https://github.com/telefonicaid/fiware-cloto/tree/develop/doc/README.rst>`_.
 
 Build and Install
 =================
@@ -58,8 +59,9 @@ To install this module you have to install some components:
 Installation
 ------------
 Download the component by executing the following instruction:
+::
 
-git clone git@github.com:telefonicaid/fiware-facts.git
+    git clone git@github.com:telefonicaid/fiware-facts.git
 
 Note: we recommend you to download this component into this location:
 ``/opt/policyManager``
@@ -73,6 +75,25 @@ The configuration used by the fiware-facts component is optionally read from the
 Default values are found in ``facts/config.py``.
 
 MYSQL cloto configuration must be filled before starting fiware-facts component, user and password are empty by default.
+
+Options that user could define:
+::
+
+    [common]
+     brokerPort: 5000       # Port listening fiware-facts
+     clotoPort:  8000       # Port listening fiware-cloto
+     redisPort:  6379       # Port listening redis-server
+     redisHost:  localhost  # Address of redis-server
+     rabbitMQ:   localhost  # Address of RabbitMQ server
+     cloto:      127.0.0.1  # Address of fiware-cloto
+
+    [mysql]
+     host: localhost        # address of mysql that fiware-cloto is using
+     user:                  # mysql user
+     password:              # mysql password
+
+    [logger_root]
+     level: INFO            # Logging level
 
 Running fiware-facts
 ====================
@@ -162,11 +183,53 @@ After that, you can execute this folloing commands:
 End-to-end tests
 ----------------
 
+Once you have fiware-facts running you can check the server executing:
+
+::
+
+    $ curl http://$HOST:5000/v1.0
+
+Where:
+
+**$HOST**: is the url/IP of the machine where fiware facts is installed, for example: (policymanager-host.org, 127.0.0.1, etc)
+
+The request before should return a response with this body if everything is ok:
+
+::
+
+    {"fiware-facts":"Up and running..."}
+
+
 Please refer to the `Installation and administration guide
 <https://github.com/telefonicaid/fiware-cloto/tree/develop/doc/admin_guide.rst#end-to-end-testing>`_ for details.
 
 Acceptance tests
 ----------------
+
+Fiware-facts acceptance tests are included into fiware-cloto repository (https://github.com/telefonicaid/fiware-cloto).
+
+ Requirements
+
+  - Python 2.7 or newer
+  - pip installed (http://docs.python-guide.org/en/latest/starting/install/linux/)
+  - virtualenv installed (pip install virtalenv)
+  - Git installed (yum install git-core / apt-get install git)
+
+ Environment preparation:
+
+  - Create a virtual environment somewhere, e.g. in ENV (virtualenv ENV)
+  - Activate the virtual environment (source ENV/bin/activate)
+  - Change to the test/acceptance folder of the project
+  - Install the requirements for the acceptance tests in the virtual environment (pip install -r requirements.txt --allow-all-external).
+  - Configure file in fiware-cloto/tests/acceptance_tests/commons/configuration.py adding the keystone url, and a valid, user, password and tenant ID.
+
+ Tests execution
+
+  Change to the fiware-cloto/tests/acceptance_tests folder of the project if not already on it and execute:
+  ::
+
+        lettuce_tools -ft features/context_update.feature --tags=skip
+
 
 In the following document you will find the steps to execute automated
 tests for the Policy Manager GE:
@@ -178,7 +241,7 @@ Advanced topics
 ===============
 
 - `Installation and administration <https://github.com/telefonicaid/fiware-cloto/tree/develop/doc/admin_guide.rst>`_
-- `User and programmers guide <https://github.com/telefonicaid/fiware-cloto/doc/tree/develop/user_guide.rst>`_
+- `User and programmers guide <https://github.com/telefonicaid/fiware-cloto/doc/tree/develop/doc/user_guide.rst>`_
 - `Open RESTful API Specification <https://github.com/telefonicaid/fiware-cloto/tree/develop/doc/open_spec.rst>`_
 - `Architecture Description <https://github.com/telefonicaid/fiware-cloto/tree/develop/doc/architecture.rst>`_
 
