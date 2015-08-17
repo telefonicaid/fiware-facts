@@ -1,148 +1,331 @@
-FIWARE Policy Manager GE - Facts
-____________________
+===============================
+FIWARE Policy Manager GE: Facts
+===============================
 
 | |Build Status| |Coverage Status| |Pypi Version| |Pypi License|
 
-Description
-===========
+.. contents:: :local:
 
-This module is part of FIWARE Policy Manager.
+Introduction
+============
 
-Server to process the incoming facts from the `Orion Context Broker <http://catalogue.fi-ware.org/enablers/publishsubscribe-context-broker-orion-context-broker>`__.
+This is the code repository for **FIWARE Policy Manager GE - Facts**, a server to process the incoming facts from the
+`Orion Context Broker <https://github.com/telefonicaid/fiware-orion>`__
+and publish the result into a RabbitMQ queue to be analysed by Fiware-Cloto. The facts are the result of the server
+resources consumption.
 
-Prerequisites
-=============
+This project is part of FIWARE_.
+Check also the `FIWARE Catalogue entry for Policy Manager`__
+
+__ `FIWARE Policy Manager - Catalogue`_
+
+
+Any feedback on this documentation is highly welcome, including bugs, typos or
+things you think should be included but aren't. You can use `github issues`__
+to provide feedback.
+
+__ `Fiware-facts - GitHub issues`_
+
+`Top`__.
+
+__ `FIWARE Policy Manager GE: Facts`_
+
+GEi overall description
+=======================
+Bosun GEri is the reference implementation of Policy Manager GE.
+
+Bosun GEri offers decision-making ability, independently of the type of resource (physical/virtual resources,
+network, service, etc.)  being able to solve complex problems within the Cloud field by reasoning about the knowledge
+base, represented by facts and rules.
+Bosun GEri provides the basic management of cloud resources based on rules, as well as management of the corresponding
+resources within FIWARE Cloud instances based on infrastructure physical monitoring, resources and services
+security monitoring or whatever that could be defined by facts, actions and rules.
+
+The baseline for the Bosun GEri is PyCLIPS, which is a module to interact with CLIPS expert system implemented in
+python language. The reason to take PyCLIPS is to extend the OpenStack ecosystem with an expert system, written in
+the same language as the rest of the OpenStack services.
+Besides, It provides notification service to your own HTTP server where you can define your
+own actions based on the notifications launched by Policy Manager.
+Last but not least, Bosun is integrated with the Monitoring GEri in order to recover the information of the (virtual)
+system and calculate any possible change on it based on the knowledge database defined for it.
+
+`Top`__.
+
+__ `FIWARE Policy Manager GE: Facts`_
+
+Components
+----------
+
+Fiware-Cloto
+    Fiware-cloto is part of FIWARE Policy Manager. It provides an API-REST to create rules associated to servers,
+    subscribe servers to Context Broker to get information about resources consumption of that servers and launch actions
+    described in rules when conditions are given.
+
+Fiware-Facts
+    Server to process the incoming facts from the
+    `Orion Context Broker <https://github.com/telefonicaid/fiware-orion>`__
+    and publish the result into a RabbitMQ queue to be analysed by Fiware-Cloto. The facts are the result of the server
+    resources consumption.
+
+For more information, please refer to the `documentation <https://github.com/telefonicaid/fiware-cloto/tree/develop/doc/README.rst>`_.
+
+`Top`__.
+
+__ `FIWARE Policy Manager GE: Facts`_
+
+Build and Install
+=================
+
+Requirements
+------------
+
+- Operating systems: CentOS (RedHat) and Ubuntu (Debian), being CentOS 6.3 the
+  reference operating system.
+
 To install this module you have to install some components:
 
 - Python 2.7
 - Fiware-cloto module (https://github.com/telefonicaid/fiware-cloto)
 - Redis 2.9.1 or above
-- gunicorn 19.1.1 or above
+- RabbitMQ Server 3.3.0 or above (http://www.rabbitmq.com/download.html)
+
+`Top`__.
+
+__ `FIWARE Policy Manager GE: Facts`_
 
 Installation
-============
+------------
 Download the component by executing the following instruction:
+::
 
-git clone git@github.com:telefonicaid/fiware-facts.git
+    git clone git@github.com:telefonicaid/fiware-facts.git
 
-Usage
-=====
+Note: we recommend you to download this component into this location:
+``/opt/policyManager``
+
+`Top`__.
+
+__ `FIWARE Policy Manager GE: Facts`_
+
+Configuration file
+------------------
+The configuration used by the fiware-facts component is optionally read from the file
+``conf/fiware-facts.cfg``
+
+Default values are found in ``facts/config.py``.
+
+MYSQL cloto configuration must be filled before starting fiware-facts component, user and password are empty by default.
+
+Options that user could define:
+::
+
+    [common]
+     brokerPort: 5000       # Port listening fiware-facts
+     clotoPort:  8000       # Port listening fiware-cloto
+     redisPort:  6379       # Port listening redis-server
+     redisHost:  localhost  # Address of redis-server
+     rabbitMQ:   localhost  # Address of RabbitMQ server
+     cloto:      127.0.0.1  # Address of fiware-cloto
+
+    [mysql]
+     host: localhost        # address of mysql that fiware-cloto is using
+     user:                  # mysql user
+     password:              # mysql password
+
+    [logger_root]
+     level: INFO            # Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+
+`Top`__.
+
+__ `FIWARE Policy Manager GE: Facts`_
+
+Running
+=======
 
 Execute command "gunicorn --check-config server.py" inside the folder where you downloaded fiware-facts
 
-Changelog
-=========
+`Top`__.
 
-v1.5.0 (2015-07-28)
--------------------
+__ `FIWARE Policy Manager GE: Facts`_
 
-Fix
-~~~
+API Overview
+============
 
-- Fixing imprecision while parsing from string to a number. [Guillermo
-  Jimenez Prieto]
+Servers will update their context. The context information contains the description of the CPU, Memory, Disk and
+Network usages.
 
-- Updating build.sh file to build in jenkins. [Guillermo Jimenez Prieto]
+An example of this operation could be:
 
-- Fixing context value. NGSI parameter is called value in the latest
-  release of NGSI. [Guillermo Jimenez Prieto]
+::
 
-- Context value parameter is called value in the last specification of
-  NGSI. [Guillermo Jimenez Prieto]
+        curl --include \
+             --request POST \
+             --header "Content-Type: application/json" \
+             --data-binary "{
+            "contextResponses": [
+                {
+                    "contextElement": {
+                       "attributes": [
+                           {
+                               "value": "0.12",
+                               "name": "usedMemPct",
+                               "type": "string"
+                           },
+                           {
+                               "value": "0.14",
+                               "name": "cpuLoadPct",
+                               "type": "string"
+                           },
+                           {
+                               "value": "0.856240",
+                               "name": "freeSpacePct",
+                               "type": "string"
+                           },
+                           {
+                               "value": "0.8122",
+                               "name": "netLoadPct",
+                               "type": "string"
+                           }
+                       ],
+                       "id": "Trento:193.205.211.69",
+                       "isPattern": "false",
+                       "type": "host"
+                   },
+                   "statusCode": {
+                       "code": "200",
+                       "reasonPhrase": "OK"
+                   }
+               }
+            ]
+        }" \
+        'http://policymanager-host.org:5000/v1.0/d3fdddc6324c439780a6fd963a9fa148/servers/52415800-8b69-11e0-9b19-734f6af67565'
 
-v1.4.0 (2015-06-29)
--------------------
+This message follows the NGSI-10 information model but using JSON format.
 
-Fix
-~~~
 
-- Checking if window size is instance of integer or long. [Guillermo
-  Jimenez Prieto]
+The response has no body and should return 200 OK.
 
-- Fixing tests about getting windowsizes from cloto component.
-  [Guillermo Jimenez Prieto]
+`Top`__.
 
-- Fixing Facts component cannot access to the tenant Windowsize without
-  a valid tenant token via API. [Guillermo Jimenez Prieto]
+__ `FIWARE Policy Manager GE: Facts`_
 
-- Adding new variables to the configuration for the new windowsize
-  retriving method. [Guillermo Jimenez Prieto]
+API Reference Documentation
+---------------------------
 
-- Checking that connection to rabbitMQ is open before close it.
-  [Guillermo Jimenez Prieto]
+- `FIWARE Policy Manager v1 (Apiary)`__
 
-- Fixing some bugs with the windowsize representation. [Guillermo
-  Jimenez Prieto]
+__ `FIWARE Policy Manager - Apiary`_
 
-- Checking that there is a connection before close it. [Guillermo
-  Jimenez Prieto]
+`Top`__.
 
-v1.3.0 (2015-06-01)
--------------------
+__ `FIWARE Policy Manager GE: Facts`_
 
-New
-~~~
+Testing
+=======
 
-- Added Windows Size support for tenants. [Guillermo Jimenez Prieto]
+Unit tests
+----------
 
-Fix
-~~~
+To execute the unit tests you must have a redis-server and a rabbitmq-server up and running.
+Please take a look to the installation manual in order to configure those components.
 
-- Updated Readme File with new installation information. [Guillermo
-  Jimenez Prieto]
+After that, you can execute this folloing commands:
 
-v1.2.0 (2015-04-01)
--------------------
+::
 
-New
-~~~
+    $ python server.py &
+    $ export PYTHONPATH=$PWD
+    $ nosetests -s -v --cover-package=facts --with-cover
 
-- New: dev: preparing release @release. [Guillermo Jimenez Prieto]
+`Top`__.
 
-Fix
-~~~
+__ `FIWARE Policy Manager GE: Facts`_
 
-- Fixing some magic numbers. [Guillermo Jimenez Prieto]
+End-to-end tests
+----------------
 
-- Fixing coverage. [Guillermo Jimenez Prieto]
+Once you have fiware-facts running you can check the server executing:
 
-- Improving signal stability checking each fact with the previous one.
-  [Guillermo Jimenez Prieto]
+::
 
-- Fixing a multitenacy bug. [Guillermo Jimenez Prieto]
+    $ curl http://$HOST:5000/v1.0
 
-- Fixing a multitenacy bug. [Guillermo Jimenez Prieto]
+Where:
 
-- Repaired multitenacy bug with serverid in lists. [Guillermo Jimenez
-  Prieto]
+**$HOST**: is the url/IP of the machine where fiware facts is installed, for example: (policymanager-host.org, 127.0.0.1, etc)
 
-v1.1.0 (2015-03-04)
--------------------
+The request before should return a response with this body if everything is ok:
 
-New
-~~~
+::
 
-- New: dev: preparing release @release. [Guillermo Jimenez Prieto]
+    {"fiware-facts":"Up and running..."}
 
-v1.0.0 (2015-02-24)
--------------------
 
-New
-~~~
+Please refer to the `Installation and administration guide
+<https://github.com/telefonicaid/fiware-cloto/tree/develop/doc/admin_guide.rst#end-to-end-testing>`_ for details.
 
-- Building travis. [Guillermo Jimenez Prieto]
+`Top`__.
 
-Fix
-~~~
+__ `FIWARE Policy Manager GE: Facts`_
 
-- Fixing an acceptance test and cobertura. [Guillermo Jimenez Prieto]
+Acceptance tests
+----------------
 
-- Updating unittests and adding new data to build.sh in order to build
-  in jenkins. [Guillermo Jimenez Prieto]
+Fiware-facts acceptance tests are included into fiware-cloto repository (https://github.com/telefonicaid/fiware-cloto).
 
-- Fixing multitenacy bug and gunicorn deployment. [Guillermo Jimenez
-  Prieto]
+Requirements
 
+- Python 2.7 or newer
+- pip installed (http://docs.python-guide.org/en/latest/starting/install/linux/)
+- virtualenv installed (pip install virtalenv)
+- Git installed (yum install git-core / apt-get install git)
+
+Environment preparation:
+
+- Create a virtual environment somewhere, e.g. in ENV (virtualenv ENV)
+- Activate the virtual environment (source ENV/bin/activate)
+- Change to the test/acceptance folder of the project
+- Install the requirements for the acceptance tests in the virtual environment (pip install -r requirements.txt --allow-all-external).
+- Configure file in fiware-cloto/tests/acceptance_tests/commons/configuration.py adding the keystone url, and a valid, user, password and tenant ID.
+
+Tests execution
+
+Change to the fiware-cloto/tests/acceptance_tests folder of the project if not already on it and execute:
+::
+
+     $ lettuce_tools -ft features/context_update.feature --tags=skip
+
+
+In the following document you will find the steps to execute automated
+tests for the Policy Manager GE:
+
+- `Policy Manager acceptance tests <https://github.com/telefonicaid/fiware-cloto/tree/develop/cloto/tests/acceptance_tests/README.md>`_
+
+`Top`__.
+
+__ `FIWARE Policy Manager GE: Facts`_
+
+Advanced topics
+===============
+
+- `Installation and administration <https://github.com/telefonicaid/fiware-cloto/tree/develop/doc/admin_guide.rst>`_
+- `User and programmers guide <https://github.com/telefonicaid/fiware-cloto/doc/tree/develop/doc/user_guide.rst>`_
+- `Open RESTful API Specification <https://github.com/telefonicaid/fiware-cloto/tree/develop/doc/open_spec.rst>`_
+- `Architecture Description <https://github.com/telefonicaid/fiware-cloto/tree/develop/doc/architecture.rst>`_
+
+`Top`__.
+
+__ `FIWARE Policy Manager GE: Facts`_
+
+Support
+=======
+
+Ask your thorough programming questions using stackoverflow and your general questions on FIWARE Q&A.
+In both cases please use the tag fiware-bosun
+
+`Top`__.
+
+__ `FIWARE Policy Manager GE: Facts`_
 
 License
 =======
@@ -153,10 +336,18 @@ License
 
 .. |Build Status| image:: https://travis-ci.org/telefonicaid/fiware-facts.svg?branch=develop
    :target: https://travis-ci.org/telefonicaid/fiware-facts
-.. |Coverage Status| image:: https://coveralls.io/repos/telefonicaid/fiware-facts/badge.png?branch=develop
+.. |Coverage Status| image:: https://img.shields.io/coveralls/telefonicaid/fiware-facts/develop.svg
     :target: https://coveralls.io/r/telefonicaid/fiware-facts
 .. |Pypi Version| image:: https://badge.fury.io/py/fiware-facts.svg
    :target: https://pypi.python.org/pypi/fiware-facts/
 .. |Pypi License| image:: https://img.shields.io/pypi/l/fiware-facts.svg
    :target: https://pypi.python.org/pypi/fiware-facts/
 
+
+.. REFERENCES
+
+.. _FIWARE: https://www.fiware.org/
+.. _FIWARE Ops: https://www.fiware.org/fiware-operations/
+.. _FIWARE Policy Manager - Apiary: https://jsapi.apiary.io/apis/policymanager/reference.html
+.. _Fiware-facts - GitHub issues: https://github.com/telefonicaid/fiware-facts/issues/new
+.. _FIWARE Policy Manager - Catalogue: http://catalogue.fiware.org/enablers/policy-manager-bosun

@@ -1,0 +1,112 @@
+Changelog
+=========
+
+v1.5.0 (2015-07-28)
+-------------------
+
+Fix
+~~~
+
+- Fixing imprecision while parsing from string to a number. [Guillermo
+  Jimenez Prieto]
+
+- Updating build.sh file to build in jenkins. [Guillermo Jimenez Prieto]
+
+- Fixing context value. NGSI parameter is called value in the latest
+  release of NGSI. [Guillermo Jimenez Prieto]
+
+- Context value parameter is called value in the last specification of
+  NGSI. [Guillermo Jimenez Prieto]
+
+v1.4.0 (2015-06-29)
+-------------------
+
+Fix
+~~~
+
+- Checking if window size is instance of integer or long. [Guillermo
+  Jimenez Prieto]
+
+- Fixing tests about getting windowsizes from cloto component.
+  [Guillermo Jimenez Prieto]
+
+- Fixing Facts component cannot access to the tenant Windowsize without
+  a valid tenant token via API. [Guillermo Jimenez Prieto]
+
+- Adding new variables to the configuration for the new windowsize
+  retriving method. [Guillermo Jimenez Prieto]
+
+- Checking that connection to rabbitMQ is open before close it.
+  [Guillermo Jimenez Prieto]
+
+- Fixing some bugs with the windowsize representation. [Guillermo
+  Jimenez Prieto]
+
+- Checking that there is a connection before close it. [Guillermo
+  Jimenez Prieto]
+
+v1.3.0 (2015-06-01)
+-------------------
+
+New
+~~~
+
+- Added Windows Size support for tenants. [Guillermo Jimenez Prieto]
+
+Fix
+~~~
+
+- Updated Readme File with new installation information. [Guillermo
+  Jimenez Prieto]
+
+v1.2.0 (2015-04-01)
+-------------------
+
+New
+~~~
+
+- New: dev: preparing release @release. [Guillermo Jimenez Prieto]
+
+Fix
+~~~
+
+- Fixing some magic numbers. [Guillermo Jimenez Prieto]
+
+- Fixing coverage. [Guillermo Jimenez Prieto]
+
+- Improving signal stability checking each fact with the previous one.
+  [Guillermo Jimenez Prieto]
+
+- Fixing a multitenacy bug. [Guillermo Jimenez Prieto]
+
+- Fixing a multitenacy bug. [Guillermo Jimenez Prieto]
+
+- Repaired multitenacy bug with serverid in lists. [Guillermo Jimenez
+  Prieto]
+
+v1.1.0 (2015-03-04)
+-------------------
+
+New
+~~~
+
+- New: dev: preparing release @release. [Guillermo Jimenez Prieto]
+
+v1.0.0 (2015-02-24)
+-------------------
+
+New
+~~~
+
+- Building travis. [Guillermo Jimenez Prieto]
+
+Fix
+~~~
+
+- Fixing an acceptance test and cobertura. [Guillermo Jimenez Prieto]
+
+- Updating unittests and adding new data to build.sh in order to build
+  in jenkins. [Guillermo Jimenez Prieto]
+
+- Fixing multitenacy bug and gunicorn deployment. [Guillermo Jimenez
+  Prieto]
