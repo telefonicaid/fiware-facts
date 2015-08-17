@@ -1,6 +1,6 @@
-================================
-FIWARE Policy Manager GE - Facts
-================================
+===============================
+FIWARE Policy Manager GE: Facts
+===============================
 
 | |Build Status| |Coverage Status| |Pypi Version| |Pypi License|
 
@@ -28,7 +28,7 @@ __ `Fiware-facts - GitHub issues`_
 
 `Top`__.
 
-__ `FIWARE Policy Manager GE - Facts`_
+__ `FIWARE Policy Manager GE: Facts`_
 
 GEi overall description
 =======================
@@ -51,7 +51,7 @@ system and calculate any possible change on it based on the knowledge database d
 
 `Top`__.
 
-__ `FIWARE Policy Manager GE - Facts`_
+__ `FIWARE Policy Manager GE: Facts`_
 
 Components
 ----------
@@ -71,7 +71,7 @@ For more information, please refer to the `documentation <https://github.com/tel
 
 `Top`__.
 
-__ `FIWARE Policy Manager GE - Facts`_
+__ `FIWARE Policy Manager GE: Facts`_
 
 Build and Install
 =================
@@ -91,7 +91,7 @@ To install this module you have to install some components:
 
 `Top`__.
 
-__ `FIWARE Policy Manager GE - Facts`_
+__ `FIWARE Policy Manager GE: Facts`_
 
 Installation
 ------------
@@ -105,7 +105,7 @@ Note: we recommend you to download this component into this location:
 
 `Top`__.
 
-__ `FIWARE Policy Manager GE - Facts`_
+__ `FIWARE Policy Manager GE: Facts`_
 
 Configuration file
 ------------------
@@ -137,7 +137,7 @@ Options that user could define:
 
 `Top`__.
 
-__ `FIWARE Policy Manager GE - Facts`_
+__ `FIWARE Policy Manager GE: Facts`_
 
 Running
 =======
@@ -146,7 +146,7 @@ Execute command "gunicorn --check-config server.py" inside the folder where you 
 
 `Top`__.
 
-__ `FIWARE Policy Manager GE - Facts`_
+__ `FIWARE Policy Manager GE: Facts`_
 
 API Overview
 ============
@@ -207,7 +207,7 @@ The response has no body and should return 200 OK.
 
 `Top`__.
 
-__ `FIWARE Policy Manager GE - Facts`_
+__ `FIWARE Policy Manager GE: Facts`_
 
 API Reference Documentation
 ---------------------------
@@ -218,7 +218,7 @@ __ `FIWARE Policy Manager - Apiary`_
 
 `Top`__.
 
-__ `FIWARE Policy Manager GE - Facts`_
+__ `FIWARE Policy Manager GE: Facts`_
 
 Testing
 =======
@@ -239,7 +239,7 @@ After that, you can execute this folloing commands:
 
 `Top`__.
 
-__ `FIWARE Policy Manager GE - Facts`_
+__ `FIWARE Policy Manager GE: Facts`_
 
 End-to-end tests
 ----------------
@@ -266,7 +266,7 @@ Please refer to the `Installation and administration guide
 
 `Top`__.
 
-__ `FIWARE Policy Manager GE - Facts`_
+__ `FIWARE Policy Manager GE: Facts`_
 
 Acceptance tests
 ----------------
@@ -303,7 +303,7 @@ tests for the Policy Manager GE:
 
 `Top`__.
 
-__ `FIWARE Policy Manager GE - Facts`_
+__ `FIWARE Policy Manager GE: Facts`_
 
 Advanced topics
 ===============
@@ -315,7 +315,7 @@ Advanced topics
 
 `Top`__.
 
-__ `FIWARE Policy Manager GE - Facts`_
+__ `FIWARE Policy Manager GE: Facts`_
 
 Support
 =======
@@ -325,7 +325,7 @@ In both cases please use the tag fiware-bosun
 
 `Top`__.
 
-__ `FIWARE Policy Manager GE - Facts`_
+__ `FIWARE Policy Manager GE: Facts`_
 
 License
 =======
