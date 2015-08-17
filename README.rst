@@ -4,36 +4,7 @@ FIWARE Policy Manager GE - Facts
 
 | |Build Status| |Coverage Status| |Pypi Version| |Pypi License|
 
-
-- `Introduction`_
-
-- `GEi overall description`_
-
-  * `Components`_
-
-- `Build and Install`_
-
-  * `Requirements`_
-  * `Installation`_
-  * `Configuration file`_
-
-- `Running`_
-
-- `API Overview`_
-
-  * `API Reference Documentation`_
-
-- `Testing`_
-
-  * `Unit tests`_
-  * `End-to-end tests`_
-  * `Acceptance tests`_
-
-- `Advanced topics`_
-
-- `Support`_
-
-- `License`_
+.. contents:: :local:
 
 Introduction
 ============
@@ -44,7 +15,9 @@ and publish the result into a RabbitMQ queue to be analysed by Fiware-Cloto. The
 resources consumption.
 
 This project is part of FIWARE_.
-Check also the `FIWARE Catalogue entry for Policy Manager <http://catalogue.fiware.org/enablers/policy-manager-bosun>`__
+Check also the `FIWARE Catalogue entry for Policy Manager`__
+
+__ `FIWARE Policy Manager - Catalogue`_
 
 
 Any feedback on this documentation is highly welcome, including bugs, typos or
@@ -320,7 +293,7 @@ Fiware-facts acceptance tests are included into fiware-cloto repository (https:/
   Change to the fiware-cloto/tests/acceptance_tests folder of the project if not already on it and execute:
   ::
 
-        lettuce_tools -ft features/context_update.feature --tags=skip
+       $ lettuce_tools -ft features/context_update.feature --tags=skip
 
 
 In the following document you will find the steps to execute automated
@@ -377,3 +350,4 @@ License
 .. _FIWARE Ops: https://www.fiware.org/fiware-operations/
 .. _FIWARE Policy Manager - Apiary: https://jsapi.apiary.io/apis/policymanager/reference.html
 .. _Fiware-facts - GitHub issues: https://github.com/telefonicaid/fiware-facts/issues/new
+.. _FIWARE Policy Manager - Catalogue: http://catalogue.fiware.org/enablers/policy-manager-bosun
