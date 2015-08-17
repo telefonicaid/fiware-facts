@@ -5,18 +5,57 @@ FIWARE Policy Manager GE - Facts
 | |Build Status| |Coverage Status| |Pypi Version| |Pypi License|
 
 
+- `Introduction`_
+
+- `GEi overall description`_
+
+  * `Components`_
+
+- `Build and Install`_
+
+  * `Requirements`_
+  * `Installation`_
+  * `Configuration file`_
+
+- `Running`_
+
+- `API Overview`_
+
+  * `API Reference Documentation`_
+
+- `Testing`_
+
+  * `Unit tests`_
+  * `End-to-end tests`_
+  * `Acceptance tests`_
+
+- `Advanced topics`_
+
+- `Support`_
+
+- `License`_
+
+Introduction
+============
+
 This is the code repository for **FIWARE Policy Manager GE - Facts**, a server to process the incoming facts from the
 `Orion Context Broker <https://github.com/telefonicaid/fiware-orion>`__
 and publish the result into a RabbitMQ queue to be analysed by Fiware-Cloto. The facts are the result of the server
 resources consumption.
 
-This project is part of FIWARE_ and `FIWARE Ops`_ suite of tools for the operation of FIWARE Lab.
+This project is part of FIWARE_.
+Check also the `FIWARE Catalogue entry for Policy Manager <http://catalogue.fiware.org/enablers/policy-manager-bosun>`__
+
 
 Any feedback on this documentation is highly welcome, including bugs, typos or
 things you think should be included but aren't. You can use `github issues`__
 to provide feedback.
 
 __ `Fiware-facts - GitHub issues`_
+
+`Top`__.
+
+__ `FIWARE Policy Manager GE - Facts`_
 
 GEi overall description
 =======================
@@ -37,6 +76,10 @@ own actions based on the notifications launched by Policy Manager.
 Last but not least, Bosun is integrated with the Monitoring GEri in order to recover the information of the (virtual)
 system and calculate any possible change on it based on the knowledge database defined for it.
 
+`Top`__.
+
+__ `FIWARE Policy Manager GE - Facts`_
+
 Components
 ----------
 
@@ -52,6 +95,10 @@ Fiware-Facts
     resources consumption.
 
 For more information, please refer to the `documentation <https://github.com/telefonicaid/fiware-cloto/tree/develop/doc/README.rst>`_.
+
+`Top`__.
+
+__ `FIWARE Policy Manager GE - Facts`_
 
 Build and Install
 =================
@@ -69,6 +116,10 @@ To install this module you have to install some components:
 - Redis 2.9.1 or above
 - RabbitMQ Server 3.3.0 or above (http://www.rabbitmq.com/download.html)
 
+`Top`__.
+
+__ `FIWARE Policy Manager GE - Facts`_
+
 Installation
 ------------
 Download the component by executing the following instruction:
@@ -79,6 +130,9 @@ Download the component by executing the following instruction:
 Note: we recommend you to download this component into this location:
 ``/opt/policyManager``
 
+`Top`__.
+
+__ `FIWARE Policy Manager GE - Facts`_
 
 Configuration file
 ------------------
@@ -106,12 +160,20 @@ Options that user could define:
      password:              # mysql password
 
     [logger_root]
-     level: INFO            # Logging level
+     level: INFO            # Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
 
-Running fiware-facts
-====================
+`Top`__.
+
+__ `FIWARE Policy Manager GE - Facts`_
+
+Running
+=======
 
 Execute command "gunicorn --check-config server.py" inside the folder where you downloaded fiware-facts
+
+`Top`__.
+
+__ `FIWARE Policy Manager GE - Facts`_
 
 API Overview
 ============
@@ -126,40 +188,41 @@ An example of this operation could be:
         curl --include \
              --request POST \
              --header "Content-Type: application/json" \
-             --data-binary "{"contextResponses": [
+             --data-binary "{
+            "contextResponses": [
                 {
                     "contextElement": {
-                        "attributes": [
-                            {
-                                "value": "6",
-                                "name": "users",
-                                "type": "string"
-                            },
-                            {
-                                "value": "1",
-                                "name": "usedMemPct",
-                                "type": "string"
-                            },
-                            {
-                                "value": "0.14",
-                                "name": "cpuLoadPct",
-                                "type": "string"
-                            },
-                            {
-                                "value": "0.856240",
-                                "name": "freeSpacePct",
-                                "type": "string"
-                            }
-                        ],
-                        "id": "Trento:193.205.211.69",
-                        "isPattern": "false",
-                        "type": "host"
-                    },
-                    "statusCode": {
-                        "code": "200",
-                        "reasonPhrase": "OK"
-                    }
-                }
+                       "attributes": [
+                           {
+                               "value": "0.12",
+                               "name": "usedMemPct",
+                               "type": "string"
+                           },
+                           {
+                               "value": "0.14",
+                               "name": "cpuLoadPct",
+                               "type": "string"
+                           },
+                           {
+                               "value": "0.856240",
+                               "name": "freeSpacePct",
+                               "type": "string"
+                           },
+                           {
+                               "value": "0.8122",
+                               "name": "netLoadPct",
+                               "type": "string"
+                           }
+                       ],
+                       "id": "Trento:193.205.211.69",
+                       "isPattern": "false",
+                       "type": "host"
+                   },
+                   "statusCode": {
+                       "code": "200",
+                       "reasonPhrase": "OK"
+                   }
+               }
             ]
         }" \
         'http://policymanager-host.org:5000/v1.0/d3fdddc6324c439780a6fd963a9fa148/servers/52415800-8b69-11e0-9b19-734f6af67565'
@@ -169,6 +232,10 @@ This message follows the NGSI-10 information model but using JSON format.
 
 The response has no body and should return 200 OK.
 
+`Top`__.
+
+__ `FIWARE Policy Manager GE - Facts`_
+
 API Reference Documentation
 ---------------------------
 
@@ -176,6 +243,9 @@ API Reference Documentation
 
 __ `FIWARE Policy Manager - Apiary`_
 
+`Top`__.
+
+__ `FIWARE Policy Manager GE - Facts`_
 
 Testing
 =======
@@ -184,6 +254,7 @@ Unit tests
 ----------
 
 To execute the unit tests you must have a redis-server and a rabbitmq-server up and running.
+Please take a look to the installation manual in order to configure those components.
 
 After that, you can execute this folloing commands:
 
@@ -192,6 +263,10 @@ After that, you can execute this folloing commands:
     $ python server.py &
     $ export PYTHONPATH=$PWD
     $ nosetests -s -v --cover-package=facts --with-cover
+
+`Top`__.
+
+__ `FIWARE Policy Manager GE - Facts`_
 
 End-to-end tests
 ----------------
@@ -215,6 +290,10 @@ The request before should return a response with this body if everything is ok:
 
 Please refer to the `Installation and administration guide
 <https://github.com/telefonicaid/fiware-cloto/tree/develop/doc/admin_guide.rst#end-to-end-testing>`_ for details.
+
+`Top`__.
+
+__ `FIWARE Policy Manager GE - Facts`_
 
 Acceptance tests
 ----------------
@@ -249,6 +328,9 @@ tests for the Policy Manager GE:
 
 - `Policy Manager acceptance tests <https://github.com/telefonicaid/fiware-cloto/tree/develop/cloto/tests/acceptance_tests/README.md>`_
 
+`Top`__.
+
+__ `FIWARE Policy Manager GE - Facts`_
 
 Advanced topics
 ===============
@@ -257,6 +339,20 @@ Advanced topics
 - `User and programmers guide <https://github.com/telefonicaid/fiware-cloto/doc/tree/develop/doc/user_guide.rst>`_
 - `Open RESTful API Specification <https://github.com/telefonicaid/fiware-cloto/tree/develop/doc/open_spec.rst>`_
 - `Architecture Description <https://github.com/telefonicaid/fiware-cloto/tree/develop/doc/architecture.rst>`_
+
+`Top`__.
+
+__ `FIWARE Policy Manager GE - Facts`_
+
+Support
+=======
+
+Ask your thorough programming questions using stackoverflow and your general questions on FIWARE Q&A.
+In both cases please use the tag fiware-bosun
+
+`Top`__.
+
+__ `FIWARE Policy Manager GE - Facts`_
 
 License
 =======
