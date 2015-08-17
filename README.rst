@@ -32,7 +32,7 @@ __ `FIWARE Policy Manager GE - Facts`_
 
 GEi overall description
 =======================
-Policy Manager is called Bosun.
+Bosun GEri is the reference implementation of Policy Manager GE.
 
 Bosun GEri offers decision-making ability, independently of the type of resource (physical/virtual resources,
 network, service, etc.)  being able to solve complex problems within the Cloud field by reasoning about the knowledge
