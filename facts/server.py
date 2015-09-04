@@ -23,7 +23,7 @@
 # contact with opensource@tid.es
 #
 
-__version__ = '1.5.0'
+__version__ = '1.6.0'
 __version_info__ = tuple([int(num) for num in __version__.split('.')])
 __description__ = 'Facts Listener'
 __author__ = 'fla'
