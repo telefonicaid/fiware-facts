@@ -50,6 +50,8 @@ class MyCursor(MagicMock):
 
 
 class MyAppTest(unittest.TestCase):
+    """Class to start flask server as testing mode.
+    """
 
     @classmethod
     def setUpClass(self):
@@ -57,18 +59,13 @@ class MyAppTest(unittest.TestCase):
         server.app.config['TESTING'] = True
         # Disable CSRF checking for WTForms
         server.app.config['WTF_CSRF_ENABLED'] = False
-        # Point SQLAlchemy to a test database location
-        # (set in virtualenv normally, but fall back to sqlite if not defined)
         self.app = server.app.test_client()
         self.app.post()
 
 
-"""Class to test the flask, gevent process
-"""
-
-
 class MyTest(MyAppTest):
-
+    """Class to test flask server.
+    """
     def setUp(self):
         self.tenantId = "tenantId"
         self.mockedClient = mock()
