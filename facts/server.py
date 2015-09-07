@@ -101,13 +101,9 @@ def facts(tenantid, serverid):
     if request.headers['content-type'] == content_type:
         try:
             # Ensure that received data is a valid JSON
-            print "Esto es request: %s" % request.data
-
             user_submission = json.loads(request.data)  # @UnusedVariable
         except ValueError as v:
             # Data is not a well-formed json
-            print "ESTO ES EL ERROR: %s" % v
-
             message = "[{}] received {} from ip {}:{}"\
                 .format("-", json, request.environ['REMOTE_ADDR'], request.environ['REMOTE_PORT'])
 
