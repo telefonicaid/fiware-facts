@@ -23,7 +23,7 @@
 # contact with opensource@tid.es
 #
 
-__version__ = '1.6.0'
+__version__ = '1.7.0'
 __version_info__ = tuple([int(num) for num in __version__.split('.')])
 __description__ = 'Facts Listener'
 __author__ = 'fla'
@@ -101,13 +101,9 @@ def facts(tenantid, serverid):
     if request.headers['content-type'] == content_type:
         try:
             # Ensure that received data is a valid JSON
-            print "Esto es request: %s" % request.data
-
             user_submission = json.loads(request.data)  # @UnusedVariable
-        except ValueError as v:
+        except ValueError:
             # Data is not a well-formed json
-            print "ESTO ES EL ERROR: %s" % v
-
             message = "[{}] received {} from ip {}:{}"\
                 .format("-", json, request.environ['REMOTE_ADDR'], request.environ['REMOTE_PORT'])
 

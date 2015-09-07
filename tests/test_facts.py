@@ -24,8 +24,8 @@ __author__ = 'fla'
 
 from flask.ext.testing import TestCase
 from flask import Flask
-from mockito import *
-from mock import patch, MagicMock
+from mockito import mock, when
+from mock import MagicMock
 import urllib2
 import json
 import unittest
@@ -50,6 +50,8 @@ class MyCursor(MagicMock):
 
 
 class MyAppTest(unittest.TestCase):
+    """Class to start flask server as testing mode.
+    """
 
     @classmethod
     def setUpClass(self):
@@ -57,18 +59,13 @@ class MyAppTest(unittest.TestCase):
         server.app.config['TESTING'] = True
         # Disable CSRF checking for WTForms
         server.app.config['WTF_CSRF_ENABLED'] = False
-        # Point SQLAlchemy to a test database location
-        # (set in virtualenv normally, but fall back to sqlite if not defined)
         self.app = server.app.test_client()
         self.app.post()
 
 
-"""Class to test the flask, gevent process
-"""
-
-
 class MyTest(MyAppTest):
-
+    """Class to test flask server.
+    """
     def setUp(self):
         self.tenantId = "tenantId"
         self.mockedClient = mock()
@@ -112,42 +109,40 @@ class MyTest(MyAppTest):
 
         :return       200 Ok
         """
-        data = {'ids': [12, 3, 4, 5, 6]}
         data2 = {"contextResponses": [
                     {
                         "contextElement": {
-                            "attributes": [
-                                {
-                                    "value": "99.12",
-                                    "name": "usedMemPct",
-                                    "type": "string"
-                                },
-                                {
-                                    "value": "99.14",
-                                    "name": "cpuLoadPct",
-                                    "type": "string"
-                                },
-                                {
-                                    "value": "99.856240",
-                                    "name": "freeSpacePct",
-                                    "type": "string"
-                                },
-                                {
-                                    "value": "99.8122",
-                                    "name": "netLoadPct",
-                                    "type": "string"
-                                }
-                            ],
-                            "id": "Trento:193.205.211.69",
-                            "isPattern": "false",
-                            "type": "host"
-                        },
-                        "statusCode": {
-                            "code": "200",
-                            "reasonPhrase": "OK"
-                        }
-
-                    }
+                           "attributes": [
+                               {
+                                   "value": "0.12",
+                                   "name": "usedMemPct",
+                                   "type": "string"
+                               },
+                               {
+                                   "value": "0.14",
+                                   "name": "cpuLoadPct",
+                                   "type": "string"
+                               },
+                               {
+                                   "value": "0.856240",
+                                   "name": "freeSpacePct",
+                                   "type": "string"
+                               },
+                               {
+                                   "value": "0.8122",
+                                   "name": "netLoadPct",
+                                   "type": "string"
+                               }
+                           ],
+                           "id": "Trento:193.205.211.69",
+                           "isPattern": "false",
+                           "type": "host"
+                       },
+                       "statusCode": {
+                           "code": "200",
+                           "reasonPhrase": "OK"
+                       }
+                   }
                 ]
             }
 
