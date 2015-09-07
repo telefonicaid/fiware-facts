@@ -22,11 +22,24 @@
 # For those usages not covered by the Apache version 2.0 License please
 # contact with opensource@tid.es
 #
-from distutils.core import setup
-from server import __version__
+from setuptools import setup, find_packages
+from facts.server import __version__
 setup(
   name='fiware-facts',
-  packages=['fiware-facts'],  # this must be the same as the name above
+  packages=find_packages(exclude=['tests*']),
+  install_requires=["redis==2.9.1",
+  "Flask==0.10.1",
+  "gevent==1.0.1",
+  "pika==0.9.13",
+  "python-dateutil==1.5",
+  "gunicorn==19.1.1",
+  "python-keystoneclient==1.3.0",
+  "oslo.i18n==1.7.0",
+  "MySQL-python==1.2.5"
+  ],
+  package_data = {
+    'facts_conf': ['*.cfg']
+  },
   version=__version__,
   description='Server to process the incoming facts from the Orion Context Broker',
   author='Fernando Lopez Aguilar, Guillermo Jimenez Prieto',
