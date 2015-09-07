@@ -142,7 +142,7 @@ __ `FIWARE Policy Manager GE: Facts`_
 Running
 =======
 
-Execute command "gunicorn --check-config server.py" inside the folder where you downloaded fiware-facts
+Execute command "gunicorn facts.server:app" inside the folder where you downloaded fiware-facts
 
 `Top`__.
 
