@@ -1,36 +1,37 @@
-{"contextResponses": [
+{
+    "contextResponses": [
         {
             "contextElement": {
-                "attributes": [
-                    {
-                        "value": "6",
-                        "name": "users",
-                        "type": "string"
-                    },
-                    {
-                        "value": "1",
-                        "name": "usedMemPct",
-                        "type": "string"
-                    },
-                    {
-                        "value": "0.14",
-                        "name": "cpuLoadPct",
-                        "type": "string"
-                    },
-                    {
-                        "value": "0.856240",
-                        "name": "freeSpacePct",
-                        "type": "string"
-                    }
-                ],
-                "id": "Trento:193.205.211.69",
-                "isPattern": "false",
-                "type": "host"
-            },
-            "statusCode": {
-                "code": "200",
-                "reasonPhrase": "OK"
-            }
-        }
+               "attributes": [
+                   {
+                       "value": "0.12",
+                       "name": "usedMemPct",
+                       "type": "string"
+                   },
+                   {
+                       "value": "0.14",
+                       "name": "cpuLoadPct",
+                       "type": "string"
+                   },
+                   {
+                       "value": "0.856240",
+                       "name": "freeSpacePct",
+                       "type": "string"
+                   },
+                   {
+                       "value": "0.8122",
+                       "name": "netLoadPct",
+                       "type": "string"
+                   }
+               ],
+               "id": "Trento:193.205.211.69",
+               "isPattern": "false",
+               "type": "host"
+           },
+           "statusCode": {
+               "code": "200",
+               "reasonPhrase": "OK"
+           }
+       }
     ]
 }
