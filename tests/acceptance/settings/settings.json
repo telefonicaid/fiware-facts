@@ -1,0 +1,17 @@
+{
+    "environment": {
+        "name": "experimentation",
+        "log_path": "/var/logs/fiware-facts"
+    },
+    "facts_service": {
+        "protocol": "http",
+        "host": "10.11.12.13",
+        "port": "5000",
+        "resource": "/v1.0",
+        "host_user": "root",
+        "host_password": "",
+        "private_key_location": "",
+        "service_log_path": "",
+        "service_log_file_name": ""
+    }
+}
