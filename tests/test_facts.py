@@ -112,42 +112,40 @@ class MyTest(MyAppTest):
 
         :return       200 Ok
         """
-        data = {'ids': [12, 3, 4, 5, 6]}
         data2 = {"contextResponses": [
                     {
                         "contextElement": {
-                            "attributes": [
-                                {
-                                    "value": "99.12",
-                                    "name": "usedMemPct",
-                                    "type": "string"
-                                },
-                                {
-                                    "value": "99.14",
-                                    "name": "cpuLoadPct",
-                                    "type": "string"
-                                },
-                                {
-                                    "value": "99.856240",
-                                    "name": "freeSpacePct",
-                                    "type": "string"
-                                },
-                                {
-                                    "value": "99.8122",
-                                    "name": "netLoadPct",
-                                    "type": "string"
-                                }
-                            ],
-                            "id": "Trento:193.205.211.69",
-                            "isPattern": "false",
-                            "type": "host"
-                        },
-                        "statusCode": {
-                            "code": "200",
-                            "reasonPhrase": "OK"
-                        }
-
-                    }
+                           "attributes": [
+                               {
+                                   "value": "0.12",
+                                   "name": "usedMemPct",
+                                   "type": "string"
+                               },
+                               {
+                                   "value": "0.14",
+                                   "name": "cpuLoadPct",
+                                   "type": "string"
+                               },
+                               {
+                                   "value": "0.856240",
+                                   "name": "freeSpacePct",
+                                   "type": "string"
+                               },
+                               {
+                                   "value": "0.8122",
+                                   "name": "netLoadPct",
+                                   "type": "string"
+                               }
+                           ],
+                           "id": "Trento:193.205.211.69",
+                           "isPattern": "false",
+                           "type": "host"
+                       },
+                       "statusCode": {
+                           "code": "200",
+                           "reasonPhrase": "OK"
+                       }
+                   }
                 ]
             }
 
