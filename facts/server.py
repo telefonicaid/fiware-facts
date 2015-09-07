@@ -102,7 +102,7 @@ def facts(tenantid, serverid):
         try:
             # Ensure that received data is a valid JSON
             user_submission = json.loads(request.data)  # @UnusedVariable
-        except ValueError as v:
+        except ValueError:
             # Data is not a well-formed json
             message = "[{}] received {} from ip {}:{}"\
                 .format("-", json, request.environ['REMOTE_ADDR'], request.environ['REMOTE_PORT'])
