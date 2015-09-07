@@ -24,8 +24,8 @@ __author__ = 'fla'
 
 from flask.ext.testing import TestCase
 from flask import Flask
-from mockito import *
-from mock import patch, MagicMock
+from mockito import mock, when
+from mock import MagicMock
 import urllib2
 import json
 import unittest
