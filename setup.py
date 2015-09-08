@@ -36,8 +36,7 @@ setup(
   packages=find_packages(exclude=['tests*']),
   install_requires=requirements_list,
   package_data = {
-    'facts_conf': ['*.cfg'],
-    '': ['requirements.txt']
+    'facts_conf': ['*.cfg']
   },
   version=__version__,
   description='Server to process the incoming facts from the Orion Context Broker',
