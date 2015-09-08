@@ -95,13 +95,15 @@ __ `FIWARE Policy Manager GE: Facts`_
 
 Installation
 ------------
-Download the component by executing the following instruction:
+
+**Using pip**
+Install the component by executing the following instruction:
 ::
 
-    git clone git@github.com:telefonicaid/fiware-facts.git
+    pip install fiware-facts
 
-Note: we recommend you to download this component into this location:
-``/opt/policyManager``
+This operation will install the component in your python site-packages folder.
+
 
 `Top`__.
 
@@ -109,12 +111,11 @@ __ `FIWARE Policy Manager GE: Facts`_
 
 Configuration file
 ------------------
-The configuration used by the fiware-facts component is optionally read from the file
-``conf/fiware-facts.cfg``
-
-Default values are found in ``facts/config.py``.
+The configuration used by the fiware-facts component is read from the file
+``facts_conf/fiware-facts.cfg``
 
 MYSQL cloto configuration must be filled before starting fiware-facts component, user and password are empty by default.
+If you run the server without filling those values, the server will ask you to provide them.
 
 Options that user could define:
 ::
@@ -142,7 +143,12 @@ __ `FIWARE Policy Manager GE: Facts`_
 Running
 =======
 
-Execute command "gunicorn facts.server:app" inside the folder where you downloaded fiware-facts
+Execute command:
+
+::
+
+    gunicorn facts.server:app
+
 
 `Top`__.
 
@@ -232,8 +238,7 @@ Please take a look to the installation manual in order to configure those compon
 After that, you can execute this folloing commands:
 
 ::
-
-    $ python server.py &
+    $ pip install -r requirements_dev.txt
     $ export PYTHONPATH=$PWD
     $ nosetests -s -v --cover-package=facts --with-cover
 
