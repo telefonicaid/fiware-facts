@@ -35,7 +35,7 @@ setup(
   name='fiware-facts',
   packages=find_packages(exclude=['tests*']),
   install_requires=requirements_list,
-  package_data = {
+  package_data={
     'facts_conf': ['*.cfg']
   },
   version=__version__,
