@@ -25,8 +25,17 @@
 __author__ = "@jframos"
 
 
-from commons.environment_commons import set_up
 from qautils.logger.logger_utils import get_logger
+from qautils.configuration.configuration_utils import set_up_project
+from fiwarefacts_client.client import FactsClient
+from fiwarecloto_client.client import ClotoClient
+import qautils.configuration.configuration_utils as configuration_utils
+from qautils.configuration.configuration_properties import PROPERTIES_CONFIG_SERVICE_PROTOCOL, \
+    PROPERTIES_CONFIG_SERVICE_RESOURCE, PROPERTIES_CONFIG_SERVICE_PORT, PROPERTIES_CONFIG_SERVICE_HOST, \
+    PROPERTIES_CONFIG_SERVICE_OS_USERNAME, PROPERTIES_CONFIG_SERVICE_OS_PASSWORD, \
+    PROPERTIES_CONFIG_SERVICE_OS_TENANT_ID, PROPERTIES_CONFIG_SERVICE_OS_AUTH_URL
+from commons.constants import PROPERTIES_CONFIG_FACTS_SERVICE, PROPERTIES_CONFIG_CLOTO_SERVICE
+
 
 __logger__ = get_logger(__name__)
 
@@ -35,7 +44,25 @@ def before_all(context):
 
     __logger__.info("START ...")
     __logger__.info("Setting UP acceptance test project ")
-    set_up(context)
+
+    set_up_project()  # Load setting using 'qautils.configuration.configuration_utils'
+
+    # Create REST Clients
+    context.facts_client = FactsClient(
+        protocol=configuration_utils.config[PROPERTIES_CONFIG_FACTS_SERVICE][PROPERTIES_CONFIG_SERVICE_PROTOCOL],
+        host=configuration_utils.config[PROPERTIES_CONFIG_FACTS_SERVICE][PROPERTIES_CONFIG_SERVICE_HOST],
+        port=configuration_utils.config[PROPERTIES_CONFIG_FACTS_SERVICE][PROPERTIES_CONFIG_SERVICE_PORT],
+        resource=configuration_utils.config[PROPERTIES_CONFIG_FACTS_SERVICE][PROPERTIES_CONFIG_SERVICE_RESOURCE])
+
+    context.cloto_client = ClotoClient(
+        username=configuration_utils.config[PROPERTIES_CONFIG_CLOTO_SERVICE][PROPERTIES_CONFIG_SERVICE_OS_USERNAME],
+        password=configuration_utils.config[PROPERTIES_CONFIG_CLOTO_SERVICE][PROPERTIES_CONFIG_SERVICE_OS_PASSWORD],
+        tenant_id=configuration_utils.config[PROPERTIES_CONFIG_CLOTO_SERVICE][PROPERTIES_CONFIG_SERVICE_OS_TENANT_ID],
+        auth_url=configuration_utils.config[PROPERTIES_CONFIG_CLOTO_SERVICE][PROPERTIES_CONFIG_SERVICE_OS_AUTH_URL],
+        api_protocol=configuration_utils.config[PROPERTIES_CONFIG_CLOTO_SERVICE][PROPERTIES_CONFIG_SERVICE_PROTOCOL],
+        api_host=configuration_utils.config[PROPERTIES_CONFIG_CLOTO_SERVICE][PROPERTIES_CONFIG_SERVICE_HOST],
+        api_port=configuration_utils.config[PROPERTIES_CONFIG_CLOTO_SERVICE][PROPERTIES_CONFIG_SERVICE_PORT],
+        api_resource=configuration_utils.config[PROPERTIES_CONFIG_CLOTO_SERVICE][PROPERTIES_CONFIG_SERVICE_RESOURCE])
 
 
 def before_feature(context, feature):

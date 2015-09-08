@@ -1,3 +1,0 @@
-
-PROPERTIES_CONFIG_FACTS_SERVICE = "facts_service"
-

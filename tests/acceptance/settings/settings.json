@@ -1,17 +1,32 @@
 {
     "environment": {
-        "name": "experimentation",
-        "log_path": "/var/logs/fiware-facts"
+        "name": "experimentation"
     },
     "facts_service": {
         "protocol": "http",
-        "host": "10.11.12.13",
+        "host": "1.2.3.4",
         "port": "5000",
         "resource": "/v1.0",
+        "os_tenant_id": "00000000000000000000000000000000",
         "host_user": "root",
         "host_password": "",
         "private_key_location": "",
-        "service_log_path": "",
-        "service_log_file_name": ""
+        "service_log_path": "/var/logs/fiware_facts",
+        "service_log_file_name": "fiware_facts.log"
+    },
+    "cloto_service": {
+        "protocol": "http",
+        "host": "1.2.3.4",
+        "port": "8000",
+        "resource": "/v1.0",
+        "os_username": "myusername",
+        "os_password": "mypassword",
+        "os_tenant_id": "00000000000000000000000000000000",
+        "os_auth_url": "http://my-keystone:4731/v2.0",
+        "host_user": "root",
+        "host_password": "",
+        "private_key_location": "",
+        "service_log_path": "/var/logs/fiware_cloto",
+        "service_log_file_name": "fiware_cloto.log"
     }
 }

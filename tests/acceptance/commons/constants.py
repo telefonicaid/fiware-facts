@@ -26,8 +26,9 @@ __author__ = "@jframos"
 
 
 # Custom config properties
-# Common properties are defined in qautils lib: qautils.configuration.configuration_utils
+# Common properties are defined in qautils lib: qautils.configuration.configuration_properties
 PROPERTIES_CONFIG_FACTS_SERVICE = "facts_service"
+PROPERTIES_CONFIG_CLOTO_SERVICE = "cloto_service"
 
 # Context Requests
 ATTRIBUTES_NAME = u'name'

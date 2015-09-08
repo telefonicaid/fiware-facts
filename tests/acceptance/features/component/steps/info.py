@@ -25,14 +25,14 @@ __author__ = "@jframos"
 
 import behave
 from behave import step
-from hamcrest import *
+from hamcrest import assert_that, equal_to, is_, contains_string
 
 behave.use_step_matcher("re")
 
 
 @step(u'the fiware-facts service properly deployed')
 def fiware_facts_service_properly_deployed(context):
-    # So far, nothing to do
+    # Nnothing to do, so far
     pass
 
 
