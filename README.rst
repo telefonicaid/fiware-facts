@@ -238,7 +238,7 @@ Please take a look to the installation manual in order to configure those compon
 After that, you can execute this folloing commands:
 
 ::
-
+    $ pip install -r requirements_dev.txt
     $ export PYTHONPATH=$PWD
     $ nosetests -s -v --cover-package=facts --with-cover
 
