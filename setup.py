@@ -24,21 +24,20 @@
 #
 from setuptools import setup, find_packages
 from facts.server import __version__
+from pip.req import parse_requirements
+
+# parse_requirements() returns generator of pip.req.InstallRequirement objects
+install_reqs = parse_requirements("requirements.txt", session=False)
+# > requirements_list is a list of requirement; e.g. ['requests==2.6.0', 'Fabric==1.8.3']
+requirements_list = [str(ir.req) for ir in install_reqs]
+
 setup(
   name='fiware-facts',
   packages=find_packages(exclude=['tests*']),
-  install_requires=["redis==2.9.1",
-  "Flask==0.10.1",
-  "gevent==1.0.1",
-  "pika==0.9.13",
-  "python-dateutil==1.5",
-  "gunicorn==19.1.1",
-  "python-keystoneclient==1.3.0",
-  "oslo.i18n==1.7.0",
-  "MySQL-python==1.2.5"
-  ],
+  install_requires=requirements_list,
   package_data = {
-    'facts_conf': ['*.cfg']
+    'facts_conf': ['*.cfg'],
+    '': ['requirements.txt']
   },
   version=__version__,
   description='Server to process the incoming facts from the Orion Context Broker',

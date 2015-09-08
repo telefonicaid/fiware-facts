@@ -145,7 +145,11 @@ __ `FIWARE Policy Manager GE: Facts`_
 Running
 =======
 
-Execute command "gunicorn facts.server:app"
+Execute command:
+
+::
+
+    gunicorn facts.server:app
 
 
 `Top`__.
