@@ -111,10 +111,8 @@ __ `FIWARE Policy Manager GE: Facts`_
 
 Configuration file
 ------------------
-The configuration used by the fiware-facts component is optionally read from the file
+The configuration used by the fiware-facts component is read from the file
 ``facts_conf/fiware-facts.cfg``
-
-Default values are found in ``facts/config.py``.
 
 MYSQL cloto configuration must be filled before starting fiware-facts component, user and password are empty by default.
 If you run the server without filling those values, the server will ask you to provide them.
