@@ -276,35 +276,39 @@ __ `FIWARE Policy Manager GE: Facts`_
 Acceptance tests
 ----------------
 
-Fiware-facts acceptance tests are included into fiware-cloto repository (https://github.com/telefonicaid/fiware-cloto).
+All detailed documentation about acceptance tests can be consulted in `FACTS Acceptance Test Project <tests/acceptance>`_
 
-Requirements
+**Requirements**
 
-- Python 2.7 or newer
-- pip installed (http://docs.python-guide.org/en/latest/starting/install/linux/)
-- virtualenv installed (pip install virtalenv)
-- Git installed (yum install git-core / apt-get install git)
+- `Python`_ or newer (2.x).
+- `pip`_.
+- `Virtualenv`_.
+- `Fiware-Facts`_.
 
-Environment preparation:
+**Environment preparation**
 
-- Create a virtual environment somewhere, e.g. in ENV (virtualenv ENV)
-- Activate the virtual environment (source ENV/bin/activate)
-- Change to the test/acceptance folder of the project
-- Install the requirements for the acceptance tests in the virtual environment (pip install -r requirements.txt --allow-all-external).
-- Configure file in fiware-cloto/tests/acceptance_tests/commons/configuration.py adding the keystone url, and a valid, user, password and tenant ID.
+1. Create a virtual environment somewhere::
 
-Tests execution
+      $> virtualenv $WORKON_HOME/venv
 
-Change to the fiware-cloto/tests/acceptance_tests folder of the project if not already on it and execute:
-::
+#. Activate the virtual environment::
 
-     $ lettuce_tools -ft features/context_update.feature --tags=skip
+      $> source $WORKON_HOME/venv/bin/activate)
 
+#. Go to `$FACTS_HOME/tests/acceptance` folder in the project.
+#. Install the requirements for the acceptance tests in the virtual environment::
 
-In the following document you will find the steps to execute automated
-tests for the Policy Manager GE:
+      $> pip install -r requirements.txt --allow-all-external)
 
-- `Policy Manager acceptance tests <https://github.com/telefonicaid/fiware-cloto/tree/develop/cloto/tests/acceptance_tests/README.md>`_
+**Execution**
+
+Execute the following command in the acceptance test project directory::
+
+  $> cd $FACTS_HOME/tests/acceptance
+  $> behave features/component --tags ~@skip
+
+Before executing, you shoud configure properly the project settings file in `$FACTS_HOME/tests/acceptance/settings/settings.json`.
+Take a look at the `FACTS Acceptance Test Project <tests/acceptance>`_ documentation.
 
 `Top`__.
 
@@ -356,3 +360,9 @@ License
 .. _FIWARE Policy Manager - Apiary: https://jsapi.apiary.io/apis/policymanager/reference.html
 .. _Fiware-facts - GitHub issues: https://github.com/telefonicaid/fiware-facts/issues/new
 .. _FIWARE Policy Manager - Catalogue: http://catalogue.fiware.org/enablers/policy-manager-bosun
+.. _Python: http://www.python.org/
+.. _Behave: http://pythonhosted.org/behave/
+.. _pip: https://pypi.python.org/pypi/pip
+.. _Virtualenv: https://pypi.python.org/pypi/virtualenv
+.. _Fiware-Facts: https://github.com/telefonicaid/fiware-facts
+

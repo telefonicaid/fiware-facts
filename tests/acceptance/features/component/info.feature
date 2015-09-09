@@ -10,4 +10,4 @@ Feature: Get 'fiware-facts' service info
     Given the fiware-facts service properly deployed
     When  I request the service info
     Then  I receive a HTTP "200" response code
-    And   and response contains "Up and running..."
+    And   response contains "Up and running..."

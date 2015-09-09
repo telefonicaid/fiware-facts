@@ -46,6 +46,6 @@ def i_receive_a_http_response_code(context, response_code):
     assert_that(context.response.status_code, is_(equal_to(int(response_code))))
 
 
-@step(u'and response contains "(.*)"')
+@step(u'response contains "(.*)"')
 def and_the_response_contains(context, content):
     assert_that(context.response.text, contains_string(content))
