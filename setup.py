@@ -22,11 +22,22 @@
 # For those usages not covered by the Apache version 2.0 License please
 # contact with opensource@tid.es
 #
-from distutils.core import setup
-__version__ = '1.2.0'
+from setuptools import setup, find_packages
+from facts.server import __version__
+from pip.req import parse_requirements
+
+# parse_requirements() returns generator of pip.req.InstallRequirement objects
+install_reqs = parse_requirements("requirements.txt", session=False)
+# > requirements_list is a list of requirement; e.g. ['requests==2.6.0', 'Fabric==1.8.3']
+requirements_list = [str(ir.req) for ir in install_reqs]
+
 setup(
   name='fiware-facts',
-  packages=['fiware-facts'],  # this must be the same as the name above
+  packages=find_packages(exclude=['tests*']),
+  install_requires=requirements_list,
+  package_data={
+    'facts_conf': ['*.cfg']
+  },
   version=__version__,
   description='Server to process the incoming facts from the Orion Context Broker',
   author='Fernando Lopez Aguilar, Guillermo Jimenez Prieto',

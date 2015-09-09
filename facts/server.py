@@ -23,7 +23,7 @@
 # contact with opensource@tid.es
 #
 
-__version__ = '1.2.0'
+__version__ = '1.7.0'
 __version_info__ = tuple([int(num) for num in __version__.split('.')])
 __description__ = 'Facts Listener'
 __author__ = 'fla'
@@ -33,12 +33,16 @@ from facts.myredis import myredis
 from facts.queue import myqueue
 from facts.jsoncheck import jsoncheck
 from gevent.pywsgi import WSGIServer
+from keystoneclient.exceptions import NotFound
+from facts.config import fact_attributes
+from facts import cloto_db_client
 import logging.config
 import sys
 import datetime
 import gevent.monkey
 import os
 import httplib
+import gevent
 
 
 gevent.monkey.patch_all()
@@ -57,6 +61,12 @@ app = Flask(__name__)
 Initialize the redis connection library
 """
 mredis = myredis()
+
+"""
+Initialize the mysql connection library
+"""
+
+myClotoDBClient = cloto_db_client.cloto_db_client()
 
 """
 Initialize the pid of the process
@@ -104,12 +114,16 @@ def facts(tenantid, serverid):
                             content_type=content_type)
 
         # It is a valid payload and we start to process it
-        result = process_request(request, tenantid, serverid)
+        try:
+            result = process_request(request, tenantid, serverid)
+        except NotFound as ex:
+            return Response(response=ex.message, status=ex.http_status, content_type=content_type)
 
         if result == True:
             return Response(status=httplib.OK)
         else:
-            return Response(response="{\"error\":\"Internal Server Error. Unable to contact with RabbitMQ process\"}\n",
+            return Response(response="{\"error\":\"Internal Server Error. "
+                                     "Unable to contact with RabbitMQ process\"}\n",
                             status=httplib.INTERNAL_SERVER_ERROR,
                             content_type=content_type)
 
@@ -129,9 +143,12 @@ def process_request(request, tenantid, serverid):
     :return: True
     """
     json = request.json
-    message = "[{}] received {} from ip {}:{}"\
-        .format("-", json, request.environ['REMOTE_ADDR'], request.environ['REMOTE_PORT'])
-
+    if request.remote_addr:
+        message = "[{}] received {} from ip {}:{}"\
+            .format("-", json, request.environ['REMOTE_ADDR'], request.environ['REMOTE_PORT'])
+    else:
+        message = "[{}] received {} from test client"\
+            .format("-", json)
     logging.info(message)
 
     key = ['contextResponses', 'contextElement', 'attributes']
@@ -141,7 +158,7 @@ def process_request(request, tenantid, serverid):
         jsoncheck.checkit(json, key, 0)
     except (Exception), err:
         logging.error(err)
-        return Falsechmod
+        return False
 
     # Extract the list of attributes from the NGSI message
     attrlist = request.json['contextResponses'][0]['contextElement']['attributes']
@@ -150,17 +167,17 @@ def process_request(request, tenantid, serverid):
 
     for item in attrlist:
         name = item['name']
-        value = item['contextValue']
+        value = item['value']
 
         # Obtain the information of used memory and cpu
-        if name == 'usedMemPct' or name == 'cpuLoadPct':
+        if name == 'usedMemPct' or name == 'cpuLoadPct' or name == 'netLoadPct' or name == 'freeSpacePct':
             data.insert(len(data), float(value))
 
     # fix the first value of the list with the server identity
     data.insert(0, str(serverid))
 
     # fix the last value with the current date and time
-    data.insert(3, datetime.datetime.today().isoformat())
+    data.insert(len(fact_attributes) - 1, datetime.datetime.today().isoformat())
 
     # Check data coherency of time stamps
     if len(mredis.range(tenantid, serverid)) > 2:
@@ -170,17 +187,23 @@ def process_request(request, tenantid, serverid):
     mredis.insert(tenantid, serverid, data)
     logging.info(data)
 
+    # Get the windowsize for the tenant from a redis queue
+    windowsize = mredis.get_windowsize(tenantid)
+    if windowsize == []:
+        windowsize = myClotoDBClient.get_window_size(tenantid)
+        mredis.insert_window_size(tenantid, windowsize)
+
     # If the queue has the number of facts defined by the windows size, it returns the
     # last window-size values (range) and calculates the media of them (in terms of memory and cpu)
-    lo = mredis.media(mredis.range(tenantid, serverid))
+    lo = mredis.media(mredis.range(tenantid, serverid), windowsize)
 
     # If the number of facts is lt window size, the previous operation returns a null lists
     if len(lo) != 0:
         try:
             rabbit = myqueue()
 
-            message = "{\"serverId\": \"%s\", \"cpu\": %d, \"mem\": %d, \"time\": \"%s\"}" \
-                      % (lo.data[0], lo.data[1], lo.data[2], lo.data[3])
+            message = "{\"serverId\": \"%s\", \"cpu\": %s, \"mem\": %s, \"hdd\": %s, \"net\": %s, \"time\": \"%s\"}" \
+                      % (lo.data[0][1:-1], lo.data[1], lo.data[2], lo.data[3], lo.data[4], lo.data[5])
 
             logging_message = "[{}] sending message {}".format("-", message)
 
@@ -190,7 +213,6 @@ def process_request(request, tenantid, serverid):
             result = rabbit.publish_message(tenantid, message)  # @UnusedVariable
 
         except Exception:
-            #logging.info(lo.get())
             return False
 
     return True
@@ -207,7 +229,7 @@ def info(port):
     logging.info("Running in stand alone mode")
     logging.info("Port: {}".format(port))
     logging.info("PID: {}\n".format(pid))
-    logging.info("https://github.hi.inet/telefonicaid/fiware-facts\n\n\n")
+    logging.info("https://github.com/telefonicaid/fiware-facts\n\n\n")
 
 
 # process configuration file (if exists) and setup logging
@@ -225,4 +247,59 @@ http = WSGIServer(('', port), app)
 # show general information about the execution of the process
 info(port)
 
-http.serve_forever()
+
+def windowsize_updater():
+    try:
+        import pika
+        connection = None
+        connection = pika.BlockingConnection(pika.ConnectionParameters(
+                host="localhost"))
+        channel = connection.channel()
+
+        channel.exchange_declare(exchange="windowsizes",
+                                 exchange_type='direct')
+
+        result = channel.queue_declare(exclusive=True)
+        queue_name = result.method.queue
+
+        channel.queue_bind(exchange="windowsizes",
+                           queue=queue_name,
+                           routing_key="windowsizes")
+
+        logging.info('Waiting for windowsizes')
+
+        def callback(ch, method, properties, body):
+            try:
+                logging.info("received fact: %s" % body)
+                tenantid = body.split(" ")[0]
+                windowsize = body.split(" ")[1]
+                mredis.insert_window_size(tenantid, windowsize)
+
+            except ValueError:
+                logging.info("receiving an invalid body: " + body)
+
+            except Exception as ex:
+                logging.info("ERROR UPDATING WINDOWSIZE: " + ex.message)
+
+        channel.basic_consume(callback,
+                              queue=queue_name,
+                              no_ack=True)
+
+        channel.start_consuming()
+    except Exception as ex:
+        if ex.message:
+            logging.error("Error %s:" % ex.message)
+    finally:
+        if connection == None:
+            logging.error("There is no connection with RabbitMQ. Please, check if it is alive")
+        else:
+            connection.close()
+
+gevent.spawn(windowsize_updater)
+
+
+def start_server():
+    http.serve_forever()
+
+if __name__ == '__main__':
+    start_server()

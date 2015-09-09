@@ -22,10 +22,3 @@
 # contact with opensource@tid.es
 #
 __author__ = 'fla'
-
-import test_mylist
-import test_redis
-import test_queue
-import test_jsoncheck
-import test_cloto_client
-import test_facts
