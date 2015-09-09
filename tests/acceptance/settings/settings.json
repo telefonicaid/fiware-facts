@@ -7,12 +7,7 @@
         "host": "1.2.3.4",
         "port": "5000",
         "resource": "/v1.0",
-        "os_tenant_id": "00000000000000000000000000000000",
-        "host_user": "root",
-        "host_password": "",
-        "private_key_location": "",
-        "service_log_path": "/var/logs/fiware_facts",
-        "service_log_file_name": "fiware_facts.log"
+        "os_tenant_id": "00000000000000000000000000000000"
     },
     "cloto_service": {
         "protocol": "http",
@@ -22,11 +17,6 @@
         "os_username": "myusername",
         "os_password": "mypassword",
         "os_tenant_id": "00000000000000000000000000000000",
-        "os_auth_url": "http://my-keystone:4731/v2.0",
-        "host_user": "root",
-        "host_password": "",
-        "private_key_location": "",
-        "service_log_path": "/var/logs/fiware_cloto",
-        "service_log_file_name": "fiware_cloto.log"
+        "os_auth_url": "http://my-keystone:4731/v2.0"
     }
 }
