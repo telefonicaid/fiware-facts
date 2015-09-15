@@ -111,11 +111,24 @@ __ `FIWARE Policy Manager GE: Facts`_
 
 Configuration file
 ------------------
-The configuration used by the fiware-facts component is read from the file
-``facts_conf/fiware-facts.cfg``
+The configuration used by the fiware-facts component is read from the configuration file.
+This file is located depending of the OS where the server is running.
+
+**CENTOS**
+``/etc/sysconfig/fiware-facts.cfg``
+
+**UBUNTU**
+``/etc/default/fiware-facts.cfg``
+
+**OS X**
+``/etc/defaults/fiware-facts.cfg``
 
 MYSQL cloto configuration must be filled before starting fiware-facts component, user and password are empty by default.
-If you run the server without filling those values, the server will ask you to provide them.
+You can copy the `default configuration file <facts_conf/fiware_facts.cfg>`_ to the folder defined for your OS, and
+complete data about cloto MYSQL configuration (user and password).
+
+In addition, user could have a copy of this file in other location and pass its location to the server in running
+execution defining an environment variable called FACTS_SETTINGS_FILE.
 
 Options that user could define:
 ::
@@ -147,7 +160,17 @@ Execute command:
 
 ::
 
-    gunicorn facts.server:app
+    gunicorn facts.server:app -b $IP:5000
+
+Where $IP should be the IP assigned to the network interface that should be listening (ej. 192.168.1.33)
+
+You can also execute the server with a different settings file providing an environment variable with the location
+of the file:
+
+::
+
+    gunicorn facts.server:app -b $IP:5000 --env FACTS_SETTINGS_FILE=/home/user/fiware-facts.cfg
+
 
 
 `Top`__.
