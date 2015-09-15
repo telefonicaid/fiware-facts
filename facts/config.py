@@ -51,11 +51,11 @@ if _platform == "linux" or _platform == "linux2":
     elif platform.linux_distribution()[0] == "CentOS":
         cfg_dir = "/etc/sysconfig"
     else:
-        raise Exception("Your Operative System is not supported. (Facts supports: Centos, Ubuntu and OS X)")
+        raise Exception("Unsupported operating system (CentOS, Ubuntu or Mac OS X required)")
 elif _platform == "darwin":
     cfg_dir = "/etc/defaults"
 else:
-    raise Exception("Your Operative System is not supported. (Facts supports: Centos, Ubuntu and OS X)")
+    raise Exception("Unsupported operating system (CentOS, Ubuntu or Mac OS X required)")
 
 if os.environ.get("FACTS_SETTINGS_FILE"):
     cfg_filename = os.environ.get("FACTS_SETTINGS_FILE")
