@@ -55,7 +55,7 @@ if _platform == "linux" or _platform == "linux2":
 elif _platform == "darwin":
     cfg_dir = "/etc/defaults"
 else:
-            raise Exception("Your Operative System is not supported. (Facts supports: Centos, Ubuntu and OS X)")
+    raise Exception("Your Operative System is not supported. (Facts supports: Centos, Ubuntu and OS X)")
 
 if os.environ.get("FACTS_SETTINGS_FILE"):
     cfg_filename = os.environ.get("FACTS_SETTINGS_FILE")
