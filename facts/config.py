@@ -23,8 +23,11 @@
 #
 
 __author__ = 'fla'
+__version__ = '1.7.0'
 
 from ConfigParser import SafeConfigParser
+from sys import platform as _platform
+import platform
 import os.path
 import datetime
 
@@ -32,13 +35,22 @@ import datetime
 """
 Default configuration.
 
-The configuration `cfg_defaults` can be superseded with that read from `cfg_filename`
-(at path `../facts_conf/<progname>.cfg`), if file exists.
+The configuration `cfg_defaults` are loaded from `cfg_filename`, if file exists in
+/etc/fiware.d/fiware-facts.cfg
+
+Optionally, user can specify the file location manually using an Environment variable called FACTS_SETTINGS_FILE.
 """
 
 name = 'fiware-facts'
-cfg_dir = os.path.dirname(__file__) + '/../' + 'facts_conf'
-cfg_filename = os.path.join(cfg_dir, '%s.cfg' % name)
+
+cfg_dir = "/etc/fiware.d"
+
+if os.environ.get("FACTS_SETTINGS_FILE"):
+    cfg_filename = os.environ.get("FACTS_SETTINGS_FILE")
+
+else:
+    cfg_filename = os.path.join(cfg_dir, '%s.cfg' % name)
+
 cfg_defaults = {
     'brokerPort':   5000,                   # port of our facts broker
     'redisPort':    6379,                   # port of Redis
@@ -143,6 +155,8 @@ for key, value in cfg_handler_console_defaults.items():
 
 for key, value in cfg_handler_file_defaults.items():
     config.set('handler_file', key, str(value))
+
+config.set('common', 'cfg_file_path', str(cfg_filename))
 
 windowsize_facts = datetime.timedelta(seconds=10)
 

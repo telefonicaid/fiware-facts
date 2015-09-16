@@ -23,8 +23,6 @@
 # contact with opensource@tid.es
 #
 
-__version__ = '1.7.0'
-__version_info__ = tuple([int(num) for num in __version__.split('.')])
 __description__ = 'Facts Listener'
 __author__ = 'fla'
 
@@ -34,7 +32,7 @@ from facts.queue import myqueue
 from facts.jsoncheck import jsoncheck
 from gevent.pywsgi import WSGIServer
 from keystoneclient.exceptions import NotFound
-from facts.config import fact_attributes
+from facts.config import fact_attributes, __version__
 from facts import cloto_db_client
 import logging.config
 import sys
@@ -43,6 +41,8 @@ import gevent.monkey
 import os
 import httplib
 import gevent
+
+__version_info__ = tuple([int(num) for num in __version__.split('.')])
 
 
 gevent.monkey.patch_all()
@@ -232,6 +232,18 @@ def info(port):
     logging.info("https://github.com/telefonicaid/fiware-facts\n\n\n")
 
 
+def check_config_file():
+    """Checks if configuration has mysql user with a user. If user parameter is empty, shows an error
+    providing information about how to provide a valid settings file.
+    The original Settings file could be found in facts_conf and it could be copied to the required folder.
+    """
+    if config.get('mysql', 'user') == '':
+        logging.error("Cloto's Mysql data is empty. You should provide this information in the configuration file")
+        logging.error("Please create a configuration file and add cloto MySql data to %s",
+                      config.get('common', 'cfg_file_path'))
+        logging.error("You can provide a Settings file in other locations using an environment variable called"
+                      " FACTS_SETTINGS_FILE")
+
 # process configuration file (if exists) and setup logging
 if config.read(cfg_filename):
     logging.config.fileConfig(cfg_filename)
@@ -246,6 +258,7 @@ http = WSGIServer(('', port), app)
 
 # show general information about the execution of the process
 info(port)
+check_config_file()
 
 
 def windowsize_updater():

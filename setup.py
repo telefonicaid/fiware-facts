@@ -23,8 +23,8 @@
 # contact with opensource@tid.es
 #
 from setuptools import setup, find_packages
-from facts.server import __version__
 from pip.req import parse_requirements
+from facts.config import __version__
 
 # parse_requirements() returns generator of pip.req.InstallRequirement objects
 install_reqs = parse_requirements("requirements.txt", session=False)
