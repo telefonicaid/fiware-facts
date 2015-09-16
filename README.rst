@@ -112,16 +112,10 @@ __ `FIWARE Policy Manager GE: Facts`_
 Configuration file
 ------------------
 The configuration used by the fiware-facts component is read from the configuration file.
-This file is located depending of the OS where the server is running.
+This file is located here:
 
-**CENTOS**
-``/etc/sysconfig/fiware-facts.cfg``
+``/etc/fiware.d/fiware-facts.cfg``
 
-**UBUNTU**
-``/etc/default/fiware-facts.cfg``
-
-**OS X**
-``/etc/defaults/fiware-facts.cfg``
 
 MYSQL cloto configuration must be filled before starting fiware-facts component, user and password are empty by default.
 You can copy the `default configuration file <facts_conf/fiware_facts.cfg>`_ to the folder defined for your OS, and

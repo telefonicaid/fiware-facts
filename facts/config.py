@@ -35,27 +35,15 @@ import datetime
 """
 Default configuration.
 
-The configuration `cfg_defaults` are loaded from `cfg_filename`, if file exists.
-** CentOS ** --> /etc/sysconfig/fiware-facts.cfg
-** Ubuntu ** --> /etc/default/fiware-facts.cfg
-** OS X ** --> /etc/defaults/fiware-facts.cfg
+The configuration `cfg_defaults` are loaded from `cfg_filename`, if file exists in
+/etc/fiware.d/fiware-facts.cfg
 
 Optionally, user can specify the file location manually using an Environment variable called FACTS_SETTINGS_FILE.
 """
 
 name = 'fiware-facts'
 
-if _platform == "linux" or _platform == "linux2":
-    if platform.linux_distribution()[0] == "Ubuntu":
-        cfg_dir = "/etc/default"
-    elif platform.linux_distribution()[0] == "CentOS":
-        cfg_dir = "/etc/sysconfig"
-    else:
-        raise Exception("Unsupported operating system (CentOS, Ubuntu or Mac OS X required)")
-elif _platform == "darwin":
-    cfg_dir = "/etc/defaults"
-else:
-    raise Exception("Unsupported operating system (CentOS, Ubuntu or Mac OS X required)")
+cfg_dir = "/etc/fiware.d"
 
 if os.environ.get("FACTS_SETTINGS_FILE"):
     cfg_filename = os.environ.get("FACTS_SETTINGS_FILE")
