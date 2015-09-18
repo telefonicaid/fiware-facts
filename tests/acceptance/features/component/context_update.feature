@@ -5,13 +5,15 @@ Feature: Receive context update requests
   I want to receive data from the monitoring architecture through Context Broker notifications
   In order to manage facts, and group and send them to be processed.
 
-  @basic
-  Scenario Outline: Receive a context update notification with all parameters
+
+  @happy_path
+  Scenario Outline: Receive a context update notification with all context attributes.
     Given the tenant-id registered in CLOTO component
+    And   the context notification has default context elements
     When  a context notification is received for "<server_id>" with values:
           | cpuLoadPct | usedMemPct | freeSpacePct | netLoadPct |
           | <cpu>      | <memory>   | <disk>       | <network>  |
-    Then the context is updated
+    Then  the context is updated
 
     Examples:
 
@@ -32,3 +34,135 @@ Feature: Receive context update requests
       | qatest    | 0.75  | 0.8     | 1     | 0.151   |
       | qatest    | 0.75  | 1       | 0.1   | 0.151   |
       | qatest    | 1     | 0.8     | 0.1   | 0.151   |
+
+
+  Scenario Outline: : Receive context with missing parameters. Notification must be processed.
+    Given the tenant-id registered in CLOTO component
+    And   the context notification has default context elements
+    When  a context notification is received for "<server_id>" with values:
+          | cpuLoadPct | usedMemPct | freeSpacePct | netLoadPct |
+          | <cpu>      | <memory>   | <disk>       | <network>  |
+    Then  the HTTP "200" is returned
+
+    Examples:
+
+      | server_id | cpu             | memory          | disk            | network           |
+      | qatest    | [MISSING_PARAM] | 0.8             | 0.1             | 0.15              |
+      | qatest    | 0.00            | [MISSING_PARAM] | 0.1             | 0.15              |
+      | qatest    | 0.75            | 0.0             | [MISSING_PARAM] | 0.15              |
+      | qatest    | 0.75            | 0.8             | 0.0             | [MISSING_PARAM]   |
+      #| qatest    | [MISSING_PARAM] | [MISSING_PARAM] | [MISSING_PARAM] | [MISSING_PARAM]   |
+      | qatest    | [MISSING_PARAM] | 0               | [MISSING_PARAM] | 0.15              |
+
+
+  @skip @bug @CLAUDIA-5519
+  Scenario Outline: : Receive context with missing parameters (2). TO MERGE with the previous one when fixed.
+    Given the tenant-id registered in CLOTO component
+    And   the context notification has default context elements
+    When  a context notification is received for "<server_id>" with values:
+          | cpuLoadPct | usedMemPct | freeSpacePct | netLoadPct |
+          | <cpu>      | <memory>   | <disk>       | <network>  |
+    Then  the HTTP "200" is returned
+
+    Examples:
+
+      | server_id | cpu             | memory          | disk            | network           |
+      | qatest    | [MISSING_PARAM] | [MISSING_PARAM] | [MISSING_PARAM] | [MISSING_PARAM]   |
+
+
+  Scenario: Receive context when subscription does not exist. Subscription must be processed.
+    Given the tenant-id registered in CLOTO component
+    And   the context notification has default context elements
+    When  a context notification is received for "not_existing_server" with values:
+          | cpuLoadPct | usedMemPct | freeSpacePct | netLoadPct |
+          | 0.73       | 030        | 0.1          | 0.15       |
+    Then  the HTTP "200" is returned
+
+  @test
+  Scenario: Receive context when Tenant is not registered in CLOTO.
+    Given a no registered Tentand-Id in CLOTO component "no_registered_tenant_id"
+    And   the context notification has default context elements
+    When  a context notification is received for "qatest" with values:
+          | cpuLoadPct | usedMemPct | freeSpacePct | netLoadPct |
+          | 0.73       | 030        | 0.1          | 0.15       |
+    Then  the HTTP "404" is returned
+
+
+  @skip @bug @CLAUDIA-5524
+  Scenario Outline: Receive a context update notification with invalid context attribute values. Format.
+    Given the tenant-id registered in CLOTO component
+    And   the context notification has default context elements
+    When  a context notification is received for "<server_id>" with values:
+          | cpuLoadPct | usedMemPct | freeSpacePct | netLoadPct |
+          | <cpu>      | <memory>   | <disk>       | <network>  |
+    Then  the HTTP "400" is returned
+
+    Examples:
+
+      | server_id | cpu   | memory  | disk  | network |
+      | qatest    | 0,05  | 0.8     | 0.1   | 0.15    |
+      | qatest    | 0.05  | 0,8     | 0.1   | 0.15    |
+      | qatest    | 0.05  | 0.8     | 0,1   | 0.15    |
+      | qatest    | 0.05  | 0.8     | 0.1   | 0,15    |
+      | qatest    | hola  | 0.8     | 0.1   | 0.15    |
+      | qatest    | 0.05  | tel     | 0.1   | 0.15    |
+      | qatest    | 0.05  | 0.8     | qas   | 0.15    |
+      | qatest    | 0.05  | 0.8     | 0.1   | test    |
+      | qatest    | 0. 05 | 0.8     | 0.1   | 0.15    |
+      | qatest    | 0.05  | 0. 8    | 0.1   | 0.15    |
+      | qatest    | 0.05  | 0.8     | 0. 1  | 0.15    |
+      | qatest    | 0.05  | 0.8     | 0.1   | 0. 15   |
+      | qatest    | 0'05  | 0.8     | 0.1   | 0.15    |
+      | qatest    | 0.05  | 0'8     | 0.1   | 0.15    |
+      | qatest    | 0.05  | 0.8     | 0'1   | 0.15    |
+      | qatest    | 0.05  | 0.8     | 0.1   | 0'15    |
+      | qatest    |       | 0.8     | 0.1   | 0'15    |
+      | qatest    | 0.05  |         | 0.1   | 0'15    |
+      | qatest    | 0.05  | 0.8     |       | 0'15    |
+      | qatest    | 0.05  | 0.8     | 0.1   |         |
+
+
+  @skip @bug @CLAUDIA-5524
+  Scenario Outline: Receive a context update notification with invalid context attribute values. Value.
+    Given the tenant-id registered in CLOTO component
+    And   the context notification has default context elements
+    When  a context notification is received for "<server_id>" with values:
+          | cpuLoadPct | usedMemPct | freeSpacePct | netLoadPct |
+          | <cpu>      | <memory>   | <disk>       | <network>  |
+    Then  the HTTP "400" is returned
+
+    Examples:
+
+      | server_id | cpu   | memory  | disk  | network |
+      | qatest    | 1.05  | 0.8     | 0.1   | 0.15    |
+      | qatest    | 0.05  | 5.8     | 0.1   | 0.15    |
+      | qatest    | 0.05  | 0.8     | 10.1  | 0.15    |
+      | qatest    | 0.05  | 0.8     | 0.1   | 415.15  |
+      | qatest    | -0.05 | 0.8     | 0.1   | 0.15    |
+      | qatest    | 0.05  | -0.8    | 0.1   | 0.15    |
+      | qatest    | 0.05  | 0.8     | -0.1  | 0.15    |
+      | qatest    | 0.05  | 0.8     | 0.1   | -0.15   |
+
+
+  @skip @bug @CLAUDIA-5519
+  Scenario Outline: Receive context notification with missing context elements.
+
+    Given the tenant-id registered in CLOTO component
+    And   the context notification has these context elements:
+          | id         | isPattern  | type         |
+          | <id>       | <isPattern>| <type>       |
+    When  a context notification is received for "qatest" with values:
+          | cpuLoadPct | usedMemPct | freeSpacePct | netLoadPct |
+          | 0.73       | 030        | 0.1          | 0.15       |
+    Then  the HTTP "400" is returned
+
+    Examples:
+
+          | id        | isPattern   | type         |
+          | qatest    | [MISSING_PARAM]   | [MISSING_PARAM]    |
+          | [MISSING_PARAM] | false       | [MISSING_PARAM]    |
+          | [MISSING_PARAM] | [MISSING_PARAM]   | vm           |
+          | [MISSING_PARAM] | [MISSING_PARAM]   | [MISSING_PARAM]    |
+          | qatest    | false       | [MISSING_PARAM]    |
+          | qatest    | [MISSING_PARAM]   | vm           |
+          | [MISSING_PARAM] | false       | vm           |

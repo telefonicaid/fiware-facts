@@ -76,6 +76,10 @@ def before_scenario(context, scenario):
     __logger__.info("********** START SCENARIO **********")
     __logger__.info("Scenario name: %s", scenario.name)
 
+    # Clean scenario variables
+    context.context_elements = dict()
+    context.response = None
+
 
 def after_scenario(context, scenario):
 
