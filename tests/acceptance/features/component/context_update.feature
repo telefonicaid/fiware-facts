@@ -3,7 +3,7 @@
 Feature: Receive context update requests
   As a scalability manager user
   I want to receive data from the monitoring architecture through Context Broker notifications
-  In order to manage facts, and group and send them to be processed.
+  in order to manage facts, and group and send them to be processed.
 
 
   @happy_path
@@ -146,7 +146,6 @@ Feature: Receive context update requests
 
   @skip @bug @CLAUDIA-5519
   Scenario Outline: Receive context notification with missing context elements.
-
     Given the tenant-id registered in CLOTO component
     And   the context notification has these context elements:
           | id         | isPattern  | type         |
@@ -158,11 +157,11 @@ Feature: Receive context update requests
 
     Examples:
 
-          | id        | isPattern   | type         |
-          | qatest    | [MISSING_PARAM]   | [MISSING_PARAM]    |
-          | [MISSING_PARAM] | false       | [MISSING_PARAM]    |
-          | [MISSING_PARAM] | [MISSING_PARAM]   | vm           |
-          | [MISSING_PARAM] | [MISSING_PARAM]   | [MISSING_PARAM]    |
-          | qatest    | false       | [MISSING_PARAM]    |
-          | qatest    | [MISSING_PARAM]   | vm           |
-          | [MISSING_PARAM] | false       | vm           |
+          | id              | isPattern         | type            |
+          | qatest          | [MISSING_PARAM]   | [MISSING_PARAM] |
+          | [MISSING_PARAM] | false             | [MISSING_PARAM] |
+          | [MISSING_PARAM] | [MISSING_PARAM]   | vm              |
+          | [MISSING_PARAM] | [MISSING_PARAM]   | [MISSING_PARAM] |
+          | qatest          | false             | [MISSING_PARAM] |
+          | qatest          | [MISSING_PARAM]   | vm              |
+          | [MISSING_PARAM] | false             | vm              |

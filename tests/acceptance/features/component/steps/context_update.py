@@ -115,9 +115,9 @@ def the_context_is_updated(context):
                 "Response to CB notification is not the expected one: Message: {}".format(context.response.text))
 
 
-@step(u'the HTTP "(?P<error_code>.*)" is returned')
-def http_error_code_is_returned(context, error_code):
+@step(u'the HTTP "(?P<status_code>.*)" is returned')
+def http_error_code_is_returned(context, status_code):
 
-    assert_that(str(context.response.status_code), is_(error_code),
+    assert_that(str(context.response.status_code), is_(status_code),
                 "Response to CB notification has not got the expected HTTP response code: Message: {}".format(
                     context.response.text))
