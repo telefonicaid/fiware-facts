@@ -170,8 +170,19 @@ def process_request(request, tenantid, serverid):
         value = item['value']
 
         # Obtain the information of used memory and cpu
-        if name == 'usedMemPct' or name == 'cpuLoadPct' or name == 'netLoadPct' or name == 'freeSpacePct':
-            data.insert(len(data), float(value))
+        if name == 'usedMemPct':
+            mem = float(value)
+        elif name == 'cpuLoadPct':
+            cpu = float(value)
+        elif name == 'netLoadPct':
+            net = float(value)
+        elif name == 'freeSpacePct':
+            hdd = float(value)
+
+    data.insert(len(data), cpu)
+    data.insert(len(data), mem)
+    data.insert(len(data), hdd)
+    data.insert(len(data), net)
 
     # fix the first value of the list with the server identity
     data.insert(0, str(serverid))
