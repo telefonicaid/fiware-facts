@@ -177,6 +177,12 @@ def create_context_notification_model(subscription_id=None, originator=None,
     context_responses = _create_context_response(context_element, context_status)
     model = _create_context_notification(context_responses, originator, subscription_id)
 
+    # As this is a generic model builder, the resulting model will have some attributes with None value
+    #    (values not defined by params when calling this HELPER).
+    #    In order to build a well-formed body, all None attributes
+    #    should not be included in the request. This way, we have to remove all of them.
+    #    The result of executing following function, is the same model given by params, but with all its attributes
+    #    with None value deleted.
     delete_model_element_when_value_is_none(model)
 
     return model
