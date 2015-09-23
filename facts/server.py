@@ -183,15 +183,15 @@ def process_request(request, tenantid, serverid):
     if len(mredis.range(tenantid, serverid)) >= 2:
         mredis.check_time_stamps(tenantid, serverid, mredis.range(tenantid, serverid), data)
 
-    # Insert the result into the queue system
-    mredis.insert(tenantid, serverid, data)
-    logging.info(data)
-
     # Get the windowsize for the tenant from a redis queue
     windowsize = mredis.get_windowsize(tenantid)
     if windowsize == []:
         windowsize = myClotoDBClient.get_window_size(tenantid)
         mredis.insert_window_size(tenantid, windowsize)
+
+     # Insert the result into the queue system
+    mredis.insert(tenantid, serverid, data)
+    logging.info(data)
 
     # If the queue has the number of facts defined by the windows size, it returns the
     # last window-size values (range) and calculates the media of them (in terms of memory and cpu)

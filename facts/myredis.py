@@ -65,9 +65,12 @@ class myredis(object):
         :return               This operation does not return anything except when the data
                               is no list or the number of element is not equal to 4.
         """
+        windowsize = self.get_windowsize()
+        if isinstance(windowsize, list) and len(windowsize) == 1:
+            windowsize = int(windowsize[0])
         if isinstance(data, list) and len(data) == len(fact_attributes):
             self.r.rpush(tenantid + "." + serverid, data)
-            self.r.ltrim(tenantid + "." + serverid, -5, -1)
+            self.r.ltrim(tenantid + "." + serverid, -int(windowsize), -1)
         else:
             return "error"
 
