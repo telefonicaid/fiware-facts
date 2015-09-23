@@ -44,13 +44,12 @@ def i_request_the_service_info(context):
     context.response = context.facts_client.get_server_info()
 
 
-@step(u'I receive a HTTP "(\d*)" response code')
-def i_receive_a_http_response_code(context, response_code):
+@step(u'I receive a HTTP "(?P<status_code>.*)" response code')
+def http_code_is_returned(context, status_code):
 
-    assert_that(context.response.status_code, is_(equal_to(int(response_code))),
-                "Response code is not the expected one. Expected: {}; Received: {}".format(
-                    response_code,
-                    context.response.status_code))
+    assert_that(str(context.response.status_code), is_(status_code),
+                "Response to CB notification has not got the expected HTTP response code: Message: {}".format(
+                    context.response.text))
 
 
 @step(u'response contains "(.*)"')
