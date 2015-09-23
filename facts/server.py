@@ -186,7 +186,7 @@ def process_request(request, tenantid, serverid):
 
     # fix the first value of the list with the server identity
     data.insert(0, str(serverid))
-    
+
     # fix the last value with the current date and time
     data.insert(len(fact_attributes) - 1, datetime.datetime.today().isoformat())
 
