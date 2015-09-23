@@ -28,9 +28,12 @@ from qautils.http.rest_client_utils import RestClient, API_ROOT_URL_ARG_NAME
 from qautils.http.body_model_utils import model_to_request_body
 from qautils.http.headers_utils import HEADER_REPRESENTATION_JSON, HEADER_CONTENT_TYPE
 from fiwarefacts_client.context_notification_model_utils import create_context_notification_model
+from qautils.logger.logger_utils import get_logger
 
 ROOT_PATTER = "{"+API_ROOT_URL_ARG_NAME+"}"
 FACTS_PATTER = ROOT_PATTER + "/{tenant_id}/servers/{server_id}"
+
+__logger__ = get_logger(__name__)
 
 
 class FactsClient(RestClient):
@@ -46,6 +49,7 @@ class FactsClient(RestClient):
         """
         super(FactsClient, self).__init__(protocol, host, port, resource)
 
+        __logger__.info("Init FACTS REST Client")
         self.headers = dict({HEADER_CONTENT_TYPE: HEADER_REPRESENTATION_JSON})
 
     def get_server_info(self):
@@ -53,6 +57,7 @@ class FactsClient(RestClient):
         Request the FACTS' server info via API
         :return (Request response): Request with the server info
         """
+        __logger__.info("Get server info")
         return super(FactsClient, self).get(ROOT_PATTER)
 
     def send_monitored_data(self, subscription_id=None, originator=None,
@@ -81,6 +86,8 @@ class FactsClient(RestClient):
                                                                        status_code, details, reason,
                                                                        type, is_pattern, id, attribute_list)
 
+        __logger__.info("Send a context broker notification to FACTS. SubscriptionId: %s, ServerID: %s, TenantId: %s ",
+                        subscription_id, server_id, tenant_id)
         body = model_to_request_body(context_notification_model, HEADER_REPRESENTATION_JSON)
         return super(FactsClient, self).post(FACTS_PATTER, body, self.headers,
                                              tenant_id=tenant_id, server_id=server_id)

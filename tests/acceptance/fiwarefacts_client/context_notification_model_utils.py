@@ -22,6 +22,9 @@
 # contact with opensource@tid.es
 
 
+from qautils.http.body_model_utils import delete_model_element_when_value_is_none
+
+
 def create_context_element_attribute(name, type, value):
     """
     Function to create a context attribute body
@@ -66,7 +69,7 @@ def _create_context_element(type=None, is_pattern=None, id=None, attribute_list=
 
     return {"attributes": attribute_list,
             "type": type,
-            "isPatter": is_pattern,
+            "isPattern": is_pattern,
             "id": id}
 
 
@@ -166,10 +169,20 @@ def create_context_notification_model(subscription_id=None, originator=None,
                                       type=None, is_pattern=None, id=None, attribute_list=None):
     """
     HELPER. Create a context notification with the given params (described in previous private functions).
+            The result will not have the attributes with None value.
     """
 
     context_element = _create_context_element(type, is_pattern, id, attribute_list)
     context_status = _create_context_status_code(status_code, details, reason)
-    context_responses = _create_context_response(context_element,context_status)
+    context_responses = _create_context_response(context_element, context_status)
+    model = _create_context_notification(context_responses, originator, subscription_id)
 
-    return _create_context_notification(context_responses, originator, subscription_id)
+    # As this is a generic model builder, the resulting model will have some attributes with None value
+    #    (values not defined by params when calling this HELPER).
+    #    In order to build a well-formed body, all None attributes
+    #    should not be included in the request. This way, we have to remove all of them.
+    #    The result of executing following function, is the same model given by params, but with all its attributes
+    #    with None value deleted.
+    delete_model_element_when_value_is_none(model)
+
+    return model
