@@ -114,6 +114,9 @@ If you need more information about how to use Vagrant, you can see `Vagrant Gett
 Settings
 ========
 
+Project properties
+------------------
+
 Before executing the acceptance tests, you need configure the properties in the file `settings/settings.json` for each
 service properly::
 
@@ -126,7 +129,8 @@ service properly::
             "host": "1.2.3.4",
             "port": "5000",
             "resource": "/v1.0",
-            "os_tenant_id": "00000000000000000000000000000000"
+            "os_tenant_id": "00000000000000000000000000000000",
+            "facts_grace_period": 10
         },
         "cloto_service": {
             "protocol": "http",
@@ -137,8 +141,40 @@ service properly::
             "os_password": "mypassword",
             "os_tenant_id": "00000000000000000000000000000000",
             "os_auth_url": "http://my-keystone:4731/v2.0"
+        },
+        "rabbitmq_service": {
+            "host": "130.206.81.209",
+            "port": "5672",
+            "user": "qa",
+            "password": "testing",
+            "facts_messages": {
+              "exchange_name": "facts",
+              "exchange_type": "direct",
+              "queue": "facts"
+            },
+            "facts_window_size":{
+              "exchange_name": "windowsizes",
+              "routing_key": "windowsizes"
+            }
         }
     }
+
+
+RabbitMQ configuration for testing
+----------------------------------
+
+The FACTS' component test cases are executed integrated with RabbitMQ.
+Then, before executing test cases, you should configure RabbitMQ to accept connections
+from a new remote user::
+
+    root@ubuntu1404:/etc/init.d# rabbitmqctl add_user {rabbitmq_username} {rabbitmq_password}
+    root@ubuntu1404:/etc/init.d# rabbitmqctl set_permissions -p / {rabbitmq_username} ".*" ".*" ".*"
+    root@ubuntu1404:/etc/init.d# rabbitmqctl set_user_tags {rabbitmq_username} administrator
+
+
+That user credentials should be configured in the project properties (`rabbitmq_service` property)
+to be used by test cases. The rest of RabbitMQ configuration should be configured
+according to FACTS' configuration.
 
 
 API endpoint

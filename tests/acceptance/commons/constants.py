@@ -29,8 +29,23 @@ __author__ = "@jframos"
 # Common properties are defined in qautils lib: qautils.configuration.configuration_properties
 PROPERTIES_CONFIG_FACTS_SERVICE = "facts_service"
 PROPERTIES_CONFIG_CLOTO_SERVICE = "cloto_service"
+PROPERTIES_CONFIG_RABBITMQ_SERVICE = "rabbitmq_service"
+
+# FACTS attributes
+PROPERTIES_CONFIG_FACTS_SERVICE_GRACE_PERIOD = "facts_grace_period"
+
+# RabbitMQ attributes
+PROPERTIES_CONFIG_RABBITMQ_SERVICE_FACTS_MESSAGES = "facts_messages"
+PROPERTIES_CONFIG_RABBITMQ_SERVICE_WINDOW_SIZE = "facts_window_size"
+PROPERTIES_CONFIG_RABBITMQ_SERVICE_EXCHANGE_NAME = "exchange_name"
+PROPERTIES_CONFIG_RABBITMQ_SERVICE_EXCHANGE_TYPE = "exchange_type"
+PROPERTIES_CONFIG_RABBITMQ_SERVICE_QUEUE = "queue"
+PROPERTIES_CONFIG_RABBITMQ_SERVICE_ROUTING_KEY = "routing_key"
 
 # Context Requests
 ATTRIBUTES_NAME = u'name'
 ATTRIBUTES_TYPE = u'type'
 ATTRIBUTES_VALUE = u'contextValue'
+
+# Configuration constants
+FACTS_DEFAULT_WINDOW_SIZE = 2

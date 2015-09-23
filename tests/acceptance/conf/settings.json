@@ -7,7 +7,9 @@
         "host": "1.2.3.4",
         "port": "5000",
         "resource": "/v1.0",
-        "os_tenant_id": "00000000000000000000000000000000"
+        "os_tenant_id": "00000000000000000000000000000000",
+        "facts_grace_period": 10
+
     },
     "cloto_service": {
         "protocol": "http",
@@ -18,5 +20,20 @@
         "os_password": "mypassword",
         "os_tenant_id": "00000000000000000000000000000000",
         "os_auth_url": "http://my-keystone:4731/v2.0"
+    },
+    "rabbitmq_service": {
+        "host": "1.2.3.4",
+        "port": "5672",
+        "user": "myrabbitmqusername",
+        "password": "myrabbitmqpassword",
+        "facts_messages": {
+          "exchange_name": "facts",
+          "exchange_type": "direct",
+          "queue": "facts"
+        },
+        "facts_window_size":{
+          "exchange_name": "windowsizes",
+          "routing_key": "windowsizes"
+        }
     }
 }

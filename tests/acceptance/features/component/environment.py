@@ -29,12 +29,16 @@ from qautils.logger.logger_utils import get_logger
 from qautils.configuration.configuration_utils import set_up_project
 from fiwarefacts_client.client import FactsClient
 from fiwarecloto_client.client import ClotoClient
+from commons.rabbit_utils import RabbitMQConsumer, RabbitMQPublisher
 import qautils.configuration.configuration_utils as configuration_utils
+from fiwarefacts_client.window_size_model_utils import get_window_size_rabbitmq_message
 from qautils.configuration.configuration_properties import PROPERTIES_CONFIG_SERVICE_PROTOCOL, \
     PROPERTIES_CONFIG_SERVICE_RESOURCE, PROPERTIES_CONFIG_SERVICE_PORT, PROPERTIES_CONFIG_SERVICE_HOST, \
     PROPERTIES_CONFIG_SERVICE_OS_USERNAME, PROPERTIES_CONFIG_SERVICE_OS_PASSWORD, \
-    PROPERTIES_CONFIG_SERVICE_OS_TENANT_ID, PROPERTIES_CONFIG_SERVICE_OS_AUTH_URL
-from commons.constants import PROPERTIES_CONFIG_FACTS_SERVICE, PROPERTIES_CONFIG_CLOTO_SERVICE
+    PROPERTIES_CONFIG_SERVICE_OS_TENANT_ID, PROPERTIES_CONFIG_SERVICE_OS_AUTH_URL, PROPERTIES_CONFIG_SERVICE_USER, \
+    PROPERTIES_CONFIG_SERVICE_PASSWORD
+from commons.constants import *  # All custom constants are used in this file.
+import time
 
 
 __logger__ = get_logger(__name__)
@@ -46,6 +50,10 @@ def before_all(context):
     __logger__.info("Setting UP acceptance test project ")
 
     set_up_project()  # Load setting using 'qautils.configuration.configuration_utils'
+
+    # Save tenantId
+    context.tenant_id = \
+        configuration_utils.config[PROPERTIES_CONFIG_CLOTO_SERVICE][PROPERTIES_CONFIG_SERVICE_OS_TENANT_ID]
 
     # Create REST Clients
     context.facts_client = FactsClient(
@@ -80,10 +88,60 @@ def before_scenario(context, scenario):
     context.context_elements = dict()
     context.response = None
 
+    # Init RabbitMQ consumer
+    context.rabbitmq_consumer = RabbitMQConsumer(
+        amqp_host=configuration_utils.config[PROPERTIES_CONFIG_RABBITMQ_SERVICE][PROPERTIES_CONFIG_SERVICE_HOST],
+        amqp_port=configuration_utils.config[PROPERTIES_CONFIG_RABBITMQ_SERVICE][PROPERTIES_CONFIG_SERVICE_PORT],
+        amqp_user=configuration_utils.config[PROPERTIES_CONFIG_RABBITMQ_SERVICE][PROPERTIES_CONFIG_SERVICE_USER],
+        amqp_password=configuration_utils.config[PROPERTIES_CONFIG_RABBITMQ_SERVICE][PROPERTIES_CONFIG_SERVICE_PASSWORD])
+
+    facts_message_config = \
+        configuration_utils.config[PROPERTIES_CONFIG_RABBITMQ_SERVICE][PROPERTIES_CONFIG_RABBITMQ_SERVICE_FACTS_MESSAGES]
+
+    context.rabbitmq_consumer.exchange = \
+        facts_message_config[PROPERTIES_CONFIG_RABBITMQ_SERVICE_EXCHANGE_NAME]
+
+    context.rabbitmq_consumer.exchange_type = \
+        facts_message_config[PROPERTIES_CONFIG_RABBITMQ_SERVICE_EXCHANGE_TYPE]
+
+    context.rabbitmq_consumer.queue = \
+        facts_message_config[PROPERTIES_CONFIG_RABBITMQ_SERVICE_QUEUE]
+
+    # Init RabbitMQ publisher
+    context.rabbitmq_publisher = RabbitMQPublisher(
+        amqp_host=configuration_utils.config[PROPERTIES_CONFIG_RABBITMQ_SERVICE][PROPERTIES_CONFIG_SERVICE_HOST],
+        amqp_port=configuration_utils.config[PROPERTIES_CONFIG_RABBITMQ_SERVICE][PROPERTIES_CONFIG_SERVICE_PORT],
+        amqp_user=configuration_utils.config[PROPERTIES_CONFIG_RABBITMQ_SERVICE][PROPERTIES_CONFIG_SERVICE_USER],
+        amqp_password=configuration_utils.config[PROPERTIES_CONFIG_RABBITMQ_SERVICE][PROPERTIES_CONFIG_SERVICE_PASSWORD])
+
+    facts_window_size_config = \
+        configuration_utils.config[PROPERTIES_CONFIG_RABBITMQ_SERVICE][PROPERTIES_CONFIG_RABBITMQ_SERVICE_WINDOW_SIZE]
+
+    context.rabbitmq_publisher.exchange = \
+        facts_window_size_config[PROPERTIES_CONFIG_RABBITMQ_SERVICE_EXCHANGE_NAME]
+
+    context.rabbitmq_publisher.routing_key = \
+        facts_window_size_config[PROPERTIES_CONFIG_RABBITMQ_SERVICE_ROUTING_KEY]
+
+    # Set default window size to 2 (FACTS)
+    message = get_window_size_rabbitmq_message(context.tenant_id, FACTS_DEFAULT_WINDOW_SIZE)
+    context.rabbitmq_publisher.send_message(message)
+
 
 def after_scenario(context, scenario):
 
     __logger__.info("********** END SCENARIO **********")
+
+    # Close RabbitMQ consumer (if initiated)
+    context.rabbitmq_consumer.stop()
+    context.rabbitmq_consumer.close_connection()
+
+    # Wait for grace period defined (FACTS component) to delete all stored facts.
+    grace_period = \
+        configuration_utils.config[PROPERTIES_CONFIG_FACTS_SERVICE][PROPERTIES_CONFIG_FACTS_SERVICE_GRACE_PERIOD]
+
+    __logger__.info("Explicit wait for FACTS grace period: %d seconds", grace_period)
+    time.sleep(grace_period)
 
 
 def after_feature(context, feature):
