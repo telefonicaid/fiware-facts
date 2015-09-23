@@ -185,8 +185,8 @@ def process_request(request, tenantid, serverid):
     data.insert(len(data), net)
 
     # fix the first value of the list with the server identity
-    data.insert(0, str(serverid))
-
+    data.insert(0, str(serverid)
+)
     # fix the last value with the current date and time
     data.insert(len(fact_attributes) - 1, datetime.datetime.today().isoformat())
 
@@ -212,7 +212,8 @@ def process_request(request, tenantid, serverid):
     if len(lo) != 0:
         try:
             rabbit = myqueue()
-
+            if len(lo) == 1:
+                lo.data = lo.data[0]
             message = "{\"serverId\": \"%s\", \"cpu\": %s, \"mem\": %s, \"hdd\": %s, \"net\": %s, \"time\": \"%s\"}" \
                       % (lo.data[0][1:-1], lo.data[1], lo.data[2], lo.data[3], lo.data[4], lo.data[5])
 
