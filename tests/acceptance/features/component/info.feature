@@ -9,5 +9,5 @@ Feature: Get 'fiware-facts' service info
   Scenario: Get info from Fiware-Facts service.
     Given the fiware-facts service properly deployed
     When  I request the service info
-    Then  the HTTP "200" is returned
+    Then  I receive a HTTP "200" response code
     And   response contains "Up and running..."

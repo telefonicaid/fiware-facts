@@ -42,7 +42,7 @@ Feature: Receive context update requests
     When  a context notification is received for "<server_id>" with values:
           | cpuLoadPct | usedMemPct | freeSpacePct | netLoadPct |
           | <cpu>      | <memory>   | <disk>       | <network>  |
-    Then  the HTTP "200" is returned
+    Then  I receive a HTTP "200" response code
 
     Examples:
 
@@ -62,7 +62,7 @@ Feature: Receive context update requests
     When  a context notification is received for "<server_id>" with values:
           | cpuLoadPct | usedMemPct | freeSpacePct | netLoadPct |
           | <cpu>      | <memory>   | <disk>       | <network>  |
-    Then  the HTTP "200" is returned
+    Then  I receive a HTTP "200" response code
 
     Examples:
 
@@ -76,7 +76,7 @@ Feature: Receive context update requests
     When  a context notification is received for "not_existing_server" with values:
           | cpuLoadPct | usedMemPct | freeSpacePct | netLoadPct |
           | 0.73       | 030        | 0.1          | 0.15       |
-    Then  the HTTP "200" is returned
+    Then  I receive a HTTP "200" response code
 
   @test
   Scenario: Receive context when Tenant is not registered in CLOTO.
@@ -85,7 +85,7 @@ Feature: Receive context update requests
     When  a context notification is received for "qatest" with values:
           | cpuLoadPct | usedMemPct | freeSpacePct | netLoadPct |
           | 0.73       | 030        | 0.1          | 0.15       |
-    Then  the HTTP "404" is returned
+    Then  I receive a HTTP "404" response code
 
 
   @skip @bug @CLAUDIA-5524
@@ -95,7 +95,7 @@ Feature: Receive context update requests
     When  a context notification is received for "<server_id>" with values:
           | cpuLoadPct | usedMemPct | freeSpacePct | netLoadPct |
           | <cpu>      | <memory>   | <disk>       | <network>  |
-    Then  the HTTP "400" is returned
+    Then  I receive a HTTP "404" response code
 
     Examples:
 
@@ -129,7 +129,7 @@ Feature: Receive context update requests
     When  a context notification is received for "<server_id>" with values:
           | cpuLoadPct | usedMemPct | freeSpacePct | netLoadPct |
           | <cpu>      | <memory>   | <disk>       | <network>  |
-    Then  the HTTP "400" is returned
+    Then  I receive a HTTP "400" response code
 
     Examples:
 
@@ -153,7 +153,7 @@ Feature: Receive context update requests
     When  a context notification is received for "qatest" with values:
           | cpuLoadPct | usedMemPct | freeSpacePct | netLoadPct |
           | 0.73       | 030        | 0.1          | 0.15       |
-    Then  the HTTP "400" is returned
+    Then  I receive a HTTP "400" response code
 
     Examples:
 

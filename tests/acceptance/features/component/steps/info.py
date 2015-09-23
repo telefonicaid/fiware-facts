@@ -44,7 +44,7 @@ def i_request_the_service_info(context):
     context.response = context.facts_client.get_server_info()
 
 
-@step(u'the HTTP "(?P<status_code>.*)" is returned')
+@step(u'I receive a HTTP "(?P<status_code>.*)" response code')
 def http_code_is_returned(context, status_code):
 
     assert_that(str(context.response.status_code), is_(status_code),

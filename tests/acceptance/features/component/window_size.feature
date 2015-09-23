@@ -264,7 +264,7 @@ Feature: Update window size.
     And   the following notifications are received for "qatest" with values:
           | cpuLoadPct | usedMemPct | freeSpacePct | netLoadPct |
           | 1.0        | 1.0        | 1.0          | 1.0        |
-    Then  "2" notification is sent to RabbitMQ
+    Then  "2" notifications are sent to RabbitMQ
     And   the message sent to RabbitMQ has got the following monitoring attributes:
           | serverId   | cpu        | mem          | hdd        | net      |
           | qatest     | 0.6        | 0.6          | 0.6        | 0.6      |
