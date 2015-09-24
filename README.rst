@@ -88,6 +88,7 @@ To install this module you have to install some components:
 - Fiware-cloto module (https://github.com/telefonicaid/fiware-cloto)
 - Redis 2.9.1 or above
 - RabbitMQ Server 3.3.0 or above (http://www.rabbitmq.com/download.html)
+- MySQL 5.6.14 or above (http://dev.mysql.com/downloads/mysql/)
 
 `Top`__.
 
@@ -165,7 +166,16 @@ of the file:
 
     gunicorn facts.server:app -b $IP:5000 --env FACTS_SETTINGS_FILE=/home/user/fiware-facts.cfg
 
+NOTE: if you want to see gunicorn log if something is going wrong, you could execute the command before adding
+``--log-file=-`` at the end of the command. This option will show the logs in your prompt.
 
+
+Finally, ensure that you create a folder for logs ``/var/log/fiware-facts/`` (by default), with the right permissions to write
+in that folder.
+
+::
+
+    mkdir -m /var/log/fiware-facts
 
 `Top`__.
 
