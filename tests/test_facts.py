@@ -97,12 +97,9 @@ class MyTest(MyAppTest):
 
         req.add_header('Content-Type', 'application/json')
 
-        try:
-            response = self.app.post(self.url, json.dumps(data))
-
-        except (urllib2.HTTPError), err:
-            self.assertEqual(err.status_code, 500)
-            self.assertEqual(err.data, "INTERNAL SERVER ERROR")
+        response = self.app.post(self.url, json.dumps(data))
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.data, '{"error":"Bad request. Content-type is not application/json"}\n')
 
     def test_context_broker_message(self):
         """ Test that the POST operation over the API returns a valid response if message is built correctly.
