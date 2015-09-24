@@ -165,7 +165,8 @@ of the file:
 
     gunicorn facts.server:app -b $IP:5000 --env FACTS_SETTINGS_FILE=/home/user/fiware-facts.cfg
 
-
+NOTE: if you want to see gunicorn log if something is going wrong, you could execute the command before adding
+``--log-file=-`` at the end of the command. This option will show the logs in your prompt.
 
 `Top`__.
 
