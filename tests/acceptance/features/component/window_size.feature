@@ -8,7 +8,7 @@ Feature: Update window size.
 
   @happy_path
   Scenario: FACTS does not send messages when only one context notification is received (default window size value is 2).
-    Given the tenant-id registered in CLOTO component
+    Given the configured tenant-id is registered in CLOTO component
     And   RabbitMQ consumer is looking into the configured message bus
     And   the context notification has default context elements
     When  the following notifications are received for "qatest" with values:
@@ -19,7 +19,7 @@ Feature: Update window size.
 
   @happy_path @skip @bug @CLAUDIA-5528
   Scenario: FACTS sends one message when two context notifications are received (default window size value is 2). (1/4).
-    Given the tenant-id registered in CLOTO component
+    Given the configured tenant-id is registered in CLOTO component
     And   RabbitMQ consumer is looking into the configured message bus
     And   the context notification has default context elements
     When  the following notifications are received for "qatest" with values:
@@ -34,7 +34,7 @@ Feature: Update window size.
 
   @skip @bug @CLAUDIA-5528 @CLAUDIA-5531
   Scenario: FACTS sends two messages when three context notifications are received (default window size value is 2) (2/4).
-    Given the tenant-id registered in CLOTO component
+    Given the configured tenant-id is registered in CLOTO component
     And   RabbitMQ consumer is looking into the configured message bus
     And   the context notification has default context elements
     When  the following notifications are received for "qatest" with values:
@@ -51,7 +51,7 @@ Feature: Update window size.
 
   @skip @bug @CLAUDIA-5528 @CLAUDIA-5531
   Scenario: FACTS sends three messages when four context notifications are received (default window size value is 2) (3/4)
-    Given the tenant-id registered in CLOTO component
+    Given the configured tenant-id is registered in CLOTO component
     And   RabbitMQ consumer is looking into the configured message bus
     And   the context notification has default context elements
     When  the following notifications are received for "qatest" with values:
@@ -70,7 +70,7 @@ Feature: Update window size.
 
   @happy_path @skip @bug @CLAUDIA-5528 @CLAUDIA-5531 @CLAUDIA-5532
   Scenario: FACTS sends messages with different context attribute values (default window size value is 2)
-    Given the tenant-id registered in CLOTO component
+    Given the configured tenant-id is registered in CLOTO component
     And   RabbitMQ consumer is looking into the configured message bus
     And   the context notification has default context elements
     When  the following notifications are received for "qatest" with values:
@@ -91,7 +91,7 @@ Feature: Update window size.
 
   @skip @bug @CLAUDIA-5528 @CLAUDIA-5530 @CLAUDIA-5531 @CLAUDIA-5533
   Scenario: Window size is set set to 1.
-    Given the tenant-id registered in CLOTO component
+    Given the configured tenant-id is registered in CLOTO component
     And   RabbitMQ consumer is looking into the configured message bus
     And   the context notification has default context elements
     When  window size is set to "1"
@@ -110,7 +110,7 @@ Feature: Update window size.
 
   @skip @bug @CLAUDIA-5528 @CLAUDIA-5530 @CLAUDIA-5531
   Scenario: Window size is set set to 5. No messages (facts) are processed.
-    Given the tenant-id registered in CLOTO component
+    Given the configured tenant-id is registered in CLOTO component
     And   RabbitMQ consumer is looking into the configured message bus
     And   the context notification has default context elements
     When  window size is set to "5"
@@ -125,7 +125,7 @@ Feature: Update window size.
 
   @skip @bug @CLAUDIA-5528 @CLAUDIA-5530 @CLAUDIA-5531
   Scenario: Window size is set set to 6. One message (fact) is processed.
-    Given the tenant-id registered in CLOTO component
+    Given the configured tenant-id is registered in CLOTO component
     And   RabbitMQ consumer is looking into the configured message bus
     And   the context notification has default context elements
     When  window size is set to "6"
@@ -145,7 +145,7 @@ Feature: Update window size.
 
   @skip @bug @CLAUDIA-5528 @CLAUDIA-5530
   Scenario: Window size is changed while receiving facts (1/4) (default window size is 2)
-    Given the tenant-id registered in CLOTO component
+    Given the configured tenant-id is registered in CLOTO component
     And   RabbitMQ consumer is looking into the configured message bus
     And   the context notification has default context elements
     When  the following notifications are received for "qatest" with values:
@@ -160,7 +160,7 @@ Feature: Update window size.
 
   @happy_path @skip @bug @CLAUDIA-5528 @CLAUDIA-5530
   Scenario: Window size is changed while receiving facts (2/4) (default window size is 2)
-    Given the tenant-id registered in CLOTO component
+    Given the configured tenant-id is registered in CLOTO component
     And   RabbitMQ consumer is looking into the configured message bus
     And   the context notification has default context elements
     When  the following notifications are received for "qatest" with values:
@@ -179,7 +179,7 @@ Feature: Update window size.
 
   @skip @bug @CLAUDIA-5528 @CLAUDIA-5530
   Scenario: Window size is changed while receiving facts (3/4) (default window size is 2)
-    Given the tenant-id registered in CLOTO component
+    Given the configured tenant-id is registered in CLOTO component
     And   RabbitMQ consumer is looking into the configured message bus
     And   the context notification has default context elements
     And   window size is set to "3"
@@ -198,7 +198,7 @@ Feature: Update window size.
 
   @skip @bug @CLAUDIA-5528 @CLAUDIA-5530
   Scenario: Window size is changed while receiving facts (4/4) (default window size is 2)
-    Given the tenant-id registered in CLOTO component
+    Given the configured tenant-id is registered in CLOTO component
     And   RabbitMQ consumer is looking into the configured message bus
     And   the context notification has default context elements
     And   window size is set to "3"
@@ -218,7 +218,7 @@ Feature: Update window size.
 
   @happy_path @skip @bug @CLAUDIA-5528
   Scenario: Different server IDs are managed separately. No messages are processed by FACTS (default window size) (1/3)
-    Given the tenant-id registered in CLOTO component
+    Given the configured tenant-id is registered in CLOTO component
     And   RabbitMQ consumer is looking into the configured message bus
     And   the context notification has default context elements
     When  the following notifications are received for "qatest" with values:
@@ -231,7 +231,7 @@ Feature: Update window size.
 
   @happy_path @skip @bug @CLAUDIA-5528
   Scenario: Different server IDs are managed separately. One message is processed for a server (default window size) (2/3)
-    Given the tenant-id registered in CLOTO component
+    Given the configured tenant-id is registered in CLOTO component
     And   RabbitMQ consumer is looking into the configured message bus
     And   the context notification has default context elements
     When  the following notifications are received for "qatest" with values:
@@ -251,7 +251,7 @@ Feature: Update window size.
 
   @skip @bug @CLAUDIA-5528
   Scenario: Different server IDs are managed separately. One message is processed for each server (default window size) (3/3)
-    Given the tenant-id registered in CLOTO component
+    Given the configured tenant-id is registered in CLOTO component
     And   RabbitMQ consumer is looking into the configured message bus
     And   the context notification has default context elements
     When  the following notifications are received for "qatest" with values:

@@ -8,6 +8,7 @@
         "port": "5000",
         "resource": "/v1.0",
         "os_tenant_id": "00000000000000000000000000000000",
+        "os_secondary_tenant_id": "00000000000000000000000000000001",
         "facts_grace_period": 10
 
     },
@@ -28,8 +29,7 @@
         "password": "myrabbitmqpassword",
         "facts_messages": {
           "exchange_name": "facts",
-          "exchange_type": "direct",
-          "queue": "facts"
+          "exchange_type": "direct"
         },
         "facts_window_size":{
           "exchange_name": "windowsizes",

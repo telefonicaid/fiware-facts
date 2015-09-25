@@ -8,7 +8,7 @@ Feature: Receive context update requests
 
   @happy_path
   Scenario Outline: Receive a context update notification with all context attributes.
-    Given the tenant-id registered in CLOTO component
+    Given the configured tenant-id is registered in CLOTO component
     And   the context notification has default context elements
     When  a context notification is received for "<server_id>" with values:
           | cpuLoadPct | usedMemPct | freeSpacePct | netLoadPct |
@@ -37,7 +37,7 @@ Feature: Receive context update requests
 
 
   Scenario Outline: : Receive context with missing parameters. Notification must be processed.
-    Given the tenant-id registered in CLOTO component
+    Given the configured tenant-id is registered in CLOTO component
     And   the context notification has default context elements
     When  a context notification is received for "<server_id>" with values:
           | cpuLoadPct | usedMemPct | freeSpacePct | netLoadPct |
@@ -57,7 +57,7 @@ Feature: Receive context update requests
 
   @skip @bug @CLAUDIA-5519
   Scenario Outline: : Receive context with missing parameters (2). TO MERGE with the previous one when fixed.
-    Given the tenant-id registered in CLOTO component
+    Given the configured tenant-id is registered in CLOTO component
     And   the context notification has default context elements
     When  a context notification is received for "<server_id>" with values:
           | cpuLoadPct | usedMemPct | freeSpacePct | netLoadPct |
@@ -71,7 +71,7 @@ Feature: Receive context update requests
 
 
   Scenario: Receive context when subscription does not exist. Subscription must be processed.
-    Given the tenant-id registered in CLOTO component
+    Given the configured tenant-id is registered in CLOTO component
     And   the context notification has default context elements
     When  a context notification is received for "not_existing_server" with values:
           | cpuLoadPct | usedMemPct | freeSpacePct | netLoadPct |
@@ -90,7 +90,7 @@ Feature: Receive context update requests
 
   @skip @bug @CLAUDIA-5524
   Scenario Outline: Receive a context update notification with invalid context attribute values. Format.
-    Given the tenant-id registered in CLOTO component
+    Given the configured tenant-id is registered in CLOTO component
     And   the context notification has default context elements
     When  a context notification is received for "<server_id>" with values:
           | cpuLoadPct | usedMemPct | freeSpacePct | netLoadPct |
@@ -124,7 +124,7 @@ Feature: Receive context update requests
 
   @skip @bug @CLAUDIA-5524
   Scenario Outline: Receive a context update notification with invalid context attribute values. Value.
-    Given the tenant-id registered in CLOTO component
+    Given the configured tenant-id is registered in CLOTO component
     And   the context notification has default context elements
     When  a context notification is received for "<server_id>" with values:
           | cpuLoadPct | usedMemPct | freeSpacePct | netLoadPct |
@@ -146,7 +146,7 @@ Feature: Receive context update requests
 
   @skip @bug @CLAUDIA-5519
   Scenario Outline: Receive context notification with missing context elements.
-    Given the tenant-id registered in CLOTO component
+    Given the configured tenant-id is registered in CLOTO component
     And   the context notification has these context elements:
           | id         | isPattern  | type         |
           | <id>       | <isPattern>| <type>       |
