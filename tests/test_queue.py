@@ -37,6 +37,8 @@ class TestQueue(TestCase):
     pass
 
     def testConnectionNone(self):
+        """ Test if method fails when tries to publish a message with AMQP connection equal to None.
+        """
         queue = myqueue()
 
         queue.connection = None
@@ -49,6 +51,8 @@ class TestQueue(TestCase):
             self.assertEqual(expectedvalue, err.message)
 
     def testChannelNone(self):
+        """ Test if method fails when tries to publish a message with channel equal to None.
+        """
         queue = myqueue()
 
         queue.channel = None

@@ -225,3 +225,30 @@ class Testmylist(TestCase):
         result = result / len(p2)
 
         self.assertEqual(expectedvalue, result.data)
+
+    def testDeleteAQueue(self):
+        """test the insertion of a real data and delete the queue"""
+        mylist_instance = mylist()
+        fact = ['serverId', 1.0, 0.14, '2014-03-29T23:02:46.973949']
+        expected_initial_length = 2
+        expected_final_length = 0
+
+        p2 = list()
+
+        p2.insert(0, fact)
+        p2.insert(0, fact)
+
+        mylist_instance.insert(p2)
+
+        self.assertEqual(expected_initial_length, mylist_instance.__len__())
+
+        mylist_instance.delete()
+
+        self.assertEqual(expected_final_length, mylist_instance.__len__())
+
+    def testInsertAnEmptyQueue(self):
+        """test the insertion of a fake data with 0 items"""
+        mylist_instance = mylist()
+        expected_final = 0
+        response = mylist_instance.sum(0)
+        self.assertEqual(expected_final, response)
