@@ -26,22 +26,22 @@ __author__ = "@jframos"
 import behave
 from behave import step
 from hamcrest import assert_that, is_
-import uuid
 from qautils.dataset.dataset_utils import DatasetUtils
+from commons.step_helpers import send_context_notification_step_helper
 
 behave.use_step_matcher("re")
-dataset_utils = DatasetUtils()
+_dataset_utils = DatasetUtils()
 
 
-@step(u'the tenant-id registered in CLOTO component')
+@step(u'the configured tenant-id is registered in CLOTO component')
+@step(u'the main tenant-id configured is registered in CLOTO component')
 def tenant_id_is_registered_in_cloto(context):
 
     context.tenant_id_facts = context.tenant_id
 
-    print ("> A GET request is executed to CLOTO component, to init all data about that tenant in its system.")
+    print ("> A GET request is executed to CLOTO component, to init all data about that main tenant in its system.")
     _, response = context.cloto_client.get_tenant_id_resource_client().get_tenant_id(context.tenant_id_facts)
 
-    print ("> Assert: The tenant is registered in CLOTO component (response is OK)")
     assert_that(response.ok,
                 "TenantId '{}' for testing cannot be retrieved from CLOTO: Message: {}".format(context.tenant_id_facts,
                                                                                                response.text))
@@ -69,43 +69,18 @@ def the_context_notification_has_these_context_elements(context):
     context.context_elements = dict()
     for element in context.table.rows:
         data = element.as_dict()
-        data = dataset_utils.generate_fixed_length_params(data)
-        data = dataset_utils.remove_missing_params(data)
+        data = _dataset_utils.generate_fixed_length_params(data)
+        data = _dataset_utils.remove_missing_params(data)
         context.context_elements.update(data)
 
 
 @step(u'the following notifications are received for "(?P<server_id>.*)" with values')
 @step(u'a context notification is received for "(?P<server_id>.*)" with values')
+@step(u'the following notifications are received for "(?P<server_id>.*)" and main tenant-id with values')
+@step(u'a context notification is received for "(?P<server_id>.*)" and main tenant-id with values')
 def a_context_update_is_received(context, server_id):
 
-    # Prepare table data. Each element is a single request (context notification) to FACTS.
-    for element in context.table.rows:
-        testdata = dict()
-
-        auxdata = element.as_dict()
-        auxdata = dataset_utils.generate_fixed_length_params(auxdata)
-        auxdata = dataset_utils.remove_missing_params(auxdata)
-        testdata.update(auxdata)
-
-        attribute_list = list()
-        for data in testdata:
-            attribute_list.append({"name": data, "type": "string", "value": testdata[data]})
-
-        type = context.context_elements['type'] if 'type' in context.context_elements else None
-        is_pattern = context.context_elements['isPattern'] if 'isPattern' in context.context_elements else None
-        id = context.context_elements['id'] if 'id' in context.context_elements else None
-
-        print("> Send a context notification to FIWARE-FACTS.")
-        context.response = context.facts_client.send_monitored_data(subscription_id = str(uuid.uuid1()),
-                                                                    originator=server_id,
-                                                                    status_code="200",
-                                                                    details="OK",
-                                                                    type=type,
-                                                                    is_pattern=is_pattern,
-                                                                    id=id,
-                                                                    attribute_list=attribute_list,
-                                                                    tenant_id=context.tenant_id_facts,
-                                                                    server_id=server_id)
+    send_context_notification_step_helper(context, context.tenant_id_facts, server_id)
 
 
 @step(u'the context is updated')
