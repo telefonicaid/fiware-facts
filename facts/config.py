@@ -23,7 +23,7 @@
 #
 
 __author__ = 'fla'
-__version__ = '1.8.0'
+__version__ = '2.0.0'
 
 from ConfigParser import SafeConfigParser
 from sys import platform as _platform
