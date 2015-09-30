@@ -29,6 +29,7 @@ from hamcrest import assert_that, has_entries, has_length
 from fiwarefacts_client.window_size_model_utils import get_window_size_rabbitmq_message
 from commons.custom_asserts import is_message_in_consumer_list
 from qautils.dataset.dataset_utils import DatasetUtils
+import time
 
 _dataset_utils = DatasetUtils()
 behave.use_step_matcher("re")
@@ -80,3 +81,10 @@ def window_size_is_set(context, window_size):
 
     message = get_window_size_rabbitmq_message(context.tenant_id, window_size)
     context.rabbitmq_publisher.send_message(message)
+
+
+@step(u'I wait "(?P<seconds>\d*)" seconds')
+def explicit_wait(context, seconds):
+
+    print ("> Explicit wait: %s seconds" % seconds)
+    time.sleep(int(seconds))
