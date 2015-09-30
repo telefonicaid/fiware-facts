@@ -130,6 +130,7 @@ service properly::
             "port": "5000",
             "resource": "/v1.0",
             "os_tenant_id": "00000000000000000000000000000000",
+            "os_secondary_tenant_id": "00000000000000000000000000000001",
             "facts_grace_period": 10
         },
         "cloto_service": {
@@ -149,8 +150,7 @@ service properly::
             "password": "testing",
             "facts_messages": {
               "exchange_name": "facts",
-              "exchange_type": "direct",
-              "queue": "facts"
+              "exchange_type": "direct"
             },
             "facts_window_size":{
               "exchange_name": "windowsizes",
@@ -185,6 +185,7 @@ API endpoint
 - **port**: API port
 - **resource**: Base API URI
 
+
 OpenStack credentials
 ---------------------
 
@@ -194,6 +195,15 @@ OpenStack credentials
 - **os_user_domain_name**: Domain Name for the user (Keystone v3).
 - **os_user**: Username.
 - **os_password**: User password.
+
+
+Multi-Tenancy features
+----------------------
+
+It has been defined some scenarios to test the Multi-Tenancy support. To execute these test cases
+you will need to configure the property `os_secondary_tenant_id` to use a secondary tenant in such test. The
+configured user and password should have access to both 'normal' and secondary tenant.
+
 
 .. REFERENCES
 
