@@ -23,40 +23,66 @@ Given clauses
 
 ::
 
-   >> the fiware-facts service properly deployed
+    >> the fiware-facts service properly deployed
 
-   >> the tenant-id registered in CLOTO component
-   >> a no registered Tentand-Id in CLOTO component "(?P<tenant_id>.*)"
+    >> the configured tenant-id is registered in CLOTO component
+    >> the main tenant-id configured is registered in CLOTO component
+    >> the secondary tenant-id configured is registered in CLOTO component
 
-   >> the context notification has default context elements
-   >> the context notification has these context elements
+    >> a no registered Tentand-Id in CLOTO component "(?P<tenant_id>.*)"
 
-   >> RabbitMQ consumer is looking into the configured message bus
+    >> the context notification has default context elements
+    >> the context notification has these context elements
+
+    >> RabbitMQ consumer is looking into the configured message bus
+    >> a new secondary RabbitMQ consumer is looking into the configured message bus
+
 
 When clauses
 ------------
 
 ::
 
-   >> I request the service info
+    >> I request the service info
 
-   >> a context notification is received for "(?P<server_id>.*)" with values
-   >> the following notifications are received for "(?P<server_id>.*)" with values
+    >> a context notification is received for "(?P<server_id>.*)" with values
+    >> a context notification is received for "(?P<server_id>.*)" and main tenant-id with values
+    >> a context notification is received for "(?P<server_id>.*)" and secondary tenant-id with values
 
-   >> window size is set to "(?P<window_size>.*)"
+    >> the following notifications are received for "(?P<server_id>.*)" with values
+    >> the following notifications are received for "(?P<server_id>.*)" and main tenant-id with values
+    >> the following notifications are received for "(?P<server_id>.*)" and secondary tenant-id with values
+
+    >> window size is set to "(?P<window_size>.*)"
+    >> window size is set to "(?P<window_size>.*)" for the main tenant
+    >> window size is set to "(?P<window_size>.*)" for the secondary tenant
+
+    >> I wait "(?P<seconds>\d*)" seconds
 
 Then clauses
 ------------
 
 ::
 
-   >> the context is updated
-   >> the HTTP "(?P<status_code>.*)" is returned
-   >> response contains "(.*)
+    >> the context is updated
 
-   >> no messages have been received by RabbitMQ consumer
-   >> "(?P<number_of_notifications>.*)" notifications are sent to RabbitMQ
-   >> "(?P<number_of_notifications>.*)" notification is sent to RabbitMQ
-   >> the messages sent to RabbitMQ have got the following monitoring attributes
-   >> the message sent to RabbitMQ has got the following monitoring attributes
+    >> I receive a HTTP "(?P<status_code>.*)" response code
+    >> response contains "(.*)
 
+    >> "(?P<number_of_notifications>.*)" notifications are sent to RabbitMQ
+    >> "(?P<number_of_notifications>.*)" notification is sent to RabbitMQ
+    >> "(?P<number_of_notifications>.*)" notifications are sent to RabbitMQ with the main tenant
+    >> "(?P<number_of_notifications>.*)" notification is sent to RabbitMQ with the main tenant
+    >> "(?P<number_of_notifications>.*)" notifications are sent to RabbitMQ with the secondary tenant
+    >> "(?P<number_of_notifications>.*)" notification is sent to RabbitMQ with the secondary tenant
+
+    >> the messages sent to RabbitMQ have got the following monitoring attributes
+    >> the messages sent to RabbitMQ with the main tenant have got the following monitoring attributes
+    >> the messages sent to RabbitMQ with the secondary tenant have got the following monitoring attributes
+    >> the message sent to RabbitMQ has got the following monitoring attributes
+    >> the message sent to RabbitMQ with the main tenant has got the following monitoring attributes
+    >> the message sent to RabbitMQ with the secondary tenant has got the following monitoring attributes
+
+    >> no messages have been received by RabbitMQ consumer
+    >> no messages have been received by the main RabbitMQ consumer
+    >> no messages have been received by the secondary RabbitMQ consumer
