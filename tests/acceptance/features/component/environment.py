@@ -88,7 +88,12 @@ def before_scenario(context, scenario):
     context.context_elements = dict()
     context.response = None
 
-    # Init RabbitMQ consumer
+    # List of RabbitMQ Consumers for testing purposes. This list is necessary to be used as Multi-Tenancy test cases.
+    # By default, this list only will have information for the main tenant used in test cases. Additional RabbitMQ
+    # consumers should be added by each test case if they are needed.
+    context.rabbitmq_consumer_list = list()
+
+    # Init RabbitMQ consumer and append it on the list - Main tenantId
     context.rabbitmq_consumer = RabbitMQConsumer(
         amqp_host=configuration_utils.config[PROPERTIES_CONFIG_RABBITMQ_SERVICE][PROPERTIES_CONFIG_SERVICE_HOST],
         amqp_port=configuration_utils.config[PROPERTIES_CONFIG_RABBITMQ_SERVICE][PROPERTIES_CONFIG_SERVICE_PORT],
@@ -104,8 +109,7 @@ def before_scenario(context, scenario):
     context.rabbitmq_consumer.exchange_type = \
         facts_message_config[PROPERTIES_CONFIG_RABBITMQ_SERVICE_EXCHANGE_TYPE]
 
-    context.rabbitmq_consumer.queue = \
-        facts_message_config[PROPERTIES_CONFIG_RABBITMQ_SERVICE_QUEUE]
+    context.rabbitmq_consumer_list.append(context.rabbitmq_consumer)
 
     # Init RabbitMQ publisher
     context.rabbitmq_publisher = RabbitMQPublisher(
@@ -123,7 +127,7 @@ def before_scenario(context, scenario):
     context.rabbitmq_publisher.routing_key = \
         facts_window_size_config[PROPERTIES_CONFIG_RABBITMQ_SERVICE_ROUTING_KEY]
 
-    # Set default window size to 2 (FACTS)
+    # Set default window size to 2 (FACTS), for the main tenantId configured
     message = get_window_size_rabbitmq_message(context.tenant_id, FACTS_DEFAULT_WINDOW_SIZE)
     context.rabbitmq_publisher.send_message(message)
 
@@ -132,9 +136,13 @@ def after_scenario(context, scenario):
 
     __logger__.info("********** END SCENARIO **********")
 
-    # Close RabbitMQ consumer (if initiated)
-    context.rabbitmq_consumer.stop()
-    context.rabbitmq_consumer.close_connection()
+    # Close all RabbitMQ consumers (if initiated)
+    for consumer in context.rabbitmq_consumer_list:
+        consumer.stop()
+        consumer.close_connection()
+
+    # Close RabbitMQ publisher (if initiated)
+    context.rabbitmq_publisher.close()
 
     # Wait for grace period defined (FACTS component) to delete all stored facts.
     grace_period = \

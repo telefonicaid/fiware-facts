@@ -114,16 +114,6 @@ class RabbitMQConsumer(object):
 
     """
 
-    exchange = 'message'
-    exchange_type = 'direct'
-    queue = 'text'
-    routing_key = 'example.text'
-
-    # Received messages. Format example: [{'id': 1, 'body': 'body_messsage_1'},
-    #                                     {'id': 2, 'body': 'body_messsage_2'},
-    #                                      ...]
-    message_list = list()
-
     def __init__(self, amqp_host, amqp_port, amqp_user, amqp_password):
         """
         Create a new instance of the consumer class, passing in the AMQP
@@ -132,6 +122,16 @@ class RabbitMQConsumer(object):
         :param str amqp_url: The AMQP url to connect with
 
         """
+
+        self.exchange = 'message'
+        self.exchange_type = 'direct'
+        self.queue = None
+        self.routing_key = 'example.text'
+
+        # Received messages. Format example: [{'id': 1, 'body': 'body_messsage_1'},
+        #                                     {'id': 2, 'body': 'body_messsage_2'},
+        #                                      ...]
+        self.message_list = list()
 
         self._connection = None
         self._channel = None
@@ -224,8 +224,6 @@ class RabbitMQConsumer(object):
         Open a new channel with RabbitMQ by issuing the Channel.Open RPC
         command. When RabbitMQ responds that the channel is open, the
         on_channel_open callback will be invoked by pika.
-        After opening, channel is cleared
-
         """
 
         __logger__.info('Creating a new channel')
@@ -237,7 +235,6 @@ class RabbitMQConsumer(object):
         The channel object is passed in so we can make use of it.
 
         Since the channel is now open, we'll declare the exchange to use.
-        The channel will be cleared after opening: All buffered data will be deleted.
 
         :param pika.channel.Channel channel: The channel object
 
@@ -245,9 +242,6 @@ class RabbitMQConsumer(object):
 
         __logger__.debug('Channel opened')
         self._channel = channel
-
-        __logger__.debug('Clearing queue %s', self.queue)
-        self._channel.queue_delete(queue=self.queue)
 
         self.add_on_channel_close_callback()
         self.setup_exchange(self.exchange)
@@ -317,8 +311,12 @@ class RabbitMQConsumer(object):
 
         """
 
-        __logger__.debug('Declaring queue %s', queue_name)
-        self._channel.queue_declare(self.on_queue_declareok, queue_name)
+        if queue_name:
+            __logger__.debug('Declaring queue %s', queue_name)
+            self._channel.queue_declare(self.on_queue_declareok, queue_name)
+        else:
+            __logger__.debug('Declaring queue without name. We will use the created one for that exchange')
+            self._channel.queue_declare(self.on_queue_declareok)
 
     def on_queue_declareok(self, method_frame):
         """
@@ -332,6 +330,7 @@ class RabbitMQConsumer(object):
 
         """
 
+        self.queue = method_frame.method.queue
         __logger__.debug('Binding %s to %s with %s',
                     self.exchange, self.queue, self.routing_key)
         self._channel.queue_bind(self.on_bindok, self.queue,
@@ -408,8 +407,8 @@ class RabbitMQConsumer(object):
 
         """
 
-        __logger__.debug('Received message # %s: %s',
-                         basic_deliver.delivery_tag, body)
+        __logger__.debug('Received message #%s for %s : %s',
+                         basic_deliver.delivery_tag, self.routing_key, body)
         self.message_list.append({'id': int(basic_deliver.delivery_tag), 'body': body})
         self.acknowledge_message(basic_deliver.delivery_tag)
 
