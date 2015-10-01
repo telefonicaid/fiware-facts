@@ -1,6 +1,52 @@
 Changelog
 =========
 
+v1.8.0 (2015-09-29)
+-------------------
+
+New
+~~~
+
+- Adding more tests and improving the previous ones. [Guillermo Jimenez
+  Prieto]
+
+- Server checks if configuration file is complete or need more
+  configuration. [Guillermo Jimenez Prieto]
+
+- Configuration is now loaded from a cfg depending on the operative
+  system or it is recovered from a environment variable location.
+  [Guillermo Jimenez Prieto]
+
+- Adding unittests to test facts server. [Guillermo Jimenez Prieto]
+
+- Added more default values to configuration when server starts without
+  config file. [Guillermo Jimenez Prieto]
+
+- Moved config file to new location. [Guillermo Jimenez Prieto]
+
+Fix
+~~~
+
+- Adding more useful information to README. [Guillermo Jimenez Prieto]
+
+- Version is now into default config file. [Guillermo Jimenez Prieto]
+
+- Updated Readme file with all new changes. [Guillermo Jimenez Prieto]
+
+- Fixed installation using pip. Now users can install this component
+  from pipit repository. [Guillermo Jimenez Prieto]
+
+- Updated context broker data expected. [Guillermo Jimenez Prieto]
+
+v1.6.0 (2015-08-17)
+-------------------
+
+Fix
+~~~
+
+- Adding new dependencies to fix oslo errors with keystoneclient.
+  [Guillermo Jimenez Prieto]
+
 v1.5.0 (2015-07-28)
 -------------------
 
