@@ -170,8 +170,19 @@ def process_request(request, tenantid, serverid):
         value = item['value']
 
         # Obtain the information of used memory and cpu
-        if name == 'usedMemPct' or name == 'cpuLoadPct' or name == 'netLoadPct' or name == 'freeSpacePct':
-            data.insert(len(data), float(value))
+        if name == 'usedMemPct':
+            mem = float(value)
+        elif name == 'cpuLoadPct':
+            cpu = float(value)
+        elif name == 'netLoadPct':
+            net = float(value)
+        elif name == 'freeSpacePct':
+            hdd = float(value)
+
+    data.insert(len(data), cpu)
+    data.insert(len(data), mem)
+    data.insert(len(data), hdd)
+    data.insert(len(data), net)
 
     # fix the first value of the list with the server identity
     data.insert(0, str(serverid))
@@ -180,18 +191,18 @@ def process_request(request, tenantid, serverid):
     data.insert(len(fact_attributes) - 1, datetime.datetime.today().isoformat())
 
     # Check data coherency of time stamps
-    if len(mredis.range(tenantid, serverid)) > 2:
+    if len(mredis.range(tenantid, serverid)) >= 2:
         mredis.check_time_stamps(tenantid, serverid, mredis.range(tenantid, serverid), data)
-
-    # Insert the result into the queue system
-    mredis.insert(tenantid, serverid, data)
-    logging.info(data)
 
     # Get the windowsize for the tenant from a redis queue
     windowsize = mredis.get_windowsize(tenantid)
     if windowsize == []:
         windowsize = myClotoDBClient.get_window_size(tenantid)
         mredis.insert_window_size(tenantid, windowsize)
+
+     # Insert the result into the queue system
+    mredis.insert(tenantid, serverid, data)
+    logging.info(data)
 
     # If the queue has the number of facts defined by the windows size, it returns the
     # last window-size values (range) and calculates the media of them (in terms of memory and cpu)
@@ -201,7 +212,8 @@ def process_request(request, tenantid, serverid):
     if len(lo) != 0:
         try:
             rabbit = myqueue()
-
+            if len(lo) == 1:
+                lo.data = lo.data[0]
             message = "{\"serverId\": \"%s\", \"cpu\": %s, \"mem\": %s, \"hdd\": %s, \"net\": %s, \"time\": \"%s\"}" \
                       % (lo.data[0][1:-1], lo.data[1], lo.data[2], lo.data[3], lo.data[4], lo.data[5])
 
@@ -286,7 +298,7 @@ def windowsize_updater():
                 logging.info("received fact: %s" % body)
                 tenantid = body.split(" ")[0]
                 windowsize = body.split(" ")[1]
-                mredis.insert_window_size(tenantid, windowsize)
+                mredis.insert_window_size(tenantid, int(windowsize))
 
             except ValueError:
                 logging.info("receiving an invalid body: " + body)
