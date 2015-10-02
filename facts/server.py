@@ -286,7 +286,7 @@ def windowsize_updater():
                 logging.info("received fact: %s" % body)
                 tenantid = body.split(" ")[0]
                 windowsize = body.split(" ")[1]
-                mredis.insert_window_size(tenantid, windowsize)
+                mredis.insert_window_size(tenantid, int(windowsize))
 
             except ValueError:
                 logging.info("receiving an invalid body: " + body)
