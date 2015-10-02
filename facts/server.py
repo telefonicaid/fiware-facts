@@ -180,7 +180,7 @@ def process_request(request, tenantid, serverid):
     data.insert(len(fact_attributes) - 1, datetime.datetime.today().isoformat())
 
     # Check data coherency of time stamps
-    if len(mredis.range(tenantid, serverid)) > 2:
+    if len(mredis.range(tenantid, serverid)) >= 2:
         mredis.check_time_stamps(tenantid, serverid, mredis.range(tenantid, serverid), data)
 
     # Insert the result into the queue system
@@ -286,7 +286,7 @@ def windowsize_updater():
                 logging.info("received fact: %s" % body)
                 tenantid = body.split(" ")[0]
                 windowsize = body.split(" ")[1]
-                mredis.insert_window_size(tenantid, windowsize)
+                mredis.insert_window_size(tenantid, int(windowsize))
 
             except ValueError:
                 logging.info("receiving an invalid body: " + body)
