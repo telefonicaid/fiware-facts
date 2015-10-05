@@ -65,7 +65,7 @@ class myredis(object):
         :return               This operation does not return anything except when the data
                               is no list or the number of element is not equal to 4.
         """
-        windowsize = self.get_windowsize()
+        windowsize = self.get_windowsize(tenantid)
         if isinstance(windowsize, list) and len(windowsize) == 1:
             windowsize = int(windowsize[0])
         if isinstance(data, list) and len(data) == len(fact_attributes):
