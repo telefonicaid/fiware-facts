@@ -17,7 +17,7 @@ Feature: Update window size.
     Then  no messages have been received by RabbitMQ consumer
 
 
-  @happy_path @skip @bug @CLAUDIA-5528
+  @happy_path
   Scenario: FACTS sends one message when two context notifications are received (default window size value is 2). (1/4).
     Given the configured tenant-id is registered in CLOTO component
     And   RabbitMQ consumer is looking into the configured message bus
@@ -32,7 +32,6 @@ Feature: Update window size.
           | qatest     | 0.4        | 0.4          | 0.4        | 0.4      |
 
 
-  @skip @bug @CLAUDIA-5528 @CLAUDIA-5531
   Scenario: FACTS sends two messages when three context notifications are received (default window size value is 2) (2/4).
     Given the configured tenant-id is registered in CLOTO component
     And   RabbitMQ consumer is looking into the configured message bus
@@ -49,7 +48,6 @@ Feature: Update window size.
           | qatest     | 0.8        | 0.8          | 0.8        | 0.8      |
 
 
-  @skip @bug @CLAUDIA-5528 @CLAUDIA-5531
   Scenario: FACTS sends three messages when four context notifications are received (default window size value is 2) (3/4)
     Given the configured tenant-id is registered in CLOTO component
     And   RabbitMQ consumer is looking into the configured message bus
@@ -68,7 +66,7 @@ Feature: Update window size.
           | qatest     | 1.0        | 1.0          | 1.0        | 1.0      |
 
 
-  @happy_path @skip @bug @CLAUDIA-5528 @CLAUDIA-5531 @CLAUDIA-5532
+  @happy_path
   Scenario: FACTS sends messages with different context attribute values (default window size value is 2)
     Given the configured tenant-id is registered in CLOTO component
     And   RabbitMQ consumer is looking into the configured message bus
@@ -84,12 +82,11 @@ Feature: Update window size.
     And   the messages sent to RabbitMQ have got the following monitoring attributes:
           | serverId   | cpu        | mem          | hdd        | net      |
           | qatest     | 0.2        | 0.4          | 0.4        | 0.4      |
-          | qatest     | 0.8        | 0.6          | 0.8        | 0.8      |
-          | qatest     | 1.0        | 1.0          | 0.7        | 1.0      |
-          | qatest     | 0.5        | 0.5          | 0.5        | 1.0      |
+          | qatest     | 0.6        | 0.6          | 0.8        | 0.8      |
+          | qatest     | 1.0        | 0.8          | 0.6        | 1.0      |
+          | qatest     | 0.5        | 0.5          | 0.1        | 1.0      |
 
 
-  @skip @bug @CLAUDIA-5528 @CLAUDIA-5530 @CLAUDIA-5531 @CLAUDIA-5533
   Scenario: Window size is set set to 1.
     Given the configured tenant-id is registered in CLOTO component
     And   RabbitMQ consumer is looking into the configured message bus
@@ -108,7 +105,6 @@ Feature: Update window size.
           | qatest     | 0.4        | 0.4          | 0.4        | 0.4      |
 
 
-  @skip @bug @CLAUDIA-5528 @CLAUDIA-5530 @CLAUDIA-5531
   Scenario: Window size is set set to 5. No messages (facts) are processed.
     Given the configured tenant-id is registered in CLOTO component
     And   RabbitMQ consumer is looking into the configured message bus
@@ -123,7 +119,6 @@ Feature: Update window size.
     Then  no messages have been received by RabbitMQ consumer
 
 
-  @skip @bug @CLAUDIA-5528 @CLAUDIA-5530 @CLAUDIA-5531
   Scenario: Window size is set set to 6. One message (fact) is processed.
     Given the configured tenant-id is registered in CLOTO component
     And   RabbitMQ consumer is looking into the configured message bus
@@ -143,7 +138,6 @@ Feature: Update window size.
           | qatest     | 0.5        | 0.5          | 0.5        | 0.5      |
 
 
-  @skip @bug @CLAUDIA-5528 @CLAUDIA-5530
   Scenario: Window size is changed while receiving facts (1/4) (default window size is 2)
     Given the configured tenant-id is registered in CLOTO component
     And   RabbitMQ consumer is looking into the configured message bus
@@ -158,7 +152,7 @@ Feature: Update window size.
     Then  no messages have been received by RabbitMQ consumer
 
 
-  @happy_path @skip @bug @CLAUDIA-5528 @CLAUDIA-5530
+  @happy_path
   Scenario: Window size is changed while receiving facts (2/4) (default window size is 2)
     Given the configured tenant-id is registered in CLOTO component
     And   RabbitMQ consumer is looking into the configured message bus
@@ -177,7 +171,6 @@ Feature: Update window size.
           | qatest     | 0.3        | 0.3          | 0.3        | 0.3      |
 
 
-  @skip @bug @CLAUDIA-5528 @CLAUDIA-5530
   Scenario: Window size is changed while receiving facts (3/4) (default window size is 2)
     Given the configured tenant-id is registered in CLOTO component
     And   RabbitMQ consumer is looking into the configured message bus
@@ -196,7 +189,6 @@ Feature: Update window size.
           | qatest     | 0.5        | 0.5          | 0.5        | 0.5      |
 
 
-  @skip @bug @CLAUDIA-5528 @CLAUDIA-5530
   Scenario: Window size is changed while receiving facts (4/4) (default window size is 2)
     Given the configured tenant-id is registered in CLOTO component
     And   RabbitMQ consumer is looking into the configured message bus
@@ -216,7 +208,7 @@ Feature: Update window size.
           | qatest     | 0.5        | 0.5          | 0.5        | 0.5      |
 
 
-  @happy_path @skip @bug @CLAUDIA-5528
+  @happy_path
   Scenario: Different server IDs are managed separately. No messages are processed by FACTS (default window size) (1/3)
     Given the configured tenant-id is registered in CLOTO component
     And   RabbitMQ consumer is looking into the configured message bus
@@ -229,7 +221,8 @@ Feature: Update window size.
           | 0.4        | 0.4        | 0.4          | 0.4        |
     Then  no messages have been received by RabbitMQ consumer
 
-  @happy_path @skip @bug @CLAUDIA-5528
+
+  @happy_path
   Scenario: Different server IDs are managed separately. One message is processed for a server (default window size) (2/3)
     Given the configured tenant-id is registered in CLOTO component
     And   RabbitMQ consumer is looking into the configured message bus
@@ -249,7 +242,6 @@ Feature: Update window size.
           | qatest     | 0.6        | 0.6          | 0.6        | 0.6      |
 
 
-  @skip @bug @CLAUDIA-5528
   Scenario: Different server IDs are managed separately. One message is processed for each server (default window size) (3/3)
     Given the configured tenant-id is registered in CLOTO component
     And   RabbitMQ consumer is looking into the configured message bus
