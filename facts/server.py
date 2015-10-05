@@ -191,7 +191,9 @@ def process_request(request, tenantid, serverid):
     data.insert(len(fact_attributes) - 1, datetime.datetime.today().isoformat())
 
     # Check data coherency of time stamps
-    if len(mredis.range(tenantid, serverid)) >= 2:
+    # +1 is needed because the fact is not already added to the queue.
+    # It checks that queue will have at least 2 facts.
+    if len(mredis.range(tenantid, serverid)) + 1 >= 2:
         mredis.check_time_stamps(tenantid, serverid, mredis.range(tenantid, serverid), data)
 
     # Get the windowsize for the tenant from a redis queue
