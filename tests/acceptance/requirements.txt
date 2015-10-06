@@ -6,3 +6,4 @@ oslo.utils==1.7.0
 PyHamcrest>=1.8.3
 git+https://github.com/qaenablers/python-qautils.git@v1.2.0
 pika==0.10.0
+behave==1.2.5
