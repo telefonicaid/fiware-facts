@@ -6,7 +6,7 @@ Feature: Signal Stability for fact notifications.
   in order to reset the grouping when the period between facts is higher than the configured one.
 
 
-  @happy_path @skip @bug @CLAUDIA-5528
+  @happy_path
   Scenario: Facts grouping by window size is reset when the time between facts is higher than the configured one (10 seconds by default) (1/3).
     Given the configured tenant-id is registered in CLOTO component
     And   RabbitMQ consumer is looking into the configured message bus
@@ -28,7 +28,6 @@ Feature: Signal Stability for fact notifications.
           | qatest     | 0.4        | 0.4          | 0.4        | 0.4      |
 
 
-  @skip @bug @CLAUDIA-5528 @CLAUDIA-5559
   Scenario: Facts grouping by window size is reset when the time between facts is higher than the configured one (10 seconds by default) (2/3).
     Given the configured tenant-id is registered in CLOTO component
     And   RabbitMQ consumer is looking into the configured message bus
@@ -46,7 +45,6 @@ Feature: Signal Stability for fact notifications.
     Then  no messages have been received by RabbitMQ consumer
 
 
-  @skip @bug @CLAUDIA-5528 @CLAUDIA-5559
   Scenario: Facts grouping by window size is reset when the time between facts is higher than the configured one (10 seconds by default) (3/3).
     Given the configured tenant-id is registered in CLOTO component
     And   RabbitMQ consumer is looking into the configured message bus

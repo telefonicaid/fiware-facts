@@ -6,7 +6,7 @@ Feature: Multi-Tenancy solution
   in order to group and send them to Fiware-CLOTO without Tenant interferences.
 
 
-  @happy_path @skip @bug @CLAUDIA-5528
+  @happy_path
   Scenario Outline: Facts are grouped separately between different Tenants. Message is sent only to a one of them (default window size)
     Given the main tenant-id configured is registered in CLOTO component
     And   the secondary tenant-id configured is registered in CLOTO component
@@ -33,7 +33,6 @@ Feature: Multi-Tenancy solution
           | qatest         | qatest2             |
 
 
-  @skip @bug @CLAUDIA-5528
   Scenario: Facts are grouped separately between different Tenants. Message is sent to both of them (default window size)
     Given the main tenant-id configured is registered in CLOTO component
     And   the secondary tenant-id configured is registered in CLOTO component
@@ -60,7 +59,6 @@ Feature: Multi-Tenancy solution
           | qatest2    | 0.5        | 0.5          | 0.5        | 0.5      |
 
 
-  @skip @bug @CLAUDIA-5528 @CLAUDIA-5530
   Scenario: Facts are grouped separately between different Tenants. Message is sent to both of them (default window size)
     Given the main tenant-id configured is registered in CLOTO component
     And   the secondary tenant-id configured is registered in CLOTO component
@@ -87,7 +85,7 @@ Feature: Multi-Tenancy solution
           | qatest2    | 0.5        | 0.5          | 0.5        | 0.5      |
 
 
-  @happy_path @skip @bug @CLAUDIA-5528 @CLAUDIA-5530 @test
+  @happy_path
   Scenario: Facts are grouped separately between different Tenants. Message is sent to both of them (default window size)
     Given the main tenant-id configured is registered in CLOTO component
     And   the secondary tenant-id configured is registered in CLOTO component
