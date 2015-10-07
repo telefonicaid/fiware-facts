@@ -47,18 +47,19 @@ class TestRedis(TestCase):
         p = myredis()
 
         expectedvalue = []
-        p.insert(serverid, tenantid, [1])
-        result = p.range(serverid, tenantid)
+        p.insert(tenantid, serverid, [1])
+        result = p.range(tenantid, serverid)
 
         self.assertEqual(expectedvalue, result)
 
     def testInsertListWithFiveElements(self):
         """testInsertListWithFiveElements should return a list with the element inserted"""
         p = myredis()
+        p.insert_window_size(tenantid, windowsize)
 
         expectedvalue = ["['', 1, 2, 3, 4, 5]"]
-        p.insert(serverid, tenantid, [serverid, 1, 2, 3, 4, 5])
-        result = p.range(serverid, tenantid)
+        p.insert(tenantid, serverid, [serverid, 1, 2, 3, 4, 5])
+        result = p.range(tenantid, serverid)
 
         self.assertEqual(expectedvalue, result)
 
@@ -67,19 +68,20 @@ class TestRedis(TestCase):
         p = myredis()
 
         expectedvalue = []
-        p.insert(serverid, tenantid, [serverid, 1, 2, 3, 4, 5, 6])
-        result = p.range(serverid, tenantid)
+        p.insert(tenantid, serverid, [serverid, 1, 2, 3, 4, 5, 6])
+        result = p.range(tenantid, serverid)
 
         self.assertEqual(expectedvalue, result)
 
     def testInsertTwoCorrectElements(self):
         """testInsertTwoElement should always return two element in the list"""
         p = myredis()
+        p.insert_window_size(tenantid, windowsize)
 
         expectedvalue = ["['', 1, 2, 3, 4, 5]", "['', 7, 8, 9, 10, 11]"]
-        p.insert(serverid, tenantid, [serverid, 1, 2, 3, 4, 5])
-        p.insert(serverid, tenantid, [serverid, 7, 8, 9, 10, 11])
-        result = p.range(serverid, tenantid)
+        p.insert(tenantid, serverid, [serverid, 1, 2, 3, 4, 5])
+        p.insert(tenantid, serverid, [serverid, 7, 8, 9, 10, 11])
+        result = p.range(tenantid, serverid)
 
         self.assertEqual(expectedvalue, result)
 
@@ -87,17 +89,18 @@ class TestRedis(TestCase):
         """testInsertGTFiveElement should always return five element if we have
         five or more than five element in the list"""
         p = myredis()
+        p.insert_window_size(tenantid, windowsize)
 
         expectedvalue = ["['', 6, 7, 8, 9, '10']", "['', 11, 12, 13, 14, '15']", "['', 16, 17, 18, 19, '20']",
                          "['', 21, 22, 23, 24, '25']", "['', 26, 27, 28, 29, '30']"]
 
-        p.insert(serverid, tenantid, [serverid, 1, 2, 3, 4, '5'])
-        p.insert(serverid, tenantid, [serverid, 6, 7, 8, 9, '10'])
-        p.insert(serverid, tenantid, [serverid, 11, 12, 13, 14, '15'])
-        p.insert(serverid, tenantid, [serverid, 16, 17, 18, 19, '20'])
-        p.insert(serverid, tenantid, [serverid, 21, 22, 23, 24, '25'])
-        p.insert(serverid, tenantid, [serverid, 26, 27, 28, 29, '30'])
-        result = p.range(serverid, tenantid)
+        p.insert(tenantid, serverid, [serverid, 1, 2, 3, 4, '5'])
+        p.insert(tenantid, serverid, [serverid, 6, 7, 8, 9, '10'])
+        p.insert(tenantid, serverid, [serverid, 11, 12, 13, 14, '15'])
+        p.insert(tenantid, serverid, [serverid, 16, 17, 18, 19, '20'])
+        p.insert(tenantid, serverid, [serverid, 21, 22, 23, 24, '25'])
+        p.insert(tenantid, serverid, [serverid, 26, 27, 28, 29, '30'])
+        result = p.range(tenantid, serverid)
 
         self.assertEqual(expectedvalue, result)
 
@@ -105,9 +108,11 @@ class TestRedis(TestCase):
         """testSumValores should return the sum of a list
          of values"""
         p = myredis()
+        p.insert_window_size(tenantid, windowsize)
+
         expected = [["''", 1.0, 2.0, 3.0, 4.0, '5']]
-        p.insert(serverid, tenantid, [serverid, 1, 2, 3, 4, 5])
-        result = p.sum(p.range(serverid, tenantid))
+        p.insert(tenantid, serverid, [serverid, 1, 2, 3, 4, 5])
+        result = p.sum(p.range(tenantid, serverid))
 
         self.assertEqual(expected, result.data)
 
@@ -116,7 +121,7 @@ class TestRedis(TestCase):
          of values"""
         p = myredis()
         expected = '[]'
-        result = p.sum(p.range(serverid, tenantid))
+        result = p.sum(p.range(tenantid, serverid))
 
         self.assertEqual(expected, result)
 
@@ -124,15 +129,16 @@ class TestRedis(TestCase):
         """testSumValores should return the sum of a list
          of values"""
         p = myredis()
+        p.insert_window_size(tenantid, windowsize)
 
         expected = ["''", 4, 8, 12, 16, '5']
 
-        p.insert(serverid, tenantid, [serverid, 1, 2, 3, 4, 5])
-        p.insert(serverid, tenantid, [serverid, 1, 2, 3, 4, 5])
-        p.insert(serverid, tenantid, [serverid, 1, 2, 3, 4, 5])
-        p.insert(serverid, tenantid, [serverid, 1, 2, 3, 4, 5])
+        p.insert(tenantid, serverid, [serverid, 1, 2, 3, 4, 5])
+        p.insert(tenantid, serverid, [serverid, 1, 2, 3, 4, 5])
+        p.insert(tenantid, serverid, [serverid, 1, 2, 3, 4, 5])
+        p.insert(tenantid, serverid, [serverid, 1, 2, 3, 4, 5])
 
-        li = p.range(serverid, tenantid)
+        li = p.range(tenantid, serverid)
 
         result = p.sum(li)
 
@@ -142,19 +148,20 @@ class TestRedis(TestCase):
         """testSumValores should return the sum of the last
         5 values of the list of values"""
         p = myredis()
+        p.insert_window_size(tenantid, windowsize)
 
         expected = ["''", 1111100, 2222200, 3333300, 4444400, '5000000']
 
-        p.insert(serverid, tenantid, [serverid, 1, 2, 3, 4, '5'])
-        p.insert(serverid, tenantid, [serverid, 10, 20, 30, 40, '50'])
+        p.insert(tenantid, serverid, [serverid, 1, 2, 3, 4, '5'])
+        p.insert(tenantid, serverid, [serverid, 10, 20, 30, 40, '50'])
 
-        p.insert(serverid, tenantid, [serverid, 100,         200,     300, 400,        500])
-        p.insert(serverid, tenantid, [serverid, 1000,       2000,    3000, 4000,      5000])
-        p.insert(serverid, tenantid, [serverid, 10000,     20000,   30000, 40000,     50000])
-        p.insert(serverid, tenantid, [serverid, 100000,   200000,  300000, 400000,   500000])
-        p.insert(serverid, tenantid, [serverid, 1000000, 2000000, 3000000, 4000000, 5000000])
+        p.insert(tenantid, serverid, [serverid, 100,         200,     300, 400,        500])
+        p.insert(tenantid, serverid, [serverid, 1000,       2000,    3000, 4000,      5000])
+        p.insert(tenantid, serverid, [serverid, 10000,     20000,   30000, 40000,     50000])
+        p.insert(tenantid, serverid, [serverid, 100000,   200000,  300000, 400000,   500000])
+        p.insert(tenantid, serverid, [serverid, 1000000, 2000000, 3000000, 4000000, 5000000])
 
-        li = p.range(serverid, tenantid)
+        li = p.range(tenantid, serverid)
 
         result = p.sum(li)
 
@@ -164,16 +171,17 @@ class TestRedis(TestCase):
         """ return the media of a list of 4 values with window size in a list
         """
         p = myredis()
+        p.insert_window_size(tenantid, windowsize)
 
         expected = ["''", 10.8, 11.8, 12.8, 14, '25']
 
-        p.insert(serverid, tenantid, [serverid, 0, 1, 2, 4, 5])
-        p.insert(serverid, tenantid, [serverid, 6, 7, 8, 9, 10])
-        p.insert(serverid, tenantid, [serverid, 11, 12, 13, 14, 15])
-        p.insert(serverid, tenantid, [serverid, 16, 17, 18, 19, 20])
-        p.insert(serverid, tenantid, [serverid, 21, 22, 23, 24, 25])
+        p.insert(tenantid, serverid, [serverid, 0, 1, 2, 4, 5])
+        p.insert(tenantid, serverid, [serverid, 6, 7, 8, 9, 10])
+        p.insert(tenantid, serverid, [serverid, 11, 12, 13, 14, 15])
+        p.insert(tenantid, serverid, [serverid, 16, 17, 18, 19, 20])
+        p.insert(tenantid, serverid, [serverid, 21, 22, 23, 24, 25])
 
-        li = p.range(serverid, tenantid)
+        li = p.range(tenantid, serverid)
 
         result = p.media(li, windowsize_list)
 
@@ -189,16 +197,17 @@ class TestRedis(TestCase):
 
         p2 = mylist.parselist(p1)
 
-        p.insert(serverid, tenantid, p2)
-        p.insert(serverid, tenantid, p2)
+        p.insert(tenantid, serverid, p2)
+        p.insert(tenantid, serverid, p2)
 
-        result = p.media(p.range(serverid, tenantid), windowsize)
+        result = p.media(p.range(tenantid, serverid), windowsize)
 
         self.assertEqual(expected, result.data)
 
     def testRealData2(self):
         """Test with real data"""
         p = myredis()
+        p.insert_window_size(tenantid, windowsize)
 
         p1 = "[, 1.0, 0.14, 0.25, 0.30, '2014-03-29T19:18:25.784424']"
 
@@ -206,19 +215,20 @@ class TestRedis(TestCase):
 
         p2 = mylist.parselist(p1)
 
-        p.insert(serverid, tenantid, p2)
-        p.insert(serverid, tenantid, p2)
-        p.insert(serverid, tenantid, p2)
-        p.insert(serverid, tenantid, p2)
-        p.insert(serverid, tenantid, p2)
+        p.insert(tenantid, serverid, p2)
+        p.insert(tenantid, serverid, p2)
+        p.insert(tenantid, serverid, p2)
+        p.insert(tenantid, serverid, p2)
+        p.insert(tenantid, serverid, p2)
 
-        result = p.media(p.range(serverid, tenantid), windowsize)
+        result = p.media(p.range(tenantid, serverid), windowsize)
 
         self.assertEqual(expected, result.data)
 
     def testCheckTimeStamp(self):
         """Test if the time stamp of the new element is valid comparing to the last element."""
         p = myredis()
+        p.insert_window_size(tenantid, windowsize)
 
         p1 = "['serverId', 1.0, 0.14, 0.25, 0.30, '2014-03-29T19:18:25.784424']"
         p2 = "['serverId', 1.0, 0.14, 0.25, 0.30, '2014-03-29T19:18:30.784424']"
@@ -228,18 +238,19 @@ class TestRedis(TestCase):
 
         expected = True
 
-        p.insert(serverid, tenantid, mylist.parselist(p1))
-        p.insert(serverid, tenantid, mylist.parselist(p2))
-        p.insert(serverid, tenantid, mylist.parselist(p3))
-        p.insert(serverid, tenantid, mylist.parselist(p4))
+        p.insert(tenantid, serverid, mylist.parselist(p1))
+        p.insert(tenantid, serverid, mylist.parselist(p2))
+        p.insert(tenantid, serverid, mylist.parselist(p3))
+        p.insert(tenantid, serverid, mylist.parselist(p4))
 
-        result = p.check_time_stamps(tenantid, serverid, p.range(serverid, tenantid), p5)
+        result = p.check_time_stamps(tenantid, serverid, p.range(tenantid, serverid), p5)
 
         self.assertEqual(expected, result)
 
     def testCheckTimeStampInvalid(self):
         """Test if the time stamp of the new element is invalid comparing to the last element."""
         p = myredis()
+        p.insert_window_size(tenantid, windowsize)
 
         p1 = "['serverId', 1.0, 0.14, 0.25, 0.30, '2014-03-29T19:18:25.784424']"
         p2 = "['serverId', 1.0, 0.14, 0.25, 0.30, '2014-03-29T19:18:30.784424']"
@@ -249,12 +260,12 @@ class TestRedis(TestCase):
 
         expected = False
 
-        p.insert(serverid, tenantid, mylist.parselist(p1))
-        p.insert(serverid, tenantid, mylist.parselist(p2))
-        p.insert(serverid, tenantid, mylist.parselist(p3))
-        p.insert(serverid, tenantid, mylist.parselist(p4))
+        p.insert(tenantid, serverid, mylist.parselist(p1))
+        p.insert(tenantid, serverid, mylist.parselist(p2))
+        p.insert(tenantid, serverid, mylist.parselist(p3))
+        p.insert(tenantid, serverid, mylist.parselist(p4))
 
-        result = p.check_time_stamps(tenantid, serverid, p.range(serverid, tenantid), p5)
+        result = p.check_time_stamps(tenantid, serverid, p.range(tenantid, serverid), p5)
 
         self.assertEqual(expected, result)
 
@@ -294,29 +305,31 @@ class TestRedis(TestCase):
     def testMultitenacyData(self):
         """Test with real data to check if multitenacy is working"""
         p = myredis()
+        p.insert_window_size(tenantid, windowsize)
+        p.insert_window_size(tenantid2, windowsize)
 
-        p1 = "[, 1.0, 0.14, 0.25, 0.30, '2014-03-29T19:18:25.784424']"
+        p1 = "[serverId, 1.0, 0.14, 0.25, 0.30, '2014-03-29T19:18:25.784424']"
         p2 = "[different_server_id, 2.0, 0.48, 0.25, 0.30, '2014-03-29T19:18:26.784424']"
 
-        expected = ["''", 1.0, 0.14, 0.25, 0.30, '2014-03-29T19:18:25.784424']
+        expected = ["'serverId'", 1.0, 0.14, 0.25, 0.30, '2014-03-29T19:18:25.784424']
         expected2 = ["'different_server_id'", 2.0, 0.48, 0.25, 0.30, '2014-03-29T19:18:26.784424']
 
         p11 = mylist.parselist(p1)
         p21 = mylist.parselist(p2)
 
-        p.insert(serverid, tenantid, p11)
-        p.insert(serverid, tenantid, p11)
-        p.insert(serverid, tenantid, p11)
-        p.insert(serverid, tenantid, p11)
-        p.insert(serverid, tenantid, p11)
-        p.insert(serverid2, tenantid2, p21)
-        p.insert(serverid2, tenantid2, p21)
-        p.insert(serverid2, tenantid2, p21)
-        p.insert(serverid2, tenantid2, p21)
-        p.insert(serverid2, tenantid2, p21)
+        p.insert(tenantid, serverid, p11)
+        p.insert(tenantid, serverid, p11)
+        p.insert(tenantid, serverid, p11)
+        p.insert(tenantid, serverid, p11)
+        p.insert(tenantid, serverid, p11)
+        p.insert(tenantid2, serverid2, p21)
+        p.insert(tenantid2, serverid2, p21)
+        p.insert(tenantid2, serverid2, p21)
+        p.insert(tenantid2, serverid2, p21)
+        p.insert(tenantid2, serverid2, p21)
 
-        result = p.media(p.range(serverid, tenantid), windowsize)
-        result2 = p.media(p.range(serverid2, tenantid2), windowsize)
+        result = p.media(p.range(tenantid, serverid), windowsize)
+        result2 = p.media(p.range(tenantid2, serverid2), windowsize)
 
         self.assertEqual(expected, result.data)
         self.assertEqual(expected2, result2.data)
