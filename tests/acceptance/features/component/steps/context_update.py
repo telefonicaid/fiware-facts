@@ -84,7 +84,6 @@ def a_context_update_is_received(context, server_id):
 
     send_context_notification_step_helper(context, context.tenant_id_facts, server_id)
 
-    #
     # Implicit Wait. We need to wait for facts processing after sending context notifications.
     time.sleep(IMPLICIT_WAIT_AFTER_NOTIFICATION)
 
