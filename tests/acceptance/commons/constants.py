@@ -51,3 +51,6 @@ ATTRIBUTES_VALUE = u'contextValue'
 
 # Configuration constants
 FACTS_DEFAULT_WINDOW_SIZE = 2
+
+# Test constants
+IMPLICIT_WAIT_AFTER_NOTIFICATION = 1  # Seconds.
