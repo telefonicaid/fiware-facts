@@ -36,6 +36,7 @@ Feature: Receive context update requests
       | qatest    | 1     | 0.8     | 0.1   | 0.151   |
 
 
+  @skip @bug @CLAUDIA-5519
   Scenario Outline: : Receive context with missing parameters. Notification must be processed.
     Given the configured tenant-id is registered in CLOTO component
     And   the context notification has default context elements
@@ -51,23 +52,8 @@ Feature: Receive context update requests
       | qatest    | 0.00            | [MISSING_PARAM] | 0.1             | 0.15              |
       | qatest    | 0.75            | 0.0             | [MISSING_PARAM] | 0.15              |
       | qatest    | 0.75            | 0.8             | 0.0             | [MISSING_PARAM]   |
-      #| qatest    | [MISSING_PARAM] | [MISSING_PARAM] | [MISSING_PARAM] | [MISSING_PARAM]   |
-      | qatest    | [MISSING_PARAM] | 0               | [MISSING_PARAM] | 0.15              |
-
-
-  @skip @bug @CLAUDIA-5519
-  Scenario Outline: : Receive context with missing parameters (2). TO MERGE with the previous one when fixed.
-    Given the configured tenant-id is registered in CLOTO component
-    And   the context notification has default context elements
-    When  a context notification is received for "<server_id>" with values:
-          | cpuLoadPct | usedMemPct | freeSpacePct | netLoadPct |
-          | <cpu>      | <memory>   | <disk>       | <network>  |
-    Then  I receive a HTTP "200" response code
-
-    Examples:
-
-      | server_id | cpu             | memory          | disk            | network           |
       | qatest    | [MISSING_PARAM] | [MISSING_PARAM] | [MISSING_PARAM] | [MISSING_PARAM]   |
+      | qatest    | [MISSING_PARAM] | 0               | [MISSING_PARAM] | 0.15              |
 
 
   Scenario: Receive context when subscription does not exist. Subscription must be processed.
