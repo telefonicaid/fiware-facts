@@ -28,6 +28,8 @@ from behave import step
 from hamcrest import assert_that, is_
 from qautils.dataset.dataset_utils import DatasetUtils
 from commons.step_helpers import send_context_notification_step_helper
+from commons.constants import IMPLICIT_WAIT_AFTER_NOTIFICATION
+import time
 
 behave.use_step_matcher("re")
 _dataset_utils = DatasetUtils()
@@ -81,6 +83,9 @@ def the_context_notification_has_these_context_elements(context):
 def a_context_update_is_received(context, server_id):
 
     send_context_notification_step_helper(context, context.tenant_id_facts, server_id)
+
+    # Implicit Wait. We need to wait for facts processing after sending context notifications.
+    time.sleep(IMPLICIT_WAIT_AFTER_NOTIFICATION)
 
 
 @step(u'the context is updated')
