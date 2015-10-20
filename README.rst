@@ -90,6 +90,16 @@ To install this module you have to install some components:
 - RabbitMQ Server 3.3.0 or above (http://www.rabbitmq.com/download.html)
 - MySQL 5.6.14 or above (http://dev.mysql.com/downloads/mysql/)
 
+Please, be sure you have installed mysql-devel package for development of MySQL applications.
+You should be able to install it from yum or apt-get package managers.
+
+Examples:
+
+.. code::
+
+    centos$ sudo yum install mysql-devel
+    ubuntu$ sudo apt-get install mysql-devel
+
 `Top`__.
 
 __ `FIWARE Policy Manager GE: Facts`_
