@@ -1,6 +1,42 @@
 Changelog
 =========
 
+v2.0.0 (2015-10-23)
+-------------------
+
+New
+~~~
+
+- MySQL-devel package is now specified as prerequisite in the
+  installation guide. [Guillermo Jimenez Prieto]
+
+Fix
+~~~
+
+- Fixed log message when a windowsize is received. [Guillermo Jimenez
+  Prieto]
+
+- Fixing unit test errors. [Guillermo Jimenez Prieto]
+
+- Fixing behavior in the condition. [Guillermo Jimenez Prieto]
+
+- Fixing bug during insert windowsize operation. [Guillermo Jimenez
+  Prieto]
+
+- Fixed server crashes when windowsize is equal to one. [Guillermo
+  Jimenez Prieto]
+
+- Improved data parsing from context broker. [Guillermo Jimenez Prieto]
+
+- Fixing the number of facts stored into a reds queue. [Guillermo
+  Jimenez Prieto]
+
+- Fixing time stamp validation when windowsize is two. [Guillermo
+  Jimenez Prieto]
+
+- Fixing windowsize value before adding it to the reds queue. [Guillermo
+  Jimenez Prieto]
+
 v1.8.0 (2015-09-29)
 -------------------
 
