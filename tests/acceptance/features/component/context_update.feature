@@ -36,7 +36,6 @@ Feature: Receive context update requests
       | qatest    | 1     | 0.8     | 0.1   | 0.151   |
 
 
-  @skip @bug @CLAUDIA-5519
   Scenario Outline: : Receive context with missing parameters. Notification must be processed.
     Given the configured tenant-id is registered in CLOTO component
     And   the context notification has default context elements
@@ -74,7 +73,6 @@ Feature: Receive context update requests
     Then  I receive a HTTP "404" response code
 
 
-  @skip @bug @CLAUDIA-5524
   Scenario Outline: Receive a context update notification with invalid context attribute values. Format.
     Given the configured tenant-id is registered in CLOTO component
     And   the context notification has default context elements
@@ -108,7 +106,6 @@ Feature: Receive context update requests
       | qatest    | 0.05  | 0.8     | 0.1   |         |
 
 
-  @skip @bug @CLAUDIA-5524
   Scenario Outline: Receive a context update notification with invalid context attribute values. Value.
     Given the configured tenant-id is registered in CLOTO component
     And   the context notification has default context elements
