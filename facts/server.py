@@ -121,6 +121,9 @@ def facts(tenantid, serverid):
         except UnboundLocalError as ex:
             return Response(response="{\"error\":\"Some attribute is missing: " + ex.message + "\"}\n",
                             status=httplib.BAD_REQUEST, content_type=content_type)
+        except ValueError as ex:
+            return Response(response="{\"error\":\""+ ex.message + "\"}\n",
+                            status=httplib.BAD_REQUEST, content_type=content_type)
         except Exception as ex:
             return Response(response="{\"error\": \"" + ex.message + "\"}\n",
                             status=httplib.BAD_REQUEST, content_type=content_type)
@@ -177,12 +180,16 @@ def process_request(request, tenantid, serverid):
 
         # Obtain the information of used memory and cpu
         if name == 'usedMemPct':
+            verify_values(name, value)
             mem = float(value)
         elif name == 'cpuLoadPct':
+            verify_values(name, value)
             cpu = float(value)
         elif name == 'netLoadPct':
+            verify_values(name, value)
             net = float(value)
         elif name == 'freeSpacePct':
+            verify_values(name, value)
             hdd = float(value)
 
     data.insert(len(data), cpu)
@@ -236,6 +243,18 @@ def process_request(request, tenantid, serverid):
             raise ex
 
     return True
+
+
+def verify_values(name, value):
+        """Checks if rule operands are expected strings and values are valid floats
+
+        :param str name:        The name
+        :param str value:       The value
+        """
+
+        myfloat = float(value)
+        if myfloat < 0.0 or myfloat > 100.0:
+            raise ValueError("Invalid value received for %s" % name)
 
 
 def info(port):

@@ -208,3 +208,48 @@ class MyTest(MyAppTest):
 
         response = self.app.post(self.url3, data=json.dumps(data4), headers={'Content-Type': 'application/json'})
         self.assertEqual(response.status_code, 400)
+
+    def test_context_broker_message_attribute_out_of_range_value(self):
+        """ Test that the POST operation over the API returns a valid response if message is built correctly.
+
+        :return       200 Ok
+        """
+        data2 = {"contextResponses": [
+                    {
+                        "contextElement": {
+                           "attributes": [
+                               {
+                                   "value": "0.12",
+                                   "name": "usedMemPct",
+                                   "type": "string"
+                               },
+                               {
+                                   "value": "0.14",
+                                   "name": "cpuLoadPct",
+                                   "type": "string"
+                               },
+                               {
+                                   "value": "0.856240",
+                                   "name": "freeSpacePct",
+                                   "type": "string"
+                               },
+                               {
+                                   "value": "100.1",
+                                   "name": "netLoadPct",
+                                   "type": "string"
+                               }
+                           ],
+                           "id": "Trento:193.205.211.69",
+                           "isPattern": "false",
+                           "type": "host"
+                       },
+                       "statusCode": {
+                           "code": "200",
+                           "reasonPhrase": "OK"
+                       }
+                   }
+                ]
+            }
+
+        response = self.app.post(self.url3, data=json.dumps(data2), headers={'Content-Type': 'application/json'})
+        self.assertEqual(response.status_code, 400)
