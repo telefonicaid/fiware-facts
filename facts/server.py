@@ -118,6 +118,12 @@ def facts(tenantid, serverid):
             result = process_request(request, tenantid, serverid)
         except NotFound as ex:
             return Response(response=ex.message, status=ex.http_status, content_type=content_type)
+        except UnboundLocalError as ex:
+            return Response(response="{\"error\":\"Some attribute is missing: " + ex.message + "\"}\n",
+                            status=httplib.BAD_REQUEST, content_type=content_type)
+        except Exception as ex:
+            return Response(response="{\"error\": \"" + ex.message + "\"}\n",
+                            status=httplib.BAD_REQUEST, content_type=content_type)
 
         if result == True:
             return Response(status=httplib.OK)
@@ -156,9 +162,9 @@ def process_request(request, tenantid, serverid):
     # Check that it contains the previous keys
     try:
         jsoncheck.checkit(json, key, 0)
-    except (Exception), err:
+    except NotFound as err:
         logging.error(err)
-        return False
+        raise err
 
     # Extract the list of attributes from the NGSI message
     attrlist = request.json['contextResponses'][0]['contextElement']['attributes']
@@ -226,8 +232,8 @@ def process_request(request, tenantid, serverid):
             # Send the message to the RabbitMQ components.
             result = rabbit.publish_message(tenantid, message)  # @UnusedVariable
 
-        except Exception:
-            return False
+        except Exception as ex:
+            raise ex
 
     return True
 
