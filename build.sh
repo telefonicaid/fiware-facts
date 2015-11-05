@@ -39,8 +39,6 @@ sudo pip install -r requirements_dev.txt
 if [[ ! $1 == "travis_build" ]];
 then
     echo "Building with Jenkins"
-    virtualenv --system-site-packages ENV
-    source ENV/bin/activate
     #INSTALLING REDIS
     wget -O redis.tar.gz http://download.redis.io/releases/redis-2.8.19.tar.gz
     sleep 12
