@@ -29,7 +29,7 @@
 # __author__ = 'fla'
 set -e
 
-mkdir /var/log/fiware-facts
+mkdir -p /var/log/fiware-facts
 mkdir -m 777 -p target/site/cobertura
 mkdir -m 777 -p target/surefire-reports
 chmod 777 /var/log/fiware-facts
@@ -39,8 +39,6 @@ sudo pip install -r requirements_dev.txt
 if [[ ! $1 == "travis_build" ]];
 then
     echo "Building with Jenkins"
-    virtualenv --system-site-packages ENV
-    source ENV/bin/activate
     #INSTALLING REDIS
     wget -O redis.tar.gz http://download.redis.io/releases/redis-2.8.19.tar.gz
     sleep 12
@@ -54,9 +52,9 @@ then
     #INSTALLING RABBITMQ
     wget http://www.rabbitmq.com/releases/rabbitmq-server/v3.4.3/rabbitmq-server-3.4.3-1.noarch.rpm
     sleep 10
-    yum install erlang
+    sudo yum install erlang
     rpm --import http://www.rabbitmq.com/rabbitmq-signing-key-public.asc
-    yum install rabbitmq-server-3.4.3-1.noarch.rpm
+    sudo yum install rabbitmq-server-3.4.3-1.noarch.rpm
     rm -rf rabbitmq-server-3.4.3-1.noarch.rpm
     sudo /sbin/service rabbitmq-server start
 else

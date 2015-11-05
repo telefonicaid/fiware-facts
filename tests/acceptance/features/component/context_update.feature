@@ -116,18 +116,17 @@ Feature: Receive context update requests
 
     Examples:
 
-      | server_id | cpu   | memory  | disk  | network |
-      | qatest    | 1.05  | 0.8     | 0.1   | 0.15    |
-      | qatest    | 0.05  | 5.8     | 0.1   | 0.15    |
-      | qatest    | 0.05  | 0.8     | 10.1  | 0.15    |
-      | qatest    | 0.05  | 0.8     | 0.1   | 415.15  |
-      | qatest    | -0.05 | 0.8     | 0.1   | 0.15    |
-      | qatest    | 0.05  | -0.8    | 0.1   | 0.15    |
-      | qatest    | 0.05  | 0.8     | -0.1  | 0.15    |
-      | qatest    | 0.05  | 0.8     | 0.1   | -0.15   |
+      | server_id | cpu    | memory  | disk  | network |
+      | qatest    | 100.05 | 0.8     | 0.1   | 0.15    |
+      | qatest    | 0.05   | 100.8   | 0.1   | 0.15    |
+      | qatest    | 0.05   | 0.8     | 100.1 | 0.15    |
+      | qatest    | 0.05   | 0.8     | 0.1   | 415.15  |
+      | qatest    | -0.05  | 0.8     | 0.1   | 0.15    |
+      | qatest    | 0.05   | -0.8    | 0.1   | 0.15    |
+      | qatest    | 0.05   | 0.8     | -0.1  | 0.15    |
+      | qatest    | 0.05   | 0.8     | 0.1   | -0.15   |
 
 
-  @skip @bug @CLAUDIA-5519
   Scenario Outline: Receive context notification with missing context elements.
     Given the configured tenant-id is registered in CLOTO component
     And   the context notification has these context elements:
