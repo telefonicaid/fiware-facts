@@ -149,7 +149,7 @@ class MyTest(MyAppTest):
     def test_context_broker_empty_attributes_message(self):
         """ Test that the POST operation over the API returns a 400 error response if message has no attributes.
 
-        :return       200 Ok
+        :return       400 Bad Request
         """
         data3 = {"contextResponses": [
                     {
@@ -172,7 +172,7 @@ class MyTest(MyAppTest):
     def test_context_broker_any_attribute_is_missing_message(self):
         """ Test that the POST operation over the API returns a 400 error response if message has no attributes.
 
-        :return       200 Ok
+        :return       400 Bad Request
         """
         data4 = {"contextResponses": [
                     {
@@ -210,9 +210,10 @@ class MyTest(MyAppTest):
         self.assertEqual(response.status_code, 400)
 
     def test_context_broker_message_attribute_out_of_range_value(self):
-        """ Test that the POST operation over the API returns a valid response if message is built correctly.
+        """ Test that the POST operation over the API returns a 400 error response if message has an attribute value
+        greater than 100.
 
-        :return       200 Ok
+        :return       400 Bad Request
         """
         data2 = {"contextResponses": [
                     {
@@ -235,6 +236,52 @@ class MyTest(MyAppTest):
                                },
                                {
                                    "value": "100.1",
+                                   "name": "netLoadPct",
+                                   "type": "string"
+                               }
+                           ],
+                           "id": "Trento:193.205.211.69",
+                           "isPattern": "false",
+                           "type": "host"
+                       },
+                       "statusCode": {
+                           "code": "200",
+                           "reasonPhrase": "OK"
+                       }
+                   }
+                ]
+            }
+
+        response = self.app.post(self.url3, data=json.dumps(data2), headers={'Content-Type': 'application/json'})
+        self.assertEqual(response.status_code, 400)
+
+    def test_context_broker_message_attribute_with_string_value(self):
+        """ Test that the POST operation over the API returns a 400 error response if message has an attribute value
+        with a non-float value.
+
+        :return       400 Bad Request
+        """
+        data2 = {"contextResponses": [
+                    {
+                        "contextElement": {
+                           "attributes": [
+                               {
+                                   "value": "0.12",
+                                   "name": "usedMemPct",
+                                   "type": "string"
+                               },
+                               {
+                                   "value": "0.14",
+                                   "name": "cpuLoadPct",
+                                   "type": "string"
+                               },
+                               {
+                                   "value": "0.856240",
+                                   "name": "freeSpacePct",
+                                   "type": "string"
+                               },
+                               {
+                                   "value": "hundred",
                                    "name": "netLoadPct",
                                    "type": "string"
                                }
