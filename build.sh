@@ -29,7 +29,7 @@
 # __author__ = 'fla'
 
 
-mkdir /var/log/fiware-facts
+mkdir -p /var/log/fiware-facts
 mkdir -m 777 -p target/site/cobertura
 mkdir -m 777 -p target/surefire-reports
 chmod 777 /var/log/fiware-cloto
