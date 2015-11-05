@@ -27,12 +27,12 @@
 # to be shown in sonar
 #
 # __author__ = 'fla'
-
+set -e
 
 mkdir /var/log/fiware-facts
 mkdir -m 777 -p target/site/cobertura
 mkdir -m 777 -p target/surefire-reports
-chmod 777 /var/log/fiware-cloto
+chmod 777 /var/log/fiware-facts
 sudo pip install -r requirements.txt
 sudo pip install -r requirements_dev.txt
 
@@ -65,6 +65,9 @@ fi
 
 export PYTHONPATH=$PWD
 nosetests -s -v --cover-package=facts --with-cover --cover-xml-file=target/site/cobertura/coverage.xml --cover-xml --with-xunit --xunit-file=target/surefire-reports/TEST-nosetests.xml
-sudo /sbin/service rabbitmq-server stop
-kill -9 $(lsof -t -i:5000)
-kill -9 $(lsof -t -i:6379)
+
+if [[ ! $1 == "travis_build" ]];
+then
+    sudo /sbin/service rabbitmq-server stop
+    kill -9 $(lsof -t -i:6379)
+fi
