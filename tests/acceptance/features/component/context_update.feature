@@ -127,7 +127,6 @@ Feature: Receive context update requests
       | qatest    | 0.05   | 0.8     | 0.1   | -0.15   |
 
 
-  @skip @bug @CLAUDIA-5519
   Scenario Outline: Receive context notification with missing context elements.
     Given the configured tenant-id is registered in CLOTO component
     And   the context notification has these context elements:
