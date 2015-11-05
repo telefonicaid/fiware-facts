@@ -54,9 +54,9 @@ then
     #INSTALLING RABBITMQ
     wget http://www.rabbitmq.com/releases/rabbitmq-server/v3.4.3/rabbitmq-server-3.4.3-1.noarch.rpm
     sleep 10
-    yum install erlang
+    sudo yum install erlang
     rpm --import http://www.rabbitmq.com/rabbitmq-signing-key-public.asc
-    yum install rabbitmq-server-3.4.3-1.noarch.rpm
+    sudo yum install rabbitmq-server-3.4.3-1.noarch.rpm
     rm -rf rabbitmq-server-3.4.3-1.noarch.rpm
     sudo /sbin/service rabbitmq-server start
 else
