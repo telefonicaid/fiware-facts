@@ -36,13 +36,13 @@ Feature: Receive context update requests
       | qatest    | 1     | 0.8     | 0.1   | 0.151   |
 
 
-  Scenario Outline: : Receive context with missing parameters. Notification must be processed.
+  Scenario Outline: : Receive context with missing parameters. Notification must NOT be processed.
     Given the configured tenant-id is registered in CLOTO component
     And   the context notification has default context elements
     When  a context notification is received for "<server_id>" with values:
           | cpuLoadPct | usedMemPct | freeSpacePct | netLoadPct |
           | <cpu>      | <memory>   | <disk>       | <network>  |
-    Then  I receive a HTTP "200" response code
+    Then  I receive a HTTP "400" response code
 
     Examples:
 
@@ -63,7 +63,7 @@ Feature: Receive context update requests
           | 0.73       | 030        | 0.1          | 0.15       |
     Then  I receive a HTTP "200" response code
 
-  @test
+
   Scenario: Receive context when Tenant is not registered in CLOTO.
     Given a no registered Tentand-Id in CLOTO component "no_registered_tenant_id"
     And   the context notification has default context elements
@@ -79,7 +79,7 @@ Feature: Receive context update requests
     When  a context notification is received for "<server_id>" with values:
           | cpuLoadPct | usedMemPct | freeSpacePct | netLoadPct |
           | <cpu>      | <memory>   | <disk>       | <network>  |
-    Then  I receive a HTTP "404" response code
+    Then  I receive a HTTP "400" response code
 
     Examples:
 
