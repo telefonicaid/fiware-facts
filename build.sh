@@ -50,12 +50,18 @@ then
     cd ../..
 
     #INSTALLING RABBITMQ
-    wget http://www.rabbitmq.com/releases/rabbitmq-server/v3.4.3/rabbitmq-server-3.4.3-1.noarch.rpm
-    sleep 10
-    sudo yum install erlang
-    rpm --import http://www.rabbitmq.com/rabbitmq-signing-key-public.asc
-    sudo yum install rabbitmq-server-3.4.3-1.noarch.rpm
-    rm -rf rabbitmq-server-3.4.3-1.noarch.rpm
+    if yum list installed | grep rabbitmq-server
+    then
+        echo "rabbitmq-server is already installed"
+    else
+        wget http://www.rabbitmq.com/releases/rabbitmq-server/v3.4.3/rabbitmq-server-3.4.3-1.noarch.rpm
+        sleep 10
+        sudo yum install erlang
+        rpm --import http://www.rabbitmq.com/rabbitmq-signing-key-public.asc
+        sudo yum install rabbitmq-server-3.4.3-1.noarch.rpm
+        rm -rf rabbitmq-server-3.4.3-1.noarch.rpm
+    fi
+    
     sudo /sbin/service rabbitmq-server start
 else
     echo "Building with travis"
