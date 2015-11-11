@@ -379,7 +379,7 @@ License
 .. |Pypi License| image:: https://img.shields.io/pypi/l/fiware-facts.svg
    :target: https://pypi.python.org/pypi/fiware-facts/
    :alt License
-.. |help stackoverflow| image:: http://b.repl.ca/v1/help-stackoverflow-orange.png
+.. |StackOverflow| image:: http://b.repl.ca/v1/help-stackoverflow-orange.png
    :target: https://stackoverflow.com/questions/tagged/fiware-bosun
    :alt Help? Ask questions...
 
