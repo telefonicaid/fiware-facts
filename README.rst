@@ -369,19 +369,19 @@ License
 
 .. |Build Status| image:: https://travis-ci.org/telefonicaid/fiware-facts.svg?branch=develop
    :target: https://travis-ci.org/telefonicaid/fiware-facts
-   :alt Build status
+   :alt: Build status
 .. |Coverage Status| image:: https://img.shields.io/coveralls/telefonicaid/fiware-facts/develop.svg
    :target: https://coveralls.io/r/telefonicaid/fiware-facts
-   :alt Coverage status
+   :alt: Coverage status
 .. |Pypi Version| image:: https://badge.fury.io/py/fiware-facts.svg
    :target: https://pypi.python.org/pypi/fiware-facts/
-   :alt Version
+   :alt: Version
 .. |Pypi License| image:: https://img.shields.io/pypi/l/fiware-facts.svg
    :target: https://pypi.python.org/pypi/fiware-facts/
-   :alt License
+   :alt: License
 .. |StackOverflow| image:: http://b.repl.ca/v1/help-stackoverflow-orange.png
    :target: https://stackoverflow.com/questions/tagged/fiware-bosun
-   :alt Help? Ask questions...
+   :alt: Help? Ask questions...
 
 .. REFERENCES
 
