@@ -1,8 +1,9 @@
+.. _Top:
 ===============================
 FIWARE Policy Manager GE: Facts
 ===============================
 
-| |Build Status| |Coverage Status| |Pypi Version| |Pypi License|
+| |Build Status| |Coverage Status| |Pypi Version| |Pypi License| |StackOverflow|
 
 .. contents:: :local:
 
@@ -26,9 +27,8 @@ to provide feedback.
 
 __ `Fiware-facts - GitHub issues`_
 
-`Top`__.
+Top_.
 
-__ `FIWARE Policy Manager GE: Facts`_
 
 GEi overall description
 =======================
@@ -49,9 +49,8 @@ own actions based on the notifications launched by Policy Manager.
 Last but not least, Bosun is integrated with the Monitoring GEri in order to recover the information of the (virtual)
 system and calculate any possible change on it based on the knowledge database defined for it.
 
-`Top`__.
+Top_.
 
-__ `FIWARE Policy Manager GE: Facts`_
 
 Components
 ----------
@@ -69,9 +68,8 @@ Fiware-Facts
 
 For more information, please refer to the `documentation <https://github.com/telefonicaid/fiware-cloto/tree/develop/doc/README.rst>`_.
 
-`Top`__.
+Top_.
 
-__ `FIWARE Policy Manager GE: Facts`_
 
 Build and Install
 =================
@@ -100,9 +98,8 @@ Examples:
     centos$ sudo yum install mysql-devel
     ubuntu$ sudo apt-get install mysql-devel
 
-`Top`__.
+Top_.
 
-__ `FIWARE Policy Manager GE: Facts`_
 
 Installation
 ------------
@@ -116,9 +113,8 @@ Install the component by executing the following instruction:
 This operation will install the component in your python site-packages folder.
 
 
-`Top`__.
+Top_.
 
-__ `FIWARE Policy Manager GE: Facts`_
 
 Configuration file
 ------------------
@@ -154,9 +150,8 @@ Options that user could define:
     [logger_root]
      level: INFO            # Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
 
-`Top`__.
+Top_.
 
-__ `FIWARE Policy Manager GE: Facts`_
 
 Running
 =======
@@ -187,9 +182,8 @@ in that folder.
 
     mkdir -m /var/log/fiware-facts
 
-`Top`__.
+Top_.
 
-__ `FIWARE Policy Manager GE: Facts`_
 
 API Overview
 ============
@@ -248,9 +242,8 @@ This message follows the NGSI-10 information model but using JSON format.
 
 The response has no body and should return 200 OK.
 
-`Top`__.
+Top_.
 
-__ `FIWARE Policy Manager GE: Facts`_
 
 API Reference Documentation
 ---------------------------
@@ -259,9 +252,8 @@ API Reference Documentation
 
 __ `FIWARE Policy Manager - Apiary`_
 
-`Top`__.
+Top_.
 
-__ `FIWARE Policy Manager GE: Facts`_
 
 Testing
 =======
@@ -279,9 +271,8 @@ After that, you can execute this folloing commands:
     $ export PYTHONPATH=$PWD
     $ nosetests -s -v --cover-package=facts --with-cover
 
-`Top`__.
+Top_.
 
-__ `FIWARE Policy Manager GE: Facts`_
 
 End-to-end tests
 ----------------
@@ -306,9 +297,8 @@ The request before should return a response with this body if everything is ok:
 Please refer to the `Installation and administration guide
 <https://github.com/telefonicaid/fiware-cloto/tree/develop/doc/admin_guide.rst#end-to-end-testing>`_ for details.
 
-`Top`__.
+Top_.
 
-__ `FIWARE Policy Manager GE: Facts`_
 
 Acceptance tests
 ----------------
@@ -347,9 +337,8 @@ Execute the following command in the acceptance test project directory::
 Before executing, you shoud configure properly the project settings file in `$FACTS_HOME/tests/acceptance/settings/settings.json`.
 Take a look at the `FACTS Acceptance Test Project <tests/acceptance>`_ documentation.
 
-`Top`__.
+Top_.
 
-__ `FIWARE Policy Manager GE: Facts`_
 
 Advanced topics
 ===============
@@ -359,19 +348,17 @@ Advanced topics
 - `Open RESTful API Specification <https://github.com/telefonicaid/fiware-cloto/tree/develop/doc/open_spec.rst>`_
 - `Architecture Description <https://github.com/telefonicaid/fiware-cloto/tree/develop/doc/architecture.rst>`_
 
-`Top`__.
+Top_.
 
-__ `FIWARE Policy Manager GE: Facts`_
 
 Support
 =======
 
-Ask your thorough programming questions using stackoverflow and your general questions on FIWARE Q&A.
-In both cases please use the tag fiware-bosun
+Ask your thorough programming questions using `stackoverflow`_ and your general questions on `FIWARE Q&A`_.
+In both cases please use the tag *fiware-bosun*.
 
-`Top`__.
+Top_.
 
-__ `FIWARE Policy Manager GE: Facts`_
 
 License
 =======
@@ -382,13 +369,19 @@ License
 
 .. |Build Status| image:: https://travis-ci.org/telefonicaid/fiware-facts.svg?branch=develop
    :target: https://travis-ci.org/telefonicaid/fiware-facts
+   :alt: Build status
 .. |Coverage Status| image:: https://img.shields.io/coveralls/telefonicaid/fiware-facts/develop.svg
-    :target: https://coveralls.io/r/telefonicaid/fiware-facts
+   :target: https://coveralls.io/r/telefonicaid/fiware-facts
+   :alt: Coverage status
 .. |Pypi Version| image:: https://badge.fury.io/py/fiware-facts.svg
    :target: https://pypi.python.org/pypi/fiware-facts/
+   :alt: Version
 .. |Pypi License| image:: https://img.shields.io/pypi/l/fiware-facts.svg
    :target: https://pypi.python.org/pypi/fiware-facts/
-
+   :alt: License
+.. |StackOverflow| image:: http://b.repl.ca/v1/help-stackoverflow-orange.png
+   :target: https://stackoverflow.com/questions/tagged/fiware-bosun
+   :alt: Help? Ask questions...
 
 .. REFERENCES
 
@@ -402,4 +395,5 @@ License
 .. _pip: https://pypi.python.org/pypi/pip
 .. _Virtualenv: https://pypi.python.org/pypi/virtualenv
 .. _Fiware-Facts: https://github.com/telefonicaid/fiware-facts
-
+.. _stackoverflow: http://stackoverflow.com/questions/ask
+.. _`FIWARE Q&A`: https://ask.fiware.org
