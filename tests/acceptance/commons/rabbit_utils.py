@@ -33,6 +33,8 @@ __logger__ = get_logger(__name__)
 
 MAX_CONNECTION_RETRIES = 3
 SLEEP_CONNECTION_RETRIES = 2  # seconds
+RABBITMQ_CONN_TIMEOUT = 10
+RABBITMQ_CONN_ATTEMPTS = 5
 
 
 class RabbitMQPublisher(object):
@@ -66,7 +68,10 @@ class RabbitMQPublisher(object):
 
         __logger__.info('Connecting to RabbitMQ %s:%d', self._host, self._port)
         self._connection = pika.BlockingConnection(pika.ConnectionParameters(self._host, self._port, '/',
-                                                                             self._credentials))
+                                                                             self._credentials,
+                                                                             socket_timeout=RABBITMQ_CONN_TIMEOUT,
+                                                                             connection_attempts=RABBITMQ_CONN_ATTEMPTS
+                                                                             ))
         self._channel = self._connection.channel()
 
     def send_message(self, message_body):
