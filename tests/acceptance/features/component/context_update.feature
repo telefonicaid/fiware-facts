@@ -125,25 +125,3 @@ Feature: Receive context update requests
       | qatest    | 0.05   | -0.8    | 0.1   | 0.15    |
       | qatest    | 0.05   | 0.8     | -0.1  | 0.15    |
       | qatest    | 0.05   | 0.8     | 0.1   | -0.15   |
-
-
-  Scenario Outline: Receive context notification with missing context elements.
-    Given the configured tenant-id is registered in CLOTO component
-    And   the context notification has these context elements:
-          | id         | isPattern  | type         |
-          | <id>       | <isPattern>| <type>       |
-    When  a context notification is received for "qatest" with values:
-          | cpuLoadPct | usedMemPct | freeSpacePct | netLoadPct |
-          | 0.73       | 030        | 0.1          | 0.15       |
-    Then  I receive a HTTP "400" response code
-
-    Examples:
-
-          | id              | isPattern         | type            |
-          | qatest          | [MISSING_PARAM]   | [MISSING_PARAM] |
-          | [MISSING_PARAM] | false             | [MISSING_PARAM] |
-          | [MISSING_PARAM] | [MISSING_PARAM]   | vm              |
-          | [MISSING_PARAM] | [MISSING_PARAM]   | [MISSING_PARAM] |
-          | qatest          | false             | [MISSING_PARAM] |
-          | qatest          | [MISSING_PARAM]   | vm              |
-          | [MISSING_PARAM] | false             | vm              |
