@@ -1,6 +1,34 @@
 Changelog
 =========
 
+v2.1.0 (2015-12-01)
+-------------------
+
+New
+~~~
+
+- Added a test to check non-float values in POST operation. [Guillermo
+  Jimenez Prieto]
+
+- Adding tests to check the use case: exception control to some no-
+  managed situations. [Guillermo Jimenez Prieto]
+
+Fix
+~~~
+
+- Fixing mkdir error if folder already exists. [Guillermo Jimenez
+  Prieto]
+
+- Tests: Fixing acceptance tests with values out of range. [Guillermo
+  Jimenez Prieto]
+
+- Fixing CI travis build when any test fails. [Guillermo Jimenez Prieto]
+
+- Added value control and test associated. [Guillermo Jimenez Prieto]
+
+- Adding exception control to some no-managed situations. [Guillermo
+  Jimenez Prieto]
+
 v2.0.0 (2015-10-23)
 -------------------
 
