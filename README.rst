@@ -219,7 +219,7 @@ NOTE:
 Supervisor provides an “event listener” to subscribe to “event notifications”.
 The purpose of the event notification/subscription system is to provide a mechanism for
 arbitrary code to be run (e.g. send an email, make an HTTP request, etc)
-when some condition is met. That condition usually has to do with subprocess state.
+when some condition is satisfied. That condition usually has to do with subprocess state.
 For instance, you may want to notify someone via email when a process crashes and is restarted by Supervisor.
 For more information check also the `Supervisor Documentation`__
 

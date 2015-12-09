@@ -24,13 +24,11 @@
 #
 # File to execute fiware-facts component
 #
-# __author__ = 'gjp'
-
-NAME="fiware_facts"                                  # Name of the application
-SOCKFILE=/var/run/gunicorn.sock  # we will communicte using this unix socket
-USER=root                                        # the user to run as
-GROUP=root                                     # the group to run as
-NUM_WORKERS=3                                     # how many worker processes should Gunicorn spawn
+NAME="fiware_facts"                                     # Name of the application
+SOCKFILE=/var/run/gunicorn.sock                         # we will communicate using this unix socket
+USER=root                                               # the user to run as
+GROUP=root                                              # the group to run as
+NUM_WORKERS=3                                           # how many worker processes should Gunicorn spawn
 DJANGO_WSGI_MODULE=facts.server:app                     # WSGI module name
 LOCAL_IP=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'`
 
