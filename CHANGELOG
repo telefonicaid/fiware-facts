@@ -1,6 +1,15 @@
 Changelog
 =========
 
+v2.2.0 (2015-12-10)
+-------------------
+
+New
+~~~
+
+- Added instructions and scripts to run with supervisor. [Guillermo
+  Jimenez Prieto]
+
 v2.1.0 (2015-12-01)
 -------------------
 
