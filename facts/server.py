@@ -34,6 +34,8 @@ from gevent.pywsgi import WSGIServer
 from keystoneclient.exceptions import NotFound
 from facts.config import fact_attributes, __version__
 from facts import cloto_db_client
+from facts.constants import CONTENT_HEADER, JSON_TYPE, REMOTE_ADDR, REMOTE_PORT, CONTEXT_ATTRIBUTES, \
+    CONTEXT_RESPONSES, CONTEXT_ATTRIBUTES_NAME, CONTEXT_ATTRIBUTES_VALUE, CONTEXT_ELEMENT
 import logging.config
 import sys
 import datetime
@@ -47,7 +49,7 @@ __version_info__ = tuple([int(num) for num in __version__.split('.')])
 
 gevent.monkey.patch_all()
 
-content_type = 'application/json'
+content_type = JSON_TYPE
 
 from facts.config import config, cfg_filename, cfg_defaults
 
@@ -98,14 +100,14 @@ def facts(tenantid, serverid):
     :return: status code 200 - successful submission
     """
     # Ensure post's Content-Type is supported
-    if request.headers['content-type'] == content_type:
+    if request.headers[CONTENT_HEADER] == content_type:
         try:
             # Ensure that received data is a valid JSON
             user_submission = json.loads(request.data)  # @UnusedVariable
         except ValueError:
             # Data is not a well-formed json
             message = "[{}] received {} from ip {}:{}"\
-                .format("-", json, request.environ['REMOTE_ADDR'], request.environ['REMOTE_PORT'])
+                .format("-", json, request.environ[REMOTE_ADDR], request.environ[REMOTE_PORT])
 
             logging.warning(message)
 
@@ -154,7 +156,7 @@ def process_request(request, tenantid, serverid):
     json = request.json
     if request.remote_addr:
         message = "[{}] received {} from ip {}:{}"\
-            .format("-", json, request.environ['REMOTE_ADDR'], request.environ['REMOTE_PORT'])
+            .format("-", json, request.environ[REMOTE_ADDR], request.environ[REMOTE_PORT])
     else:
         message = "[{}] received {} from test client"\
             .format("-", json)
@@ -170,13 +172,13 @@ def process_request(request, tenantid, serverid):
         raise err
 
     # Extract the list of attributes from the NGSI message
-    attrlist = request.json['contextResponses'][0]['contextElement']['attributes']
+    attrlist = request.json[CONTEXT_RESPONSES][0][CONTEXT_ELEMENT][CONTEXT_ATTRIBUTES]
 
     data = list()
 
     for item in attrlist:
-        name = item['name']
-        value = item['value']
+        name = item[CONTEXT_ATTRIBUTES_NAME]
+        value = item[CONTEXT_ATTRIBUTES_VALUE]
 
         # Obtain the information of used memory and cpu
         if name == 'usedMemPct':
