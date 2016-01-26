@@ -138,8 +138,14 @@ def after_scenario(context, scenario):
 
     # Close all RabbitMQ consumers (if initiated)
     for consumer in context.rabbitmq_consumer_list:
-        consumer.stop()
-        consumer.close_connection()
+        try:
+            consumer.stop()
+        except Exception:
+            __logger__.warn("Rabbitmq consumer was already stopped")
+        try:
+            consumer.close_connection()
+        except Exception:
+            __logger__.warn("Rabbitmq consumer was already closed connection")
 
     # Close RabbitMQ publisher (if initiated)
     context.rabbitmq_publisher.close()
