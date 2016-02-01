@@ -1,6 +1,26 @@
 Changelog
 =========
 
+v2.3.0 (2016-01-26)
+-------------------
+
+New
+~~~
+
+- New file with constants added. [Guillermo Jimenez Prieto]
+
+Changes
+~~~~~~~
+
+- Python dicts are using constants instead of strings. [Guillermo
+  Jimenez Prieto]
+
+Fix
+~~~
+
+- Adding try sentence to catch exceptions when a rabbitmq consumer was
+  already stopped. [Guillermo Jimenez Prieto]
+
 v2.2.0 (2015-12-10)
 -------------------
 
