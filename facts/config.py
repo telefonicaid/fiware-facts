@@ -63,7 +63,8 @@ cfg_defaults = {
     'clotoVersion': 'v1.0',                 # Cloto API version
     'name':         'policymanager.facts',  # name of the server
     'logLevel':     'INFO',
-    'logFormat':    '%(asctime)s %(levelname)s policymanager.facts %(message)s'
+    'logFormat':    '%(asctime)s %(levelname)s policymanager.facts %(message)s',
+    'maxTimeWindowsize':   10               # The maximum time between facts to be considered a valid Fact (seconds).
 }
 
 cfg_mysql_defaults = {
@@ -158,7 +159,7 @@ for key, value in cfg_handler_file_defaults.items():
 
 config.set('common', 'cfg_file_path', str(cfg_filename))
 
-windowsize_facts = datetime.timedelta(seconds=10)
+windowsize_facts = datetime.timedelta(seconds=int(config.get('common', 'maxTimeWindowsize')))
 
 fact_attributes = ['serverId', 'CpuValue', 'MemValue', 'HddValue', 'NetValue', 'DataTime']
 

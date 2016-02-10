@@ -141,6 +141,8 @@ Options that user could define:
      redisHost:  localhost  # Address of redis-server
      rabbitMQ:   localhost  # Address of RabbitMQ server
      cloto:      127.0.0.1  # Address of fiware-cloto
+     maxTimeWindowsize: 10  # The maximum time between facts to be considered a valid Fact (seconds).
+
 
     [mysql]
      host: localhost        # address of mysql that fiware-cloto is using
