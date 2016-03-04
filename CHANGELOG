@@ -1,6 +1,15 @@
 Changelog
 =========
 
+v2.4.0 (2016-02-10)
+-------------------
+
+Changes
+~~~~~~~
+
+- The max timestamp between facts is now inside the configuration
+  properties file. [Guillermo Jimenez Prieto]
+
 v2.3.0 (2016-01-26)
 -------------------
 
