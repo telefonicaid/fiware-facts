@@ -3,7 +3,7 @@
 FIWARE Policy Manager GE: Facts
 ===============================
 
-| |Build Status| |Coverage Status| |Pypi Version| |Pypi License| |StackOverflow|
+|License Badge| |Documentation Badge| |StackOverflow| |Build Status| |Coverage Status| |Pypi Version|
 
 .. contents:: :local:
 
@@ -420,12 +420,14 @@ License
 .. |Pypi Version| image:: https://badge.fury.io/py/fiware-facts.svg
    :target: https://pypi.python.org/pypi/fiware-facts/
    :alt: Version
-.. |Pypi License| image:: https://img.shields.io/pypi/l/fiware-facts.svg
-   :target: https://pypi.python.org/pypi/fiware-facts/
+.. |License Badge| image:: https://img.shields.io/badge/license-Apache_2.0-blue.svg
+   :target: LICENSE.txt
    :alt: License
-.. |StackOverflow| image:: http://b.repl.ca/v1/help-stackoverflow-orange.png
+.. |StackOverflow| image:: https://img.shields.io/badge/support-sof-yellowgreen.svg
    :target: https://stackoverflow.com/questions/tagged/fiware-bosun
    :alt: Help? Ask questions...
+.. |Documentation Badge| image:: https://readthedocs.org/projects/fiware-cloto/badge/?version=latest
+   :target: http://fiware-cloto.readthedocs.org/en/latest/?badge=latest
 
 .. REFERENCES
 
