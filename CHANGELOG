@@ -1,6 +1,15 @@
 Changelog
 =========
 
+v2.5.0 (2016-04-01)
+-------------------
+
+New
+~~~
+
+- Add Jenkins config files to utils directory. [Guillermo Jimenez
+  Prieto]
+
 v2.4.0 (2016-02-10)
 -------------------
 
