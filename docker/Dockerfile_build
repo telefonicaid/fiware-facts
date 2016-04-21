@@ -8,5 +8,8 @@ RUN curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
 RUN python get-pip.py 
 RUN git clone https://github.com/telefonicaid/fiware-facts /opt/fiware-facts
 WORKDIR /opt/fiware-facts
+RUN mkdir /var/log/fiware-facts 
+RUN chmod 777 /var/log/fiware-facts
+RUN sudo pip install -r requirements_dev.txt
 COPY sonar-project.properties sonar-project.properties
-CMD ./build.sh 
+CMD export PYTHONPATH=$PWD; nosetests -s -v --cover-package=facts --with-cover
