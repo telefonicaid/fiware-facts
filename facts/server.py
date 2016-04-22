@@ -307,7 +307,7 @@ def windowsize_updater():
         import pika
         connection = None
         connection = pika.BlockingConnection(pika.ConnectionParameters(
-                host="localhost"))
+                host=config.get('common', 'rabbitMQ')))
         channel = connection.channel()
 
         channel.exchange_declare(exchange="windowsizes",

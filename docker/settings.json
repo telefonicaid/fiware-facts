@@ -1,0 +1,38 @@
+{
+    "environment": {
+        "name": "experimentation"
+    },
+    "facts_service": {
+        "protocol": "http",
+        "host": "fiwarefacts",
+        "port": "5000",
+        "resource": "/v1.0",
+        "os_tenant_id": "{ADM_TENANT_ID}",
+        "os_secondary_tenant_id": "67498e9bf9bc4914930c166e5dd3c98a",
+        "facts_grace_period": 10
+    },
+    "cloto_service": {
+        "protocol": "http",
+        "host": "fiwarecloto",
+        "port": "8000",
+        "resource": "/v1.0",
+        "os_tenant_id": "{ADM_TENANT_ID}",
+        "os_username": "{ADM_USERNAME}",
+        "os_password": "{ADM_PASSWORD}",
+        "os_auth_url": "http://{KEYSTONE_IP}:35357/v2.0/"
+    },
+    "rabbitmq_service": {
+        "host": "rabbit",
+        "port": "5672",
+        "user": "qa",
+        "password": "testing",
+        "facts_messages": {
+          "exchange_name": "facts",
+          "exchange_type": "direct"
+        },
+        "facts_window_size":{
+          "exchange_name": "windowsizes",
+          "routing_key": "windowsizes"
+        }
+    }
+}

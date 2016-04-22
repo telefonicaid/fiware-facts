@@ -1,0 +1,65 @@
+mysql:
+   image: mysql:5.5
+   container_name: mysql
+   environment:
+     MYSQL_DATABASE: cloto
+     MYSQL_USER: mysql
+     MYSQL_PASSWORD: mysql
+     MYSQL_ROOT_PASSWORD: supersecret
+   ports:
+    - 3306:3306
+redis:
+   image: redis
+   ports:
+    - 6379:6379   
+rabbit:
+   image: fiwarerabbit
+   container_name: rabbit
+   ports:
+    - 5672:5672
+    - 4369:4369
+    - 5671:5671
+    - 25672:25672
+   environment:
+    - RABBITMQ_USER
+    - RABBITMQ_PASSWORD
+fiwarecloto:
+  image: fiware-cloto
+  ports:
+   - 8000:8000
+  links:
+   - mysql
+   - rabbit
+  environment: 
+   - ADM_PASSWORD
+   - ADM_USERNAME
+   - ADM_TENANT_NAME
+   - ADM_TENANT_ID
+   - KEYSTONE_IP
+fiwarefacts:
+  image: fiware-facts
+  ports:
+   - 3000:3000
+  links:
+   - mysql
+   - redis
+   - rabbit
+  environment:
+   - ADM_PASSWORD
+   - ADM_USERNAME
+   - ADM_TENANT_NAME
+   - ADM_TENANT_ID
+   - KEYSTONE_IP
+fiwarefactsaceptance:
+  image: fiware-facts-acceptance
+  links:
+  - fiwarecloto
+  - fiwarefacts
+  - rabbit
+  - redis
+  environment:
+  - ADM_PASSWORD
+  - ADM_USERNAME
+  - ADM_TENANT_NAME
+  - ADM_TENANT_ID
+  - KEYSTONE_IP
