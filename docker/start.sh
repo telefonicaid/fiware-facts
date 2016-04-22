@@ -6,4 +6,3 @@ while ! nc -z redis 6379; do sleep 8; done
 while ! nc -z rabbit 5672; do sleep 8; done
 while ! nc -z mysql 3306; do sleep 8; done
 gunicorn facts.server:app -b 0.0.0.0:5000
-sleep 12000
