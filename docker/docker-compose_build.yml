@@ -1,11 +1,9 @@
 redis:
    image: redis
-   container_name: redis
    ports:
     - 6379:6379   
 rabbit:
    image: rabbitmq
-   container_name: rabbit
    ports:
     - 5672:5672
     - 4369:4369
