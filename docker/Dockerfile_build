@@ -15,5 +15,6 @@ RUN sudo pip install -r requirements_dev.txt
 COPY sonar-project.properties sonar-project.properties
 COPY config.py facts/config.py
 COPY fiware-facts.cfg /etc/fiware.d/fiware-facts.cfg
-RUN sleep 15
-CMD export PYTHONPATH=$PWD; nosetests -s -v --cover-package=facts --with-cover
+RUN mkdir coverage
+RUN mkdir test_results 
+CMD sleep 15; export PYTHONPATH=$PWD; nosetests --with-coverage --cover-package=./ --cover-xml --cover-xml-file=coverage/coverage.xml --with-xunit --xunit-file=test_results/TEST-nosetests.xml --exe
