@@ -7,7 +7,7 @@ RUN git clone https://github.com/telefonicaid/fiware-facts /opt/fiware-facts
 WORKDIR /opt/fiware-facts/tests/acceptance
 RUN pip install -r requirements.txt --allow-all-external
 COPY settings.json conf/settings.json
-RUN sudo mkdir /etc/fiware.d/
+RUN mkdir /etc/fiware.d/
 COPY fiware-facts.cfg /etc/fiware.d/fiware-facts.cfg
 COPY start_acceptance.sh start_acceptance.sh
 CMD ./start_acceptance.sh

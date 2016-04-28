@@ -11,7 +11,7 @@ WORKDIR /opt/fiware-facts
 RUN mkdir /var/log/fiware-facts 
 RUN chmod 777 /var/log/fiware-facts
 RUN pip install -r requirements.txt
-RUN sudo pip install -r requirements_dev.txt
+RUN pip install -r requirements_dev.txt
 COPY sonar-project.properties sonar-project.properties
 COPY config.py facts/config.py
 COPY fiware-facts.cfg /etc/fiware.d/fiware-facts.cfg
