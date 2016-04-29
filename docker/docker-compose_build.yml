@@ -1,20 +1,19 @@
 redis:
    image: redis
+   container_name: redis
    ports:
     - 6379:6379   
 rabbit:
-   image: fiwarerabbit
+   image: rabbitmq
    container_name: rabbit
    ports:
     - 5672:5672
     - 4369:4369
     - 5671:5671
     - 25672:25672
-   environment:
-    - RABBITMQ_USER
-    - RABBITMQ_PASSWORD
 fiwarefactsbuild:
   image: fiware-facts-build
+  container_name: fiwarefactsbuild
   links:
    - redis
    - rabbit
