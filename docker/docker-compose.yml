@@ -64,3 +64,5 @@ fiwarefactsaceptance:
   - ADM_TENANT_NAME
   - ADM_TENANT_ID
   - KEYSTONE_IP
+  - RABBITMQ_USER
+  - RABBITMQ_PASSWORD

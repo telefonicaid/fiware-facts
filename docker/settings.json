@@ -24,8 +24,8 @@
     "rabbitmq_service": {
         "host": "rabbit",
         "port": "5672",
-        "user": "qa",
-        "password": "testing",
+        "user": "{RABBITMQ_USER}",
+        "password": "{RABBITMQ_PASSWORD}",
         "facts_messages": {
           "exchange_name": "facts",
           "exchange_type": "direct"
