@@ -4,7 +4,7 @@ sed -i -e "s/{ADM_TENANT_NAME}/${ADM_TENANT_NAME}/" conf/settings.json
 sed -i -e "s/{ADM_TENANT_ID}/${ADM_TENANT_ID}/" conf/settings.json
 sed -i -e "s/{ADM_USERNAME}/${ADM_USERNAME}/" conf/settings.json
 
-sleep 15
+sleep 40
 while ! nc -z redis 6379; do sleep 8; done
 while ! nc -z rabbit 5672; do sleep 8; done
 while ! nc -z fiwarecloto 8000; do sleep 8; done
