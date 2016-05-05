@@ -8,7 +8,7 @@
         "port": "5000",
         "resource": "/v1.0",
         "os_tenant_id": "{ADM_TENANT_ID}",
-        "os_secondary_tenant_id": "67498e9bf9bc4914930c166e5dd3c98a",
+        "os_secondary_tenant_id": "{TENANT_ID_QA}",
         "facts_grace_period": 10
     },
     "cloto_service": {
