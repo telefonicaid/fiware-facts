@@ -13,7 +13,6 @@ rabbit:
     - 25672:25672
 fiwarefactsbuild:
   image: fiware-facts-build
-  container_name: fiwarefactsbuild
   links:
    - redis
    - rabbit
