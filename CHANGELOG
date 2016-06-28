@@ -1,6 +1,26 @@
 Changelog
 =========
 
+v2.6.0 (2016-06-28)
+-------------------
+New
+~~~
+
+- Create docker files. [Henar Muñoz]
+
+Changes
+~~~~~~~
+
+- Update Unit Tests. [Henar Muñoz]
+- Update requirements. [Henar Muñoz]
+
+Fix
+~~~
+
+- Add automatic version renumbering. [Fernando Lopez]
+- Resolve problems in acceptance E2E tests. [Henar Muñoz]
+
+
 v2.5.0 (2016-04-01)
 -------------------
 
