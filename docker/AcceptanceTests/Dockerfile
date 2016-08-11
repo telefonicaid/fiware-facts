@@ -10,5 +10,5 @@ RUN pip install -r requirements.txt --allow-all-external; pip install python-ope
 COPY settings.json conf/settings.json
 RUN mkdir /etc/fiware.d/
 COPY fiware-facts.cfg /etc/fiware.d/fiware-facts.cfg
-COPY start_acceptance.sh start_acceptance.sh
-CMD ./start_acceptance.sh
+COPY start.sh start.sh
+CMD ./start.sh

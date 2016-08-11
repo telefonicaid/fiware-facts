@@ -28,7 +28,6 @@
 #
 # __author__ = 'fla'
 set -e
-
 mkdir -p /var/log/fiware-facts
 mkdir -m 777 -p target/site/cobertura
 mkdir -m 777 -p target/surefire-reports

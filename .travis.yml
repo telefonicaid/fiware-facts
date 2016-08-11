@@ -9,8 +9,7 @@ env:
   - secure: fJPqjCQRymZndCV9zWH6LUV8NmsWkz4ktuRubeRqVPjAG2H2O1O0OVQP1z6P8T8nKsH3h4ccTchPWUSt0BJOjZeFs+Y56+BAw/yBT773QgIvrrDL80sgEKQcxB4wHD9yMCdd8UugKzzVccH1DO2cGoTP8YREx3JledXxdF8Dowc=
 
 install:
-    - if [[ $TRAVIS_PYTHON_VERSION == '2.6' ]]; then pip install --use-mirrors unittest2; fi
-    - pip install --use-mirrors tornado twisted pyyaml 
+    - pip install tornado twisted pyyaml 
 
 services:
   - rabbitmq
