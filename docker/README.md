@@ -30,7 +30,7 @@ After a few seconds you should have your fiware-facts image created. Just run th
     fiware-facts       latest              bd78d006c2ea        About a minute ago   480.8 MB
     ...
 
-fiware-facts image needs somce dockers mysql and rabbit alredy deployed. Thus, to deploy the container we need to execute the command `docker run -p 8000:8000 -e PASSWORD=$PASSWORD -l rabbit -l mysql fiware-murano`.
+fiware-facts image needs some dockers containers: mysql and rabbit already deployed. Thus, to deploy the container we need to execute the command `docker run -p 8000:8000 -l rabbit -l mysql fiware-facts`.
 It will launch the fiware-facts service listening on port 8000, which is linked to mysql and rabbit dockers.
 
 To check that the service is running correcly, just do
@@ -63,7 +63,7 @@ If you want to check the containers just execute docker-compose ps.
 
            Name                      Command               State                                                Ports
     ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-    docker_fiwarecloto_1   /bin/sh -c ./start.sh            Up      0.0.0.0:8000->8000/tcp
+    docker_fiwarefacts_1   /bin/sh -c ./start.sh            Up      0.0.0.0:8000->8000/tcp
     mysql                  docker-entrypoint.sh mysqld      Up      0.0.0.0:3306->3306/tcp
     rabbit                 /docker-entrypoint.sh rabb ...   Up      0.0.0.0:25672->25672/tcp, 0.0.0.0:4369->4369/tcp, 0.0.0.0:5671->5671/tcp, 0.0.0.0:5672->5672/tc
 
