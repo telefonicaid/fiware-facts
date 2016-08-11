@@ -3,7 +3,7 @@
 FIWARE Policy Manager GE: Facts
 ===============================
 
-|License Badge| |Documentation Badge| |StackOverflow| |Build Status| |Coverage Status| |Pypi Version|
+|License Badge| |Documentation Badge| |StackOverflow| |Build Status| |Coverage Status| |Docker badge| |Pypi Version|
 
 .. contents:: :local:
 
@@ -428,6 +428,9 @@ License
    :alt: Help? Ask questions...
 .. |Documentation Badge| image:: https://readthedocs.org/projects/fiware-cloto/badge/?version=latest
    :target: http://fiware-cloto.readthedocs.org/en/latest/?badge=latest
+.. |Docker badge| image:: https://img.shields.io/docker/pulls/fiware/bosun-facts.svg
+   :target: https://hub.docker.com/r/fiware/bosun-facts
+   :alt: Docker Pulls
 
 .. REFERENCES
 
