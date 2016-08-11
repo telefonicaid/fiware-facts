@@ -10,7 +10,6 @@ env:
 
 install:
     - pip install tornado twisted pyyaml 
-    - pip install --upgrade --force-reinstall greenlet
 
 services:
   - rabbitmq
