@@ -51,13 +51,15 @@ Take the Container ID and execute `docker stop b8e1de41deb5` or `docker kill b8e
 However, there is a simpler way to deploy the container. That is docker-compose and it avoids to deploy containers previously and specifies the port for fiware-facts.
 It involves just executing docker-compose up -d to launch the architecture, after exporting a set of environment variables.
 
-    export KEYSTONE_IP=<IP of the keystone instance>
-    export ADM_TENANT_ID=<admin tenant id in the OpenStack environment>
-    export ADM_TENANT_NAME=<admin tenant name>
-    export ADM_USERNAME=<admin username>
-    export ADM_PASSWORD=<admin password>
-    export OS_USER_DOMAIN_NAME=<OpenStack user domain name>
-    export OS_PROJECT_DOMAIN_NAME=<OpenStack project domain name>
+    export KEYSTONE_IP=<IP of the keystone instance for the Openstack environment previously deployed>
+    export ADM_TENANT_ID=<Tenant Id for the admin user in the OpenStack environment previously deployed>
+    export ADM_TENANT_NAME=<Tenant name for the admin user in the OpenStack environment previously deployed>
+    export ADM_USERNAME=<Username for the admin user in the OpenStack environment previously deployed>
+    export ADM_PASSWORD=<Password for the admin user in the OpenStack environment previously deployed>
+    export OS_USER_DOMAIN_NAME=<OpenStack user domain name for the Openstack environment previously deployed>
+    export OS_PROJECT_DOMAIN_NAME=<OpenStack project domain name for the Openstack environment previously deployed>
+
+
 
 If you want to check the containers just execute docker-compose ps.
 
@@ -96,13 +98,13 @@ Keep in mind that if you use these commands you get access to the tags and speci
 
 Taking into account that you download the repository from GitHub (See Section **1. The Fastest Way**). This method will launch a container to run the E2E tests of the fiware-facts component, previously you should launch or configure a FIWARE Lab access. You have to define the following environment variables:
 
-    export KEYSTONE_IP=<IP of the keystone instance>
-    export ADM_TENANT_ID=<admin tenant id in the OpenStack environment>
-    export ADM_TENANT_NAME=<admin tenant name>
-    export ADM_USERNAME=<admin username>
-    export ADM_PASSWORD=<admin password>
-    export OS_USER_DOMAIN_NAME=<OpenStack user domain name>
-    export OS_PROJECT_DOMAIN_NAME=<OpenStack project domain name>
+    export KEYSTONE_IP=<IP of the keystone instance for the Openstack environment previously deployed>
+    export ADM_TENANT_ID=<Tenant Id for the admin user in the OpenStack environment previously deployed>
+    export ADM_TENANT_NAME=<Tenant name for the admin user in the OpenStack environment previously deployed>
+    export ADM_USERNAME=<Username for the admin user in the OpenStack environment previously deployed>
+    export ADM_PASSWORD=<Password for the admin user in the OpenStack environment previously deployed>
+    export OS_USER_DOMAIN_NAME=<OpenStack user domain name for the Openstack environment previously deployed>
+    export OS_PROJECT_DOMAIN_NAME=<OpenStack project domain name for the Openstack environment previously deployed>
 
 Take it, You should move to the AcceptanceTests folder `./AcceptanceTests`. Just create a new docker image executing `docker build -t fiware-facts-acceptance .`. To see that the image is created run `docker images` and you see something like this:
 
@@ -111,7 +113,9 @@ Take it, You should move to the AcceptanceTests folder `./AcceptanceTests`. Just
     fiware-facts              latest              a46ffad45e60        4 hours ago         480.8 MB
     ...
 
-Now is time to execute the container. This time, we take advantage of the docker compose. Just execute `docker-compose up` to launch the architecture. You can take a look to the log generated executing `docker-compose logs`. If you want to get the result of the acceptance tests, just execute `docker cp docker_fiware-cloto-acceptance_1:/opt/fiware-aiakos/test/acceptance/testreport .`
+Now is time to execute the container. This time, we take advantage of the docker compose. Just execute `docker-compose up`
+to launch the architecture. You can take a look to the log generated executing `docker-compose logs`. If you want to get
+the result of the acceptance tests, just execute `docker cp acceptancetests_fiwarecloto_1:/opt/fiware-facts/tests/acceptance/testreport .`
 
 Please keep in mind that if you do not change the name of the image it will automatically create a new one for unit tests and change the previous one to tag none.
 
