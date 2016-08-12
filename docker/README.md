@@ -11,7 +11,6 @@ You do not need to do all of them, just use the first one if you want to have a 
 
 You do need to have docker in your machine. See the [documentation](https://docs.docker.com/installation/) on how to do this. Additionally, you can use the proper FIWARE Lab docker functionality to deploy dockers image there. See the [documentation](https://docs.docker.com/installation/)
 
-----
 ## 1. The Fastest Way
 
 Docker allows you to deploy an fiware-facts container in a few minutes. This method requires that you have installed docker or can deploy container into the FIWARE Lab (see previous details about it).
@@ -63,8 +62,7 @@ It involves just executing docker-compose up -d to launch the architecture, afte
 
 If you want to check the containers just execute docker-compose ps.
 
-           Name                      Command               State                                                Ports
-    ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+           Name                      Command               State                                            Ports
     docker_fiwarefacts_1   /bin/sh -c ./start.sh            Up      0.0.0.0:8000->8000/tcp
     mysql                  docker-entrypoint.sh mysqld      Up      0.0.0.0:3306->3306/tcp
     rabbit                 /docker-entrypoint.sh rabb ...   Up      0.0.0.0:25672->25672/tcp, 0.0.0.0:4369->4369/tcp, 0.0.0.0:5671->5671/tcp, 0.0.0.0:5672->5672/tc
@@ -72,7 +70,6 @@ If you want to check the containers just execute docker-compose ps.
 You can take a look to the log generated executing docker-compose logs.
 
 
-----
 ## 2. Run Unit Test of fiware-facts
 
 Taking into account that you download the repository from GitHub (See Section **1. The Fastest Way**), this method will launch a container running fiware-facts, and execute the unit tests associated to the component. You should move to the UnitTests folder `./UnitTests`. Just create a new docker image executind `docker build -t fiware-facts-unittests -f Dockerfile .`. Please keep in mind that if you do not change the name of the image it will automatically create a new one for unit tests and change the previous one to tag none.
@@ -93,7 +90,6 @@ If you have to stop it first do `docker stop fiware-facts-unittests`.
 Keep in mind that if you use these commands you get access to the tags and specific versions of fiware-facts. If you do not specify a version you are pulling from `latest` by default.
 
 
-----
 ## 3. Run Acceptance tests
 
 Taking into account that you download the repository from GitHub (See Section **1. The Fastest Way**). This method will launch a container to run the E2E tests of the fiware-facts component, previously you should launch or configure a FIWARE Lab access. You have to define the following environment variables:
@@ -121,7 +117,6 @@ Please keep in mind that if you do not change the name of the image it will auto
 
 > TIP: you can launch a FIWARE Lab testbed container to execute the fiware-facts E2E test. Just follow the indications in [FIWARE Testbed Deploy](https://hub.docker.com/r/fiware/testbed-deploy/). It will launch a virtual machine in which a reproduction of the FIWARE Lab is installed. Keep in mind that in that case Region1 have to be configured with the value qaregion.
 
-----
 ## 4. Other info
 
 Things to keep in mind while working with docker containers and fiware-facts.
