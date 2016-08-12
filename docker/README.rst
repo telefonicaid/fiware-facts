@@ -1,0 +1,1450 @@
+How to use fiware-facts with Docker
+===================================
+
+There are several options to use fiware-facts very easily using docker.
+These are (in order of complexity):
+
+-  *"Have everything automatically done for me"*. See Section **1. The
+   Fastest Way** (recommended).
+-  *"Check the unit tests associated to the component"*. See Section
+   **2. Run Unit Test of fiware-facts**.
+-  *"Check the acceptance tests are running properly"* or *"I want to
+   check that my fiware-facts instance run properly"* . See Section **3.
+   Run Acceptance tests**.
+
+You do not need to do all of them, just use the first one if you want to
+have a fully operational fiware-facts instance and maybe third one to
+check if your fiware-facts instance run properly.
+
+You do need to have docker in your machine. See the
+`documentation <https://docs.docker.com/installation/>`__ on how to do
+this. Additionally, you can use the proper FIWARE Lab docker
+functionality to deploy dockers image there. See the
+`documentation <https://docs.docker.com/installation/>`__
+
++------+
+| ##   |
+| 1.   |
+| The  |
+| Fast |
+| est  |
+| Way  |
++------+
+| Dock |
+| er   |
+| allo |
+| ws   |
+| you  |
+| to   |
+| depl |
+| oy   |
+| an   |
+| fiwa |
+| re-f |
+| acts |
+| cont |
+| aine |
+| r    |
+| in a |
+| few  |
+| minu |
+| tes. |
+| This |
+| meth |
+| od   |
+| requ |
+| ires |
+| that |
+| you  |
+| have |
+| inst |
+| alle |
+| d    |
+| dock |
+| er   |
+| or   |
+| can  |
+| depl |
+| oy   |
+| cont |
+| aine |
+| r    |
+| into |
+| the  |
+| FIWA |
+| RE   |
+| Lab  |
+| (see |
+| prev |
+| ious |
+| deta |
+| ils  |
+| abou |
+| t    |
+| it). |
++------+
+| Cons |
+| ider |
+| this |
+| meth |
+| od   |
+| if   |
+| you  |
+| want |
+| to   |
+| try  |
+| fiwa |
+| re-f |
+| acts |
+| and  |
+| do   |
+| not  |
+| want |
+| to   |
+| both |
+| er   |
+| abou |
+| t    |
+| losi |
+| ng   |
+| data |
+| .    |
++------+
+| Foll |
+| ow   |
+| thes |
+| e    |
+| step |
+| s:   |
++------+
+| -    |
+| Down |
+| load |
+| `fiw |
+| are- |
+| fact |
+| s'   |
+| sour |
+| ce   |
+| code |
+|  <ht |
+| tps: |
+| //gi |
+| thub |
+| .com |
+| /tel |
+| efon |
+| icai |
+| d/fi |
+| ware |
+| -fac |
+| ts>` |
+| __   |
+| from |
+| GitH |
+| ub   |
+| (``g |
+| it c |
+| lone |
+|  htt |
+| ps:/ |
+| /git |
+| hub. |
+| com/ |
+| tele |
+| foni |
+| caid |
+| /fiw |
+| are- |
+| fact |
+| s.gi |
+| t``) |
+| -    |
+| ``cd |
+|  fiw |
+| are- |
+| fact |
+| s/do |
+| cker |
+| ``   |
+| -    |
+| Usin |
+| g    |
+| the  |
+| comm |
+| and- |
+| line |
+| and  |
+| with |
+| in   |
+| the  |
+| dire |
+| ctor |
+| y    |
+| you  |
+| crea |
+| ted  |
+| type |
+| :    |
+| ``do |
+| cker |
+|  bui |
+| ld - |
+| t fi |
+| ware |
+| -fac |
+| ts - |
+| f Do |
+| cker |
+| file |
+|  .`` |
+| .    |
++------+
+| Afte |
+| r    |
+| a    |
+| few  |
+| seco |
+| nds  |
+| you  |
+| shou |
+| ld   |
+| have |
+| your |
+| fiwa |
+| re-f |
+| acts |
+| imag |
+| e    |
+| crea |
+| ted. |
+| Just |
+| run  |
+| the  |
+| comm |
+| and  |
+| ``do |
+| cker |
+|  ima |
+| ges` |
+| `    |
+| and  |
+| you  |
+| see  |
+| the  |
+| foll |
+| owin |
+| g    |
+| resp |
+| onse |
+| :    |
++------+
+| REPO |
+| SITO |
+| RY   |
+| TAG  |
+| IMAG |
+| E    |
+| ID   |
+| CREA |
+| TED  |
+| SIZE |
+| fiwa |
+| re-f |
+| acts |
+| late |
+| st   |
+| bd78 |
+| d006 |
+| c2ea |
+| Abou |
+| t    |
+| a    |
+| minu |
+| te   |
+| ago  |
+| 480. |
+| 8    |
+| MB   |
+| ...  |
++------+
+| fiwa |
+| re-f |
+| acts |
+| imag |
+| e    |
+| need |
+| s    |
+| some |
+| dock |
+| ers  |
+| cont |
+| aine |
+| rs:  |
+| mysq |
+| l    |
+| and  |
+| rabb |
+| it   |
+| alre |
+| ady  |
+| depl |
+| oyed |
+| .    |
+| Thus |
+| ,    |
+| to   |
+| depl |
+| oy   |
+| the  |
+| cont |
+| aine |
+| r    |
+| we   |
+| need |
+| to   |
+| exec |
+| ute  |
+| the  |
+| comm |
+| and  |
+| ``do |
+| cker |
+|  run |
+|  -p  |
+| 8000 |
+| :800 |
+| 0 -l |
+|  rab |
+| bit  |
+| -l m |
+| ysql |
+|  fiw |
+| are- |
+| fact |
+| s``. |
+| It   |
+| will |
+| laun |
+| ch   |
+| the  |
+| fiwa |
+| re-f |
+| acts |
+| serv |
+| ice  |
+| list |
+| enin |
+| g    |
+| on   |
+| port |
+| 8000 |
+| ,    |
+| whic |
+| h    |
+| is   |
+| link |
+| ed   |
+| to   |
+| mysq |
+| l    |
+| and  |
+| rabb |
+| it   |
+| dock |
+| ers. |
++------+
+| To   |
+| chec |
+| k    |
+| that |
+| the  |
+| serv |
+| ice  |
+| is   |
+| runn |
+| ing  |
+| corr |
+| ecly |
+| ,    |
+| just |
+| do   |
++------+
+| curl |
+| :800 |
+| 0    |
++------+
+| You  |
+| can  |
+| obta |
+| in   |
+| the  |
+| IP   |
+| addr |
+| ess  |
+| of   |
+| the  |
+| mach |
+| ine  |
+| just |
+| exec |
+| utin |
+| g    |
+| ``do |
+| cker |
+| -mac |
+| hine |
+|  ip` |
+| `.   |
+| What |
+| you  |
+| have |
+| done |
+| with |
+| this |
+| meth |
+| od   |
+| is   |
+| the  |
+| crea |
+| tion |
+| of   |
+| the  |
+| `fiw |
+| are- |
+| fact |
+| s <h |
+| ttps |
+| ://h |
+| ub.d |
+| ocke |
+| r.co |
+| m/r/ |
+| fiwa |
+| re/b |
+| osun |
+| -clo |
+| to/> |
+| `__  |
+| imag |
+| e    |
+| from |
+| the  |
+| publ |
+| ic   |
+| repo |
+| sito |
+| ry   |
+| of   |
+| imag |
+| es   |
+| call |
+| ed   |
+| `Doc |
+| ker  |
+| Hub  |
+| <htt |
+| ps:/ |
+| /hub |
+| .doc |
+| ker. |
+| com/ |
+| >`__ |
+| .    |
++------+
+| If   |
+| you  |
+| want |
+| to   |
+| stop |
+| the  |
+| scen |
+| ario |
+| you  |
+| have |
+| to   |
+| exec |
+| ute  |
+| ``do |
+| cker |
+|  ps` |
+| `    |
+| and  |
+| you  |
+| see  |
+| some |
+| thin |
+| g    |
+| like |
+| this |
+| :    |
++------+
+| CONT |
+| AINE |
+| R    |
+| ID   |
+| IMAG |
+| E    |
+| COMM |
+| AND  |
+| CREA |
+| TED  |
+| STAT |
+| US   |
+| PORT |
+| S    |
+| NAME |
+| S    |
+| b8e1 |
+| de41 |
+| deb5 |
+| fiwa |
+| re-f |
+| acts |
+| "/bi |
+| n/sh |
+| -c   |
+| ./st |
+| art. |
+| s"   |
+| 6    |
+| minu |
+| tes  |
+| ago  |
+| Up 6 |
+| minu |
+| tes  |
+| 0.0. |
+| 0.0: |
+| 8000 |
+| ->80 |
+| 00/t |
+| cp   |
+| ferv |
+| ent\ |
+| _dav |
+| inci |
+| ...  |
++------+
+| Take |
+| the  |
+| Cont |
+| aine |
+| r    |
+| ID   |
+| and  |
+| exec |
+| ute  |
+| ``do |
+| cker |
+|  sto |
+| p b8 |
+| e1de |
+| 41de |
+| b5`` |
+| or   |
+| ``do |
+| cker |
+|  kil |
+| l b8 |
+| e1de |
+| 41de |
+| b5`` |
+| .    |
+| Note |
+| that |
+| you  |
+| will |
+| lose |
+| any  |
+| data |
+| that |
+| was  |
+| bein |
+| g    |
+| used |
+| in   |
+| fiwa |
+| re-f |
+| acts |
+| usin |
+| g    |
+| this |
+| meth |
+| od.  |
++------+
+| Howe |
+| ver, |
+| ther |
+| e    |
+| is a |
+| simp |
+| ler  |
+| way  |
+| to   |
+| depl |
+| oy   |
+| the  |
+| cont |
+| aine |
+| r.   |
+| That |
+| is   |
+| dock |
+| er-c |
+| ompo |
+| se   |
+| and  |
+| it   |
+| avoi |
+| ds   |
+| to   |
+| depl |
+| oy   |
+| cont |
+| aine |
+| rs   |
+| prev |
+| ious |
+| ly   |
+| and  |
+| spec |
+| ifie |
+| s    |
+| the  |
+| port |
+| for  |
+| fiwa |
+| re-f |
+| acts |
+| .    |
+| It   |
+| invo |
+| lves |
+| just |
+| exec |
+| utin |
+| g    |
+| dock |
+| er-c |
+| ompo |
+| se   |
+| up   |
+| -d   |
+| to   |
+| laun |
+| ch   |
+| the  |
+| arch |
+| itec |
+| ture |
+| ,    |
+| afte |
+| r    |
+| expo |
+| rtin |
+| g    |
+| a    |
+| set  |
+| of   |
+| envi |
+| ronm |
+| ent  |
+| vari |
+| able |
+| s.   |
++------+
+| expo |
+| rt   |
+| KEYS |
+| TONE |
+| \_IP |
+| =    |
+| expo |
+| rt   |
+| ADM\ |
+| _TEN |
+| ANT\ |
+| _ID= |
+| expo |
+| rt   |
+| ADM\ |
+| _TEN |
+| ANT\ |
+| _NAM |
+| E=   |
+| expo |
+| rt   |
+| ADM\ |
+| _USE |
+| RNAM |
+| E=   |
+| expo |
+| rt   |
+| ADM\ |
+| _PAS |
+| SWOR |
+| D=   |
+| expo |
+| rt   |
+| OS\_ |
+| USER |
+| \_DO |
+| MAIN |
+| \_NA |
+| ME=  |
+| expo |
+| rt   |
+| OS\_ |
+| PROJ |
+| ECT\ |
+| _DOM |
+| AIN\ |
+| _NAM |
+| E=   |
++------+
+| If   |
+| you  |
+| want |
+| to   |
+| chec |
+| k    |
+| the  |
+| cont |
+| aine |
+| rs   |
+| just |
+| exec |
+| ute  |
+| dock |
+| er-c |
+| ompo |
+| se   |
+| ps.  |
++------+
+| Name |
+| Comm |
+| and  |
+| Stat |
+| e    |
+| Port |
+| s    |
+| ---- |
+| ---- |
+| ---- |
+| ---- |
+| ---- |
+| ---- |
+| ---- |
+| ---- |
+| ---- |
+| ---- |
+| ---- |
+| ---- |
+| ---- |
+| ---- |
+| ---- |
+| ---- |
+| ---- |
+| ---- |
+| ---- |
+| ---- |
+| ---- |
+| ---- |
+| ---- |
+| ---- |
+| ---- |
+| ---- |
+| ---- |
+| ---- |
+| ---- |
+| ---- |
+| ---- |
+| ---- |
+| ---- |
+| ---- |
+| ---- |
+| ---- |
+| ---- |
+| ---- |
+| ---- |
+| ---- |
+| dock |
+| er\_ |
+| fiwa |
+| refa |
+| cts\ |
+| _1   |
+| /bin |
+| /sh  |
+| -c   |
+| ./st |
+| art. |
+| sh   |
+| Up   |
+| 0.0. |
+| 0.0: |
+| 8000 |
+| ->80 |
+| 00/t |
+| cp   |
+| mysq |
+| l    |
+| dock |
+| er-e |
+| ntry |
+| poin |
+| t.sh |
+| mysq |
+| ld   |
+| Up   |
+| 0.0. |
+| 0.0: |
+| 3306 |
+| ->33 |
+| 06/t |
+| cp   |
+| rabb |
+| it   |
+| /doc |
+| ker- |
+| entr |
+| ypoi |
+| nt.s |
+| h    |
+| rabb |
+| ...  |
+| Up   |
+| 0.0. |
+| 0.0: |
+| 2567 |
+| 2->2 |
+| 5672 |
+| /tcp |
+| ,    |
+| 0.0. |
+| 0.0: |
+| 4369 |
+| ->43 |
+| 69/t |
+| cp,  |
+| 0.0. |
+| 0.0: |
+| 5671 |
+| ->56 |
+| 71/t |
+| cp,  |
+| 0.0. |
+| 0.0: |
+| 5672 |
+| ->56 |
+| 72/t |
+| c    |
++------+
+| You  |
+| can  |
+| take |
+| a    |
+| look |
+| to   |
+| the  |
+| log  |
+| gene |
+| rate |
+| d    |
+| exec |
+| utin |
+| g    |
+| dock |
+| er-c |
+| ompo |
+| se   |
+| logs |
+| .    |
++------+
+
+2. Run Unit Test of fiware-facts
+--------------------------------
+
+Taking into account that you download the repository from GitHub (See
+Section **1. The Fastest Way**), this method will launch a container
+running fiware-facts, and execute the unit tests associated to the
+component. You should move to the UnitTests folder ``./UnitTests``. Just
+create a new docker image executind
+``docker build -t fiware-facts-unittests -f Dockerfile .``. Please keep
+in mind that if you do not change the name of the image it will
+automatically create a new one for unit tests and change the previous
+one to tag none.
+
+To see that the image is created run ``docker images`` and you see
+something like this:
+
+::
+
+    REPOSITORY                TAG                 IMAGE ID            CREATED             SIZE
+    fiware-facts-unittests    latest              103464a8ede0        30 seconds ago      551.3 MB
+    ...
+
+To execute the unit tests of this component, just execute
+``docker run --name fiware-facts-unittests fiware-facts-unittests``.
+Finally you can extract the information of the executed tests just
+executing
+``docker cp fiware-facts-unittests:/opt/fiware-facts/report .``
+
+    TIP: If you are trying these methods or run them more than once and
+    come across an error saying that the container already exists you
+    can delete it with ``docker rm fiware-facts-unittests``. If you have
+    to stop it first do ``docker stop fiware-facts-unittests``.
+
+Keep in mind that if you use these commands you get access to the tags
+and specific versions of fiware-facts. If you do not specify a version
+you are pulling from ``latest`` by default.
+
++------+
+| ##   |
+| 3.   |
+| Run  |
+| Acce |
+| ptan |
+| ce   |
+| test |
+| s    |
++------+
+| Taki |
+| ng   |
+| into |
+| acco |
+| unt  |
+| that |
+| you  |
+| down |
+| load |
+| the  |
+| repo |
+| sito |
+| ry   |
+| from |
+| GitH |
+| ub   |
+| (See |
+| Sect |
+| ion  |
+| **1. |
+| The  |
+| Fast |
+| est  |
+| Way* |
+| *).  |
+| This |
+| meth |
+| od   |
+| will |
+| laun |
+| ch   |
+| a    |
+| cont |
+| aine |
+| r    |
+| to   |
+| run  |
+| the  |
+| E2E  |
+| test |
+| s    |
+| of   |
+| the  |
+| fiwa |
+| re-f |
+| acts |
+| comp |
+| onen |
+| t,   |
+| prev |
+| ious |
+| ly   |
+| you  |
+| shou |
+| ld   |
+| laun |
+| ch   |
+| or   |
+| conf |
+| igur |
+| e    |
+| a    |
+| FIWA |
+| RE   |
+| Lab  |
+| acce |
+| ss.  |
+| You  |
+| have |
+| to   |
+| defi |
+| ne   |
+| the  |
+| foll |
+| owin |
+| g    |
+| envi |
+| ronm |
+| ent  |
+| vari |
+| able |
+| s:   |
++------+
+| expo |
+| rt   |
+| KEYS |
+| TONE |
+| \_IP |
+| =    |
+| expo |
+| rt   |
+| ADM\ |
+| _TEN |
+| ANT\ |
+| _ID= |
+| expo |
+| rt   |
+| ADM\ |
+| _TEN |
+| ANT\ |
+| _NAM |
+| E=   |
+| expo |
+| rt   |
+| ADM\ |
+| _USE |
+| RNAM |
+| E=   |
+| expo |
+| rt   |
+| ADM\ |
+| _PAS |
+| SWOR |
+| D=   |
+| expo |
+| rt   |
+| OS\_ |
+| USER |
+| \_DO |
+| MAIN |
+| \_NA |
+| ME=  |
+| expo |
+| rt   |
+| OS\_ |
+| PROJ |
+| ECT\ |
+| _DOM |
+| AIN\ |
+| _NAM |
+| E=   |
++------+
+| Take |
+| it,  |
+| You  |
+| shou |
+| ld   |
+| move |
+| to   |
+| the  |
+| Acce |
+| ptan |
+| ceTe |
+| sts  |
+| fold |
+| er   |
+| ``./ |
+| Acce |
+| ptan |
+| ceTe |
+| sts` |
+| `.   |
+| Just |
+| crea |
+| te   |
+| a    |
+| new  |
+| dock |
+| er   |
+| imag |
+| e    |
+| exec |
+| utin |
+| g    |
+| ``do |
+| cker |
+|  bui |
+| ld - |
+| t fi |
+| ware |
+| -fac |
+| ts-a |
+| ccep |
+| tanc |
+| e .` |
+| `.   |
+| To   |
+| see  |
+| that |
+| the  |
+| imag |
+| e    |
+| is   |
+| crea |
+| ted  |
+| run  |
+| ``do |
+| cker |
+|  ima |
+| ges` |
+| `    |
+| and  |
+| you  |
+| see  |
+| some |
+| thin |
+| g    |
+| like |
+| this |
+| :    |
++------+
+| REPO |
+| SITO |
+| RY   |
+| TAG  |
+| IMAG |
+| E    |
+| ID   |
+| CREA |
+| TED  |
+| SIZE |
+| fiwa |
+| re-f |
+| acts |
+| -acc |
+| epta |
+| nce  |
+| late |
+| st   |
+| eadb |
+| e0b2 |
+| e186 |
+| Abou |
+| t    |
+| an   |
+| hour |
+| ago  |
+| 579. |
+| 3    |
+| MB   |
+| fiwa |
+| re-f |
+| acts |
+| late |
+| st   |
+| a46f |
+| fad4 |
+| 5e60 |
+| 4    |
+| hour |
+| s    |
+| ago  |
+| 480. |
+| 8    |
+| MB   |
+| ...  |
++------+
+| Now  |
+| is   |
+| time |
+| to   |
+| exec |
+| ute  |
+| the  |
+| cont |
+| aine |
+| r.   |
+| This |
+| time |
+| ,    |
+| we   |
+| take |
+| adva |
+| ntag |
+| e    |
+| of   |
+| the  |
+| dock |
+| er   |
+| comp |
+| ose. |
+| Just |
+| exec |
+| ute  |
+| ``do |
+| cker |
+| -com |
+| pose |
+|  up` |
+| `    |
+| to   |
+| laun |
+| ch   |
+| the  |
+| arch |
+| itec |
+| ture |
+| .    |
+| You  |
+| can  |
+| take |
+| a    |
+| look |
+| to   |
+| the  |
+| log  |
+| gene |
+| rate |
+| d    |
+| exec |
+| utin |
+| g    |
+| ``do |
+| cker |
+| -com |
+| pose |
+|  log |
+| s``. |
+| If   |
+| you  |
+| want |
+| to   |
+| get  |
+| the  |
+| resu |
+| lt   |
+| of   |
+| the  |
+| acce |
+| ptan |
+| ce   |
+| test |
+| s,   |
+| just |
+| exec |
+| ute  |
+| ``do |
+| cker |
+|  cp  |
+| acce |
+| ptan |
+| cete |
+| sts_ |
+| fiwa |
+| recl |
+| oto_ |
+| 1:/o |
+| pt/f |
+| iwar |
+| e-fa |
+| cts/ |
+| test |
+| s/ac |
+| cept |
+| ance |
+| /tes |
+| trep |
+| ort  |
+| .``  |
++------+
+| Plea |
+| se   |
+| keep |
+| in   |
+| mind |
+| that |
+| if   |
+| you  |
+| do   |
+| not  |
+| chan |
+| ge   |
+| the  |
+| name |
+| of   |
+| the  |
+| imag |
+| e    |
+| it   |
+| will |
+| auto |
+| mati |
+| call |
+| y    |
+| crea |
+| te   |
+| a    |
+| new  |
+| one  |
+| for  |
+| unit |
+| test |
+| s    |
+| and  |
+| chan |
+| ge   |
+| the  |
+| prev |
+| ious |
+| one  |
+| to   |
+| tag  |
+| none |
+| .    |
++------+
+| >    |
+| TIP: |
+| you  |
+| can  |
+| laun |
+| ch   |
+| a    |
+| FIWA |
+| RE   |
+| Lab  |
+| test |
+| bed  |
+| cont |
+| aine |
+| r    |
+| to   |
+| exec |
+| ute  |
+| the  |
+| fiwa |
+| re-f |
+| acts |
+| E2E  |
+| test |
+| .    |
+| Just |
+| foll |
+| ow   |
+| the  |
+| indi |
+| cati |
+| ons  |
+| in   |
+| `FIW |
+| ARE  |
+| Test |
+| bed  |
+| Depl |
+| oy < |
+| http |
+| s:// |
+| hub. |
+| dock |
+| er.c |
+| om/r |
+| /fiw |
+| are/ |
+| test |
+| bed- |
+| depl |
+| oy/> |
+| `__. |
+| It   |
+| will |
+| laun |
+| ch   |
+| a    |
+| virt |
+| ual  |
+| mach |
+| ine  |
+| in   |
+| whic |
+| h    |
+| a    |
+| repr |
+| oduc |
+| tion |
+| of   |
+| the  |
+| FIWA |
+| RE   |
+| Lab  |
+| is   |
+| inst |
+| alle |
+| d.   |
+| Keep |
+| in   |
+| mind |
+| that |
+| in   |
+| that |
+| case |
+| Regi |
+| on1  |
+| have |
+| to   |
+| be   |
+| conf |
+| igur |
+| ed   |
+| with |
+| the  |
+| valu |
+| e    |
+| qare |
+| gion |
+| .    |
++------+
+
+4. Other info
+-------------
+
+Things to keep in mind while working with docker containers and
+fiware-facts.
+
+4.1 Data persistence
+~~~~~~~~~~~~~~~~~~~~
+
+Everything you do with fiware-facts when dockerized is non-persistent.
+*You will lose all your data* if you turn off the fiware-facts
+container. This will happen with either method presented in this README.
+
+4.2 Using ``sudo``
+~~~~~~~~~~~~~~~~~~
+
+If you do not want to have to use ``sudo`` follow `these
+instructions <http://askubuntu.com/questions/477551/how-can-i-use-docker-without-sudo>`__.
+
+How to use fiware-facts with Docker
+===================================
+
+There are several options to use fiware-facts very easily using docker.
+These are (in order of complexity):
+
+-  *"Have everything automatically done for me"*. See Section **1. The
+   Fastest Way** (recommended).
+-  *"Check the unit tests associated to the component"*. See Section
+   **2. Run Unit Test of fiware-facts**.
+-  *"Check the acceptance tests are running properly"* or *"I want to
+   check that my fiware-facts instance run properly"* . See Section **3.
+   Run Acceptance tests**.
+
+You do not need to do all of them, just use the first one if you want to
+have a fully operational fiware-facts instance and maybe third one to
+check if your fiware-facts instance run properly.
+
+You do need to have docker in your machine. See the
+`documentation <https://docs.docker.com/installation/>`__ on how to do
+this. Additionally, you can use the proper FIWARE Lab docker
+functionality to deploy dockers image there. See the
+`documentation <https://docs.docker.com/installation/>`__
