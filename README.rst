@@ -21,7 +21,6 @@ Check also the `FIWARE Catalogue entry for Policy Manager`__
 
 __ `FIWARE Policy Manager - Catalogue`_
 
-
 Any feedback on this documentation is highly welcome, including bugs, typos or
 things you think should be included but aren't. You can use `github issues`__
 to provide feedback.
@@ -33,10 +32,11 @@ Top_.
 
 GEi overall description
 =======================
+
 Bosun GEri is the reference implementation of Policy Manager GE.
 
-Bosun GEri offers decision-making ability, independently of the type of resource
-(physical/virtual resources, network, service, etc.)  being able to solve
+Bosun offers decision-making ability, independently of the type of resource
+(physical/virtual resources, network, service, etc.) being able to solve
 complex problems within the Cloud field by reasoning about the knowledge
 base, represented by facts and rules. Bosun GEri provides the basic management
 of cloud resources based on rules, as well as management of the corresponding
@@ -61,7 +61,7 @@ Components
 ----------
 
 Fiware-Cloto
-    Fiware-Cloto is part of FIWARE Policy Manager. It provides an REST API to
+    Fiware-Cloto is part of FIWARE Policy Manager. It provides a REST API to
     create rules associated to servers, subscribe servers to Context Broker to
     get information about resources consumption of that servers and launch
     actions described in rules when conditions are met.
@@ -96,6 +96,7 @@ To install this module you have to install some components:
 - RabbitMQ Server 3.3.0 or above (http://www.rabbitmq.com/download.html)
 - MySQL 5.6.14 or above (http://dev.mysql.com/downloads/mysql/)
 
+
 Please, be sure you have installed mysql-devel package for development of MySQL
 applications. You should be able to install it from yum or apt-get package
 managers.
@@ -110,25 +111,27 @@ Examples:
 Top_.
 
 
+
 Installation
 ------------
 
 **Using pip**
 Install the component by executing the following instruction:
-::
 
-    pip install fiware-facts
+.. code::
+
+    $ sudo pip install fiware-facts
 
 This operation will install the component in your python site-packages folder.
-
 
 Top_.
 
 
 Configuration file
 ------------------
-The configuration used by the fiware-facts component is read from the configuration
-file located at ``/etc/fiware.d/fiware-facts.cfg``.
+
+The configuration used by the fiware-facts component is read from the file
+located at ``/etc/fiware.d/fiware-facts.cfg``.
 
 MySQL cloto configuration must be filled before starting fiware-facts component,
 user and password are empty by default. You can copy the `default configuration
@@ -140,6 +143,7 @@ location to the server in running execution defining an environment variable
 called FACTS_SETTINGS_FILE.
 
 Options that user could define:
+
 ::
 
     [common]
@@ -150,7 +154,6 @@ Options that user could define:
      rabbitMQ:   localhost  # Address of RabbitMQ server
      cloto:      127.0.0.1  # Address of fiware-cloto
      maxTimeWindowsize: 10  # The maximum time between facts to be considered a valid Fact (seconds).
-
 
     [mysql]
      host: localhost        # address of mysql that fiware-cloto is using
@@ -168,9 +171,9 @@ Running
 
 Execute command:
 
-::
+.. code::
 
-    gunicorn facts.server:app -b $IP:5000
+    $ gunicorn facts.server:app -b $IP:5000
 
 Where $IP should be the IP assigned to the network interface that should be
 listening (ej. 192.168.1.33)
@@ -178,21 +181,21 @@ listening (ej. 192.168.1.33)
 You can also execute the server with a different settings file providing an
 environment variable with the location of the file:
 
-::
+.. code::
 
-    gunicorn facts.server:app -b $IP:5000 --env FACTS_SETTINGS_FILE=/home/user/fiware-facts.cfg
+    $ gunicorn facts.server:app -b $IP:5000 --env FACTS_SETTINGS_FILE=/home/user/fiware-facts.cfg
 
 NOTE: if you want to see gunicorn log if something is going wrong, you could
 execute the command before adding ``--log-file=-`` at the end of the command.
 This option will show the logs in your prompt.
 
-
 Finally, ensure that you create a folder for logs ``/var/log/fiware-facts/``
 (by default), with the right permissions to write in that folder.
 
-::
+.. code::
 
-    mkdir -m /var/log/fiware-facts
+    $ sudo mkdir -m /var/log/fiware-facts
+
 
 Running with supervisor
 -----------------------
@@ -200,32 +203,32 @@ Running with supervisor
 Optionally you can add a new layer to manage gunicorn process with a supervisor.
 Just install supervisor on your system:
 
-::
+.. code::
 
-    sudo apt-get install supervisor
+    $ sudo apt-get install supervisor
 
 Copy the file ``utils/facts_start`` to ``/etc/fiware.d``.
 Make this script executable:
 
-::
+.. code::
 
-    sudo chmod a+x /etc/fiware.d/facts_start
+    $ sudo chmod a+x /etc/fiware.d/facts_start
 
 Copy the file ``utils/fiware-facts.conf`` to ``/etc/supervisor/conf.d``.
 
 Start fiware-facts using supervisor:
 
-::
+.. code::
 
-    sudo supervisorctl reread
-    sudo supervisorctl update
-    sudo supervisorctl start fiware-facts
+    $ sudo supervisorctl reread
+    $ sudo supervisorctl update
+    $ sudo supervisorctl start fiware-facts
 
 To stop fiware-facts just execute:
 
-::
+.. code::
 
-     sudo supervisorctl stop fiware-facts
+    $ sudo supervisorctl stop fiware-facts
 
 NOTE: Supervisor provides an “event listener” to subscribe to
 “event notifications”. The purpose of the event notification/subscription
@@ -246,9 +249,9 @@ description of the CPU, Memory, Disk and Network usages.
 
 An example of this operation could be:
 
-::
+.. code::
 
-        curl --include \
+      $ curl --include \
              --request POST \
              --header "Content-Type: application/json" \
              --data-binary "{
@@ -292,7 +295,6 @@ An example of this operation could be:
 
 This message follows the NGSI-10 information model but using JSON format.
 
-
 The response has no body and should return 200 OK.
 
 Top_.
@@ -320,11 +322,12 @@ those components.
 
 After that, you can execute this folloing commands:
 
-::
+.. code::
 
     $ pip install -r requirements_dev.txt
     $ export PYTHONPATH=$PWD
     $ nosetests -s -v --cover-package=facts --with-cover
+
 
 Top_.
 
@@ -334,7 +337,7 @@ End-to-end tests
 
 Once you have fiware-facts running you can check the server executing:
 
-::
+.. code::
 
     $ curl http://$HOST:5000/v1.0
 
@@ -350,11 +353,13 @@ The request before should return a response with this body if everything is ok:
     {"fiware-facts":"Up and running..."}
 
 
+
 Please refer to the `Installation and administration guide`__ for details.
 
 __ `FIWARE Cloto - E2E tests`_
 
 Top_.
+
 
 
 Acceptance tests
@@ -378,7 +383,11 @@ All detailed documentation about acceptance tests can be consulted in
 
 #. Activate the virtual environment::
 
+
+
       $ source $WORKON_HOME/venv/bin/activate)
+
+
 
 #. Go to `$FACTS_HOME/tests/acceptance` folder in the project.
 #. Install the requirements for the acceptance tests in the virtual environment::
