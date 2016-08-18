@@ -42,16 +42,17 @@ class cloto_db_client():
         :return: the window size
         """
         try:
+            db = config.get('mysql', 'db')
             if self.conn == None:
                 self.conn = mysql.connect(charset=config.get('mysql', 'charset'), use_unicode=True,
                                      host=config.get('mysql', 'host'),
                                      user=config.get('mysql', 'user'), passwd=config.get('mysql', 'password'),
-                                     db=config.get('mysql', 'db'))
+                                     db=db)
             cursor = self.conn.cursor()
-            cursor.execute('SELECT * FROM cloto.cloto_tenantinfo WHERE tenantId="%s"' % tenantId)
+            cursor.execute('SELECT * FROM cloto_tenantinfo WHERE tenantId="{0}"'.format(tenantId))
             data = cursor.fetchall()
             if len(data) == 0:
-                raise NotFound('{"error": "TenantID %s not found in cloto database"}' % tenantId)
+                raise NotFound('{"error": "TenantID %s not found in database"}' % tenantId)
             else:
                 tenant_information = data[0]
                 window_size = tenant_information[1]
