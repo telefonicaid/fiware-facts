@@ -49,10 +49,10 @@ class cloto_db_client():
                                      user=config.get('mysql', 'user'), passwd=config.get('mysql', 'password'),
                                      db=db)
             cursor = self.conn.cursor()
-            cursor.execute('SELECT * FROM %s.cloto_tenantinfo WHERE tenantId="%s"' % db, tenantId)
+            cursor.execute('SELECT * FROM {0}.cloto_tenantinfo WHERE tenantId="{1}"'.format(db, tenantId))
             data = cursor.fetchall()
             if len(data) == 0:
-                raise NotFound('{"error": "TenantID %s not found in %s database"}' % tenantId, db)
+                raise NotFound('{"error": "TenantID %s not found in database"}' % tenantId)
             else:
                 tenant_information = data[0]
                 window_size = tenant_information[1]
