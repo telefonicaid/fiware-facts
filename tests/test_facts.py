@@ -40,7 +40,7 @@ class MyCursor(MagicMock):
     def execute(self, query):
         # Generates mocked results depending of the MYSQL query content
         if query.startswith("SELECT * FROM ") \
-                and query.__contains__("cloto.cloto_tenantinfo")\
+                and query.__contains__("cloto_tenantinfo")\
                 and query.__contains__("WHERE tenantId=\"tenantId\""):
             self.result = [["tenantId", 5]]
 
