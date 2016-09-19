@@ -464,7 +464,7 @@ License
 .. _FIWARE Policy Manager - Apiary: https://jsapi.apiary.io/apis/policymanager/reference.html
 .. _FIWARE Facts: https://github.com/telefonicaid/fiware-facts
 .. _FIWARE Facts - GitHub issues: https://github.com/telefonicaid/fiware-facts/issues/new
-.. _FIWARE Cloto - README: https://github.com/telefonicaid/fiware-cloto/tree/master/doc/README.rst
+.. _FIWARE Cloto - README: https://github.com/telefonicaid/fiware-cloto/tree/master/doc/index.rst
 .. _FIWARE Cloto - E2E tests: https://github.com/telefonicaid/fiware-cloto/tree/master/doc/admin_guide.rst#end-to-end-testing
 .. _FIWARE Policy Manager - Catalogue: http://catalogue.fiware.org/enablers/policy-manager-bosun
 .. _Orion Context Broker: http://catalogue.fiware.org/enablers/publishsubscribe-context-broker-orion-context-broker
