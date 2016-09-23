@@ -229,7 +229,7 @@ Finally, ensure that you create a folder for logs ``/var/log/fiware-facts/``
 
 .. code::
 
-    $ sudo mkdir -m /var/log/fiware-facts
+    $ sudo mkdir -p /var/log/fiware-facts
 
 
 Running with supervisor

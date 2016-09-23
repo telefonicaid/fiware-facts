@@ -115,7 +115,7 @@ Take it, You should move to the AcceptanceTests folder `./AcceptanceTests`. Just
 
 Now is time to execute the container. This time, we take advantage of the docker compose. Just execute `docker-compose up`
 to launch the architecture. You can take a look to the log generated executing `docker-compose logs`. If you want to get
-the result of the acceptance tests, just execute `docker cp acceptancetests_fiwarecloto_1:/opt/fiware-facts/tests/acceptance/testreport .`
+the result of the acceptance tests, just execute `docker cp acceptancetests_fiwarefacts1:/opt/fiware-facts/tests/acceptance/testreport .`
 
 Please keep in mind that if you do not change the name of the image it will automatically create a new one for unit tests and change the previous one to tag none.
 
