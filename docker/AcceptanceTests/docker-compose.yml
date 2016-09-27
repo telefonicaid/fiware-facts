@@ -1,5 +1,5 @@
 mysql:
-   image: mysql:5.5
+   image: mysql:5.7
    container_name: mysql
    environment:
      MYSQL_DATABASE: cloto
@@ -13,9 +13,9 @@ redis:
    container_name: redis
    ports:
     - 6379:6379   
-rabbit:
+fiwarerabbit:
    image: fiwarerabbit
-   container_name: rabbit
+   container_name: fiwarerabbit
    ports:
     - 5672:5672
     - 4369:4369
@@ -40,7 +40,7 @@ fiwarecloto:
 fiwarefacts:
   image: fiware-facts
   ports:
-   - 3000:3000
+   - 5000:5000
   links:
    - mysql
    - redis
