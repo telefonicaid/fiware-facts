@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Create Default RabbitMQ setup
-( sleep 20 ; \
+( sleep 40 ; \
 
 # Create users
 # rabbitmqctl add_user <username> <password>
