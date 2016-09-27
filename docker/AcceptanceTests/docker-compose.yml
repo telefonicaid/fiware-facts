@@ -13,9 +13,9 @@ redis:
    container_name: redis
    ports:
     - 6379:6379   
-fiwarerabbit:
+rabbit:
    image: fiwarerabbit
-   container_name: fiwarerabbit
+   container_name: rabbit
    ports:
     - 5672:5672
     - 4369:4369
@@ -30,7 +30,7 @@ fiwarecloto:
    - 8000:8000
   links:
    - mysql
-   - fiwarerabbit
+   - rabbit
   environment: 
    - ADM_PASSWORD
    - ADM_USERNAME
@@ -44,7 +44,7 @@ fiwarefacts:
   links:
    - mysql
    - redis
-   - fiwarerabbit
+   - rabbit
   environment:
    - ADM_PASSWORD
    - ADM_USERNAME
@@ -56,7 +56,7 @@ fiwarefactsaceptance:
   links:
   - fiwarecloto
   - fiwarefacts
-  - fiwarerabbit
+  - rabbit
   - redis
   environment:
   - ADM_PASSWORD
