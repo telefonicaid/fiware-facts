@@ -3,7 +3,6 @@
 # Create Default RabbitMQ setup
 ( sleep 20 ; \
 
-rabbitmqctl add_vhost /
 # Create users
 # rabbitmqctl add_user <username> <password>
 rabbitmqctl add_user $RABBITMQ_USER $RABBITMQ_PASSWORD ; \
