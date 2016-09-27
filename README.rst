@@ -146,22 +146,58 @@ Options that user could define:
 
 ::
 
-    [common]
-     brokerPort: 5000       # Port listening fiware-facts
-     clotoPort:  8000       # Port listening fiware-cloto
-     redisPort:  6379       # Port listening redis-server
-     redisHost:  localhost  # Address of redis-server
-     rabbitMQ:   localhost  # Address of RabbitMQ server
-     cloto:      127.0.0.1  # Address of fiware-cloto
-     maxTimeWindowsize: 10  # The maximum time between facts to be considered a valid Fact (seconds).
+   [common]
+   brokerPort: 5000       # Port listening fiware-facts
+   clotoPort:  8000       # Port listening fiware-cloto
+   redisPort:  6379       # Port listening redis-server
+   redisHost:  localhost  # Address of redis-server
+   redisQueue: policymanager
+   rabbitMQ:   localhost  # Address of RabbitMQ server
+   cloto:      127.0.0.1  # Address of fiware-cloto
+   clotoVersion: v1.0
+   name:       policymanager.facts
+   maxTimeWindowsize: 10
 
-    [mysql]
-     host: localhost        # address of mysql that fiware-cloto is using
-     user:                  # mysql user
-     password:              # mysql password
+   [mysql]
+   host: localhost        # address of mysql that fiware-cloto is using
+   charset:    utf8
+   db: cloto
+   user:                  # mysql user
+   password:              # mysql password
 
-    [logger_root]
-     level: INFO            # Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+   [loggers]
+   keys: root
+
+   [handlers]
+   keys: console, file
+
+   [formatters]
+   keys: standard
+
+   [formatter_standard]
+   class: logging.Formatter
+   format: %(asctime)s %(levelname)s policymanager.facts %(message)s
+
+   [logger_root]
+   level: INFO            # Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+   handlers: console, file
+
+   [handler_console]
+   level: DEBUG
+   class: StreamHandler
+   formatter: standard
+   args: (sys.stdout,)
+
+   [handler_file]
+   level: DEBUG
+   class: handlers.RotatingFileHandler
+   formatter: standard
+   logFilePath: /var/log/fiware-facts
+   logFileName: fiware-facts.log
+   logMaxFiles: 3
+   logMaxSize: 5*1024*1024  ; 5 MB
+   args: ('%(logFilePath)s/%(logFileName)s', 'a', %(logMaxSize)s, %(logMaxFiles)s)
+
 
 Top_.
 
@@ -194,7 +230,7 @@ Finally, ensure that you create a folder for logs ``/var/log/fiware-facts/``
 
 .. code::
 
-    $ sudo mkdir -m /var/log/fiware-facts
+    $ sudo mkdir -p /var/log/fiware-facts
 
 
 Running with supervisor
