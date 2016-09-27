@@ -1,4 +1,4 @@
-FROM rabbitmq:3-management
+FROM rabbitmq:3.6-management
 
 # Add script to create default users / vhosts
 ADD init.sh /init.sh
