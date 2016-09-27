@@ -30,7 +30,7 @@ fiwarecloto:
    - 8000:8000
   links:
    - mysql
-   - rabbit
+   - fiwarerabbit
   environment: 
    - ADM_PASSWORD
    - ADM_USERNAME
@@ -44,7 +44,7 @@ fiwarefacts:
   links:
    - mysql
    - redis
-   - rabbit
+   - fiwarerabbit
   environment:
    - ADM_PASSWORD
    - ADM_USERNAME
@@ -56,7 +56,7 @@ fiwarefactsaceptance:
   links:
   - fiwarecloto
   - fiwarefacts
-  - rabbit
+  - fiwarerabbit
   - redis
   environment:
   - ADM_PASSWORD
