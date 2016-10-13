@@ -1,6 +1,20 @@
 Changelog
 =========
 
+v2.8.0 (2016-09-29)
+-------------------
+
+Changes
+~~~~~~~
+
+- Update docker files
+- Update documentation
+
+Fix
+~~~
+
+- Remove hardcoded database name
+
 v2.7.0 (2016-08-12)
 -------------------
 
@@ -12,6 +26,7 @@ Changes
 
 v2.6.0 (2016-06-28)
 -------------------
+
 New
 ~~~
 
