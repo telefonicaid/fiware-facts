@@ -106,7 +106,7 @@ Examples:
 .. code::
 
     centos$ sudo yum install mysql-devel
-    ubuntu$ sudo apt-get install mysql-devel
+    ubuntu$ sudo apt-get --no-install-recommends -y install mysql-devel
 
 Top_.
 
@@ -241,7 +241,7 @@ Just install supervisor on your system:
 
 .. code::
 
-    $ sudo apt-get install supervisor
+    $ sudo apt-get --no-install-recommends -y install supervisor
 
 Copy the file ``utils/facts_start`` to ``/etc/fiware.d``.
 Make this script executable:

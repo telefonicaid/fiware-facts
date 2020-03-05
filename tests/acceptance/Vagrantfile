@@ -39,8 +39,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision "shell", inline: "wget https://bootstrap.pypa.io/get-pip.py", privileged: true
   config.vm.provision "shell", inline: "python get-pip.py", privileged: true
   config.vm.provision "shell", inline: "apt-get update", privileged: true
-  config.vm.provision "shell", inline: "apt-get -y install python-dev", privileged: true
-  config.vm.provision "shell", inline: "apt-get -y install git", privileged: true
-  config.vm.provision "shell", inline: "apt-get -y install libxml2-dev libxslt1-dev", privileged: true
+  config.vm.provision "shell", inline: "apt-get --no-install-recommends -y install python-dev", privileged: true
+  config.vm.provision "shell", inline: "apt-get --no-install-recommends -y install git", privileged: true
+  config.vm.provision "shell", inline: "apt-get --no-install-recommends -y install libxml2-dev libxslt1-dev", privileged: true
   config.vm.provision "shell", inline: "pip install -r /vagrant/requirements.txt", privileged: true
 end
