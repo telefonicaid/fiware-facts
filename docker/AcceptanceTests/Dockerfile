@@ -2,7 +2,7 @@ FROM ubuntu
 RUN apt-get update
 RUN apt-get --no-install-recommends -y install python-pip python-dev \
    libpq-dev netcat libmysqlclient-dev libpq-dev \
-   git libffi-dev 
+   git libffi-dev apt-utils ca-certificates apt-transport-https
 RUN git clone https://github.com/telefonicaid/fiware-facts /opt/fiware-facts
 WORKDIR /opt/fiware-facts/tests/acceptance
 RUN pip install --upgrade pip
