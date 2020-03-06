@@ -1,6 +1,7 @@
 FROM ubuntu
 RUN apt-get update
-RUN apt-get -y install  python-dev \
+RUN apt-get --no-install-recommends -y install  python-dev \
+   apt-utils ca-certificates apt-transport-https \
    libpq-dev libmysqlclient-dev libpq-dev \
    git wget curl libffi-dev zip python-mysqldb \
    supervisor python-clips build-essential gcc
