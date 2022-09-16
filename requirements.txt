@@ -8,7 +8,7 @@
 oslo.config==1.13.0
 oslo.i18n==1.7.0
 oslo.serialization==1.6.0
-oslo.utils==1.7.0
+oslo.utils==4.10.1
 redis==2.9.1
 Flask==0.10.1
 gevent>=1.0.1
